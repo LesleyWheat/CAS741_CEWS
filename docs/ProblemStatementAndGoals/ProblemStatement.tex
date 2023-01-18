@@ -22,35 +22,78 @@
 \toprule
 \textbf{Date} & \textbf{Developer(s)} & \textbf{Change}\\
 \midrule
-Date1 & Lesley Wheat & Creation\\
-Date2 & Name(s) & Description of changes\\
-... & ... & ...\\
+2023-01-18 & Lesley Wheat & Creation\\
 \bottomrule
 \end{tabularx}
 \end{table}
 
 \section{Problem Statement}
 
-\wss{You should check your problem statement with the
-\href{https://github.com/smiths/capTemplate/blob/main/docs/Checklists/ProbState-Checklist.pdf}
-{problem statement checklist}.}
-\wss{You can change the section headings, as long as you include the required information.}
+Classification is a common machine learning problem and there are many techniques for solving classification problems. 
+Unfortunately, not all classification problems are easy and it can be difficult to explain why classifiers preform poorly on certain datasets. 
+Data complexity has been defined as a characteristic of the data that relates to the difficulty of the classification problem. \cite{luengo_automatic_2015} 
+To further refine this definition, we consider data complexity to be represented by aspects of the data that introduce difficulty for the classifiers. 
+
+One of these aspects is separability, an intrinsic characteristic that describes how the data points from different classes mix together. \cite{guan_novel_2021} 
+A classic measurement for separability is Fraction of Points on Class Boundary.
+Based on the work of Friedman and Rafsky \cite{friedman_multivariate_1979} and documented by Basu and Ho\cite{ho_complexity_2002}, this measurement constructs a minimum spanning tree over the dataset then calculates the number of points with a connection to another class over all points.
+
+The Cut Edge Weight measurement \cite{zighed_statistical_2005} is a variation of the Fraction of Points on Class Boundary, proposed by Zighed et al. 
+The algorithm for the normalized measurement begins by constructing a Toussaint’s Relative Neighbourhood Graph \cite{toussaint_relative_1980} over the entire dataset then computing the number of edges which connect different classes over the total number of edges. 
+This measurement is a viable way of measuring separability because it has a high coefficient of determination ($R^2$) with the mean error rate of several classifiers.
 
 \subsection{Problem}
 
+The problem is the computation of the Cut Edge Weight measurement over a dataset.
+
 \subsection{Inputs and Outputs}
 
-\wss{Characterize the problem in terms of ``high level'' inputs and outputs.  
-Use abstraction so that you can avoid details.}
+\subsubsection{Inputs}
+
+The program should receive the dataset and specified user options as inputs. 
+The dataset should contain samples with features (in machine learning, a feature is an individual measurable property or characteristic \cite{bishop_pattern_2006}). 
+Each sample should have the same number of features. 
+Each feature should have a numerical value.
+
+\subsubsection{Outputs}
+
+The program should output the value of the normalized Cut Edge Weight measurement for the input dataset calculated based on the specified options.
 
 \subsection{Stakeholders}
 
+Stakeholders are other machine learning researchers.
+
 \subsection{Environment}
 
-\wss{Hardware and software}
+The program should run on a Windows 11 operating system. 
+The program should run on a laptop and should not require a GPU.
 
 \section{Goals}
 
+The goal of the software is to calculate the value of the normalized Cut Edge Weight Statistic as defined in \cite{zighed_statistical_2005} using a Relative Neighbourhood Graph with the following variations available as user options:
+
+\begin{itemize}
+\item The option to use no weighting on the edge calculation.
+\item The option to weigh the edge calculation using the distance measurement of $(1+d_{ij})^{-1}$ where $d_{ij}$ is the Euclidean distance between points $i$ and $j$.
+\item the option to weigh the edge calculation using rank so that the weight is $r_i^{-1}$. Where  $r_j$ is calculated as the rank of vertex $j$ among the neighbours of vertex $i$.
+\end{itemize}
+
+\pagebreak
+
 \section{Stretch Goals}
+
+Stretch goals include:
+
+\begin{itemize}
+\item Generate the p-value of the statistic as defined in \cite{zighed_statistical_2005}.
+\item Give the user the option to run the algorithm using a Gabrial Graph instead of Relative Neighbourhood Graph.
+\item Give the user the option to run the algorithm using a Minimal Spanning Tree instead of Relative Neighbourhood Graph.
+\item Give the user the option to output the statistic without normalization.
+\item Package the code in a way accessible to the public.
+\end{itemize}
+
+
+\bibliographystyle{IEEEtran}
+\bibliography{refs/Ref-ProbState}
 
 \end{document}
