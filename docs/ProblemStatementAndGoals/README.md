@@ -2,4 +2,4 @@
 
 The folders and files for this folder are as follows:
 
-Describe ...
+The files for the problem statement.
