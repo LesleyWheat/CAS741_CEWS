@@ -3,7 +3,7 @@
 \usepackage{tabularx}
 \usepackage{booktabs}
 
-\title{Problem Statement and Goals\\\progname}
+\title{Problem Statement and Goals\\\progname: Data Separability Measurement}
 
 \author{\authname}
 
@@ -31,10 +31,10 @@
 
 Classification is a common machine learning problem and there are many techniques for solving classification problems. 
 Unfortunately, not all classification problems are easy and it can be difficult to explain why classifiers preform poorly on certain datasets. 
-Data complexity has been defined as a characteristic of the data that relates to the difficulty of the classification problem. \cite{luengo_automatic_2015} 
+Data complexity has been defined as a characteristic of the data that relates to the difficulty of the classification problem \cite{luengo_automatic_2015}. 
 To further refine this definition, we consider data complexity to be represented by aspects of the data that introduce difficulty for the classifiers. 
 
-One of these aspects is separability, an intrinsic characteristic that describes how the data points from different classes mix together. \cite{guan_novel_2021} 
+One of these aspects is separability, an intrinsic characteristic that describes how the data points from different classes mix together \cite{guan_novel_2021}. 
 A classic measurement for separability is Fraction of Points on Class Boundary.
 Based on the work of Friedman and Rafsky \cite{friedman_multivariate_1979} and documented by Basu and Ho\cite{ho_complexity_2002}, this measurement constructs a minimum spanning tree over the dataset then calculates the number of points with a connection to another class over all points.
 
