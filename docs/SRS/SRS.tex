@@ -177,8 +177,6 @@ systems.  The symbols are listed in alphabetical order.
 \textbf{symbol} & \textbf{unit} & \textbf{description}\\
 \midrule 
 $J_N$ & N/A & Normalized CEWS \\
-$J$ & N/A & Sum of cut edges \\
-$I$ & N/A & Sum of non cut edges \\ 
 \bottomrule
 \end{longtable*}
 \mycomment{Use your problems actual symbols.  The si package is a good idea to use for
@@ -386,7 +384,7 @@ characteristics and lists the system constraints.  \mycomment{This text can like
 
 \begin{figure}[h!]
 \begin{center}
- \includegraphics[width=0.6\textwidth]{SystemContextFigure}
+ \includegraphics[width=0.8\textwidth]{SystemContext.png}
 \caption{System Context}
 \label{Fig_SystemContext} 
 \end{center}
@@ -461,10 +459,10 @@ sections and their meaning, with the purpose of reducing ambiguity and making it
 easier to correctly understand the requirements:
 
 \begin{itemize}
-
-\item Sample :
-\item Feature :
-\item Data Point: 
+\item Data point/Example : An identifiable element in a data set which has features associated with it
+\item Data set/Sample: A set of examples from a population
+\item Feature : An individual measurable property of an example
+\item Class Label : Represents the class an example belongs to
 \item: 
 
 \end{itemize}
@@ -601,9 +599,13 @@ likely change [LC], in which the respective assumption is used.
 \begin{itemize}
 
 \item[A\refstepcounter{assumpnum}\theassumpnum \label{A:fp}:]
-Real numbers can be represented exactly in a base 2 computer system.
+Rational numbers can be represented exactly in a base 2 computer system. Operations preformed on rational numbers in a computer system is exact. Any computation rounding error is negligible. 
 
-\item[A\refstepcounter{assumpnum}\theassumpnum \label{A_meaningfulLabel}:]
+\item[A\refstepcounter{assumpnum}\theassumpnum \label{A:CWN}:]
+Class labels are represented as whole numbers. All examples from one class share the same class label.
+
+\item[A\refstepcounter{assumpnum}\theassumpnum \label{A:CWN}:]
+Each example has the same number of observations. No observations are null. 
 
 
   \mycomment{Short description of each assumption.  Each assumption
@@ -902,8 +904,9 @@ provides an estimate of the confidence with which the physical quantities can be
 measured.  This information would be part of the input if one were performing an
 uncertainty quantification exercise.
 
-The input data matrix, $D$, is of size $n \times m$, must contain real values. The size of $n$ and $m$ are limited based on software considerations. The specification parameters in Table~\ref{TblInputVar} are listed in
-Table~\ref{TblSpecParams}.
+The input data matrix, $D$, is of size $n \times m$, must contain rational values. The size of $n$ and $m$ are limited based on software considerations. 
+
+%The specification parameters in Table~\ref{TblInputVar} are listed in Table~\ref{TblSpecParams}.
 
 \begin{table}[!h]
   \caption{Input Variables} \label{TblInputVar}
@@ -913,9 +916,8 @@ Table~\ref{TblSpecParams}.
   \textbf{Var} & \textbf{Constraints} & \textbf{Software Constraints} &
                              \textbf{Typical Value} & \textbf{Uncertainty}\\
   \midrule 
-  $d_{ij}$ & $d_{ij} \in  \mathbb{R}$ &  $F_{\min} \leq  d_{ij} \leq F_{\max}$  & N/A & N/A \\
-  
-    $c_{i}$ & $c_{i} \in  \mathbb{W}$ &  $I_{\min} \leq c_{i} \leq I_{\max}$  & N/A & N/A \\
+  $d_{ij}$ & $d_{ij} \in  \mathbb{R}$ &  $d_{ij} \in  \mathbb{Q}$  & N/A & N/A \\
+    $c_{i}$ & $c_{i} \in  \mathbb{N}$ &  N/A & N/A & N/A \\
   \bottomrule
 \end{longtable*}
 \end{table}
@@ -925,6 +927,7 @@ Table~\ref{TblSpecParams}.
 %\item[(*)] \mycomment{you might need to add some notes or clarifications}
 \end{description}
 
+\mycomment{
 \begin{table}[!h]
 \caption{Specification Parameter Values} \label{TblSpecParams}
 \renewcommand{\arraystretch}{1.2}
@@ -939,6 +942,7 @@ Table~\ref{TblSpecParams}.
   \bottomrule
 \end{longtable*}
 \end{table}
+}
 
 \subsubsection{Properties of a Correct Solution} \label{sec_CorrectSolution}
 
