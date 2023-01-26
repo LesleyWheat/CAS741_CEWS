@@ -177,6 +177,7 @@ systems.  The symbols are listed in alphabetical order.
 \textbf{symbol} & \textbf{unit} & \textbf{description}\\
 \midrule 
 $J_N$ & N/A & Normalized CEWS \\
+$I(...)$ & N/A & Indicator Function \\
 \bottomrule
 \end{longtable*}
 \mycomment{Use your problems actual symbols.  The si package is a good idea to use for
@@ -718,6 +719,8 @@ None
 This section collects and equations that will be used in building the
 instance models.
 
+% RNG
+
 ~\newline
 \noindent
 \begin{minipage}{\textwidth}
@@ -738,10 +741,11 @@ RNG is type of graph constructed
 & $d(u,v)$ is the Euclidean distance between points $u$ and $v$ given by \dref{DD:ED}.\\
 \hline
   Source & \cite{zighed_statistical_2005} \\ \hline
-  Ref.\ By & \dref{GD:SNCE} \dref{GD:SCE} \\ \hline
+  Ref.\ By & \iref{IM:SNCE} \iref{IM:SCE} \\ \hline
 \end{tabular}
 \end{minipage}\\
 
+\mycomment{
 ~\newline
 \noindent
 \begin{minipage}{\textwidth}
@@ -777,7 +781,7 @@ Number& GD\refstepcounter{defnum}\thedefnum \label{GD:SNCE}\\
 \hline
 Label &\bf Sum of Non Cut Edges \\ \hline
 SI Units& N/A \\ \hline
-Equation &  I = \sum_{r=1}^{k} I_r = \frac {1}{2} \sum_{2}^{} T_{ij}  \\ \hline
+Equation &  $I = \sum_{r=1}^{k} I_r = \frac {1}{2} \sum_{2}^{} T_{ij}$  \\ \hline
 Description &
 The above equation gives the formula for calculating the the multiclass sum of non cut edges.
 \\
@@ -790,7 +794,7 @@ The above equation gives the formula for calculating the the multiclass sum of n
   Ref.\ By &  \iref{IM:CEWS} \\ \hline
 \end{tabular}
 \end{minipage}\\
-
+}
 
 
 \subsubsection{Data Definitions}\label{sec_datadef}
@@ -841,7 +845,7 @@ The goals \mycomment{reference your goals} are solved by \mycomment{reference yo
 
 ~\newline
 
-%Instance Model 1
+% Cut edges
 
 \noindent
 \begin{minipage}{\textwidth}
@@ -849,9 +853,9 @@ The goals \mycomment{reference your goals} are solved by \mycomment{reference yo
 \begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
   \hline
   \rowcolor[gray]{0.9}
-  Number& IM\refstepcounter{instnum}\theinstnum \label{IM:CEWS}\\
+  Number& IM\refstepcounter{instnum}\theinstnum \label{IM:SCE}\\
   \hline
-  Label& \bf Multiclass Normalized Cut Edge Weight Statistic\\
+  Label& \bf Sum of Cut Edges\\
   \hline
   Input & 
   The input data matrix, $D$, is of size $n \times m$ is formatted as: \\
@@ -875,13 +879,91 @@ The goals \mycomment{reference your goals} are solved by \mycomment{reference yo
   \end{array} } \right]
 \] \\
   & The input is constrained based on \ref{sec_DataConstraints}.  \\\hline
-  Output&$J_{N}$, $0\leq t \leq 1$, such that\\
-  &$J_{N} = \frac {J}{I+J}$\\
+  Output&$J$, $0 \leq J \leq n^2 $, such that\\
+  &$J = \sum_{r=1}^{k-1} \sum_{s=r+1}^{k} J_{r,s} =  \frac {1}{2} \sum_{2}^{} Z_{ij}$\\
   \hline
-  Description&$I$ is from \dref{GD:SNCE}.\\
-  &$J$ is from \dref{GD:SCE}.\\
+  Description & The above equation gives the formula for calculating the multiclass is the sum of cut edges. \\
+& $k$ is the number of classes.\\
+& $J_{r,s}$ is the sum of edges linking a vertex of class $r$ and a vertex of class $s$ based on \dref{GD:RNG}.\\
+& $Z_{ij}$ is $I(c_i = c_j)$, a boolean variable indicating different classes (one if the vertices $i$ and $j$ have different and zero if not).\\
+  \hline
+  Sources& \cite{zighed_statistical_2005} \cite{jaromczyk_relative_1992} \\
+  \hline
+  Ref.\ By & \iref{IM:CEWS}\\
+  \hline
+\end{tabular}
+\end{minipage}\\
+
+%non cut edges
+
+\noindent
+\begin{minipage}{\textwidth}
+\renewcommand*{\arraystretch}{1.5}
+\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+  \hline
+  \rowcolor[gray]{0.9}
+  Number& IM\refstepcounter{instnum}\theinstnum \label{IM:SNCE}\\
+  \hline
+  Label& \bf Sum of Non Cut Edges\\
+  \hline
+  Input & 
+  The input data matrix, $D$, is of size $n \times m$ is formatted as: \\
+ & \[
+  D_{n \times m} =
+  \left[ {\begin{array}{cccc}
+    d_{11} & d_{12} & \cdots & d_{1m}\\
+    d_{21} & d_{22} & \cdots & d_{2m}\\
+    \vdots & \vdots & \ddots & \vdots\\
+    d_{n1} & d_{n2} & \cdots & d_{nm}\\
+  \end{array} } \right]
+\] \\
+& The class label matrix, $C$, if of size $n$ and is formatted as: \\
+ & \[
+  C_=
+  \left[ {\begin{array}{c}
+    c_{1} \\
+    c_{2} \\
+    \vdots \\
+    c_{n} \\
+  \end{array} } \right]
+\] \\
+  & The input is constrained based on \ref{sec_DataConstraints}.  \\\hline
+  Output&$I$, $0\leq I \leq  n^2 $, such that\\
+  &$I = \sum_{r=1}^{k} I_r = \frac {1}{2} \sum_{2}^{} T_{ij}$ \\
+  \hline
+  Description &
+The above equation gives the formula for calculating the the multiclass sum of non cut edges. \\
+& $k$ is the number of classes.\\
+& $I_r$ is the sum of edges linking two vertices of the same class for class $r$ based on \dref{GD:RNG}.\\
+& $T_{ij}$ is $I(c_i = c_j)$, a boolean variable indicating same class (one if the vertices $i$ and $j$ have the classes are the same and zero if not).\\
   \hline
   Sources& \cite{zighed_statistical_2005} \\
+  \hline
+  Ref.\ By & \iref{IM:CEWS}\\
+  \hline
+\end{tabular}
+\end{minipage}\\
+
+%CEWS
+
+\noindent
+\begin{minipage}{\textwidth}
+\renewcommand*{\arraystretch}{1.5}
+\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+  \hline
+  \rowcolor[gray]{0.9}
+  Number& IM\refstepcounter{instnum}\theinstnum \label{IM:CEWS}\\
+  \hline
+  Label& \bf Multiclass Normalized Cut Edge Weight Measurement\\
+  \hline
+  Input & $I$ from \iref{IM:SNCE} and $J$ from \iref{IM:SCE}. \\ \hline
+  Output&$J_{N}$, $0\leq J_N \leq 1$, such that\\
+  &$J_{N} = \frac {J}{I+J}$\\
+  \hline
+Description &
+The above equation gives the formula for calculating the the multiclass normalized cut edge weight measurement.
+\\ \hline
+  Sources& \cite{zighed_statistical_2005} \cite{jaromczyk_relative_1992} \\
   \hline
   Ref.\ By & None\\
   \hline
@@ -1243,7 +1325,7 @@ Their values are defined in this section for easy maintenance.}
 \phantomsection
 \addcontentsline{toc}{section}{References}
 \bibliographystyle{IEEEtran}
-\bibliography{refs/Ref-ProbState}
+\bibliography{refs/theoryrefs}
 
 \newpage
 
