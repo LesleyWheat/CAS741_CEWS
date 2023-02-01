@@ -771,7 +771,7 @@ RNG is an undirected graph constructed by connecting an edge between two points 
 & $d(a,b)$ is the Euclidean distance between points $a$ and $b$ given by \ddref{DD:ED}.\\
 \hline
   Source & \cite{zighed_statistical_2005} \\ \hline
-  Ref.\ By & \iref{IM:SNCE} \iref{IM:SCE} \\ \hline
+  Ref.\ By & \iref{IM:CEWS} \\ \hline
 \end{tabular}
 \end{minipage}\\
 
@@ -881,87 +881,32 @@ The goals \mycomment{reference your goals} are solved by \mycomment{reference yo
 \begin{minipage}{\textwidth}
 \renewcommand*{\arraystretch}{1.5}
 \begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
-  \hline
-  \rowcolor[gray]{0.9}
-  Number& IM\refstepcounter{instnum}\theinstnum \label{IM:CEWS}\\
-  \hline
-  Label& \bf Multiclass Normalized Cut Edge Weight Measurement\\
-  \hline
-  Input & $I$ from \iref{IM:SNCE} and $J$ from \iref{IM:SCE}. \\ \hline
-  Output&$J_{N}$, $0\leq J_N \leq 1$, such that\\
-  &$J_{N} = \frac {J}{I+J}$\\
-  \hline
-Description &
-The above equation gives the formula for calculating the the multiclass normalized cut edge weight measurement.
-\\ \hline
-  Sources& \cite{zighed_statistical_2005} \\
-  \hline
-  Ref.\ By & None\\
-  \hline
+    \hline
+    \rowcolor[gray]{0.9}
+    Number& IM\refstepcounter{instnum}\theinstnum \label{IM:CEWS}\\
+    \hline
+    Label& \bf Multiclass Normalized Cut Edge Weight Measurement\\
+    \hline
+    Input & The input data matrix, $D$, and the class label matrix, $C$, based on \ref{sec:dataConstraints}. \\ \hline
+    Output&$J_{N}$, $0\leq J_N \leq 1$, such that\\
+    &$J_{N} = \frac {J}{I+J}$\\
+    & where \\
+    & $J = \sum_{r=1}^{k-1} \sum_{s=r+1}^{k} J_{r,s}; 0 \leq J \leq n^2$\\
+    & $J_{r,s}  = \sum^{n}_{i=1} \sum^n_{j=1} V_{ij} \times I(c_i = r \And c_j = s)$ \\
+    & $I = \sum_{r=1}^{k} I_r, 0\leq I \leq  n^2$ \\
+    & $I_{r}  = \sum^{n-1}_{i=1} \sum^n_{j=i+1} V_{ij} \times I(c_i = r \And c_j = r)$ \\
+    \hline
+    Description &
+    The above equation gives the formula for calculating the the multiclass normalized cut edge weight measurement. \\
+    & $k$ is the number of classes.\\
+    & $V_{ij}$ is the RNG connection matrix for matrix $D$ given by \dref{GD:RNG}.\\
+    \hline
+    Sources& \cite{zighed_statistical_2005} \cite{jaromczyk_relative_1992} \\
+    \hline
+    Ref.\ By & None\\
+    \hline
 \end{tabular}
-\end{minipage}\\
-
-% Cut edges
-\medskip
-
-\noindent
-\begin{minipage}{\textwidth}
-\renewcommand*{\arraystretch}{1.5}
-\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
-  \hline
-  \rowcolor[gray]{0.9}
-  Number& IM\refstepcounter{instnum}\theinstnum \label{IM:SCE}\\
-  \hline
-  Label& \bf Multiclass Sum of Cut Edges\\
-  \hline
-  Input & 
-  The input data matrix, $D$, and the class label matrix, $C$, based on \ref{sec:dataConstraints}.  \\\hline
-  Output&$J$, $0 \leq J \leq n^2 $, such that\\
-  &$J = \sum_{r=1}^{k-1} \sum_{s=r+1}^{k} J_{r,s}$\\
-  & $ J_{r,s}  = \sum^{n}_{i=1} \sum^n_{j=1} V_{ij} \times I(c_i = r \And c_j = s)$ \\
-  \hline
-  Description & The above equation gives the formula for calculating the multiclass sum of cut edges. \\
-& $k$ is the number of classes.\\
-& $V_{ij}$ is the RNG connection matrix for matrix $D$ given by \dref{GD:RNG}.\\
-  \hline
-  Sources& \cite{zighed_statistical_2005} \cite{jaromczyk_relative_1992} \\
-  \hline
-  Ref.\ By & \iref{IM:CEWS}\\
-  \hline
-\end{tabular}
-\end{minipage}\\
-
-%non cut edges
-\medskip
-\noindent
-\begin{minipage}{\textwidth}
-\renewcommand*{\arraystretch}{1.5}
-\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
-  \hline
-  \rowcolor[gray]{0.9}
-  Number& IM\refstepcounter{instnum}\theinstnum \label{IM:SNCE}\\
-  \hline
-  Label& \bf Multiclass Sum of Non Cut Edges\\
-  \hline
-  Input & 
-  The input data matrix, $D$, and the class label matrix, $C$, based on \ref{sec:dataConstraints}.  \\\hline
-  Output&$I$, $0\leq I \leq  n^2 $, such that\\
-  &$I = \sum_{r=1}^{k} I_r $ \\
-  & $I_{r}  = \sum^{n-1}_{i=1} \sum^n_{j=i+1} V_{ij} \times I(c_i = r \And c_j = r)$ \\
-  \hline
-  Description &
-The above equation gives the formula for calculating the the multiclass sum of non cut edges. \\
-& $k$ is the number of classes.\\
-& $V_{ij}$ is the RNG connection matrix for matrix $D$ given by \dref{GD:RNG}.\\
-  \hline
-  Sources & \cite{zighed_statistical_2005} \cite{jaromczyk_relative_1992} \\
-  \hline
-  Ref.\ By & \iref{IM:CEWS}\\
-  \hline
-\end{tabular}
-\end{minipage}\\
-
-  
+\end{minipage}\\ 
 
 \subsubsection{Input Data Constraints} \label{sec:dataConstraints}    
 
@@ -1170,13 +1115,11 @@ be covered in the Verification and Validation document.}
 
 \noindent \begin{itemize}
 
-\item[LC\refstepcounter{lcnum}\thelcnum\label{LC:optWeights}:] The addition of user options such as option to weigh the edge calculations: \iref{IM:SNCE} and \iref{IM:SCE}. Related to: \aref{A:weights}.
+\item[LC\refstepcounter{lcnum}\thelcnum\label{LC:optWeights}:] The addition of user options such as option to weigh the edge calculations: \iref{IM:CEWS}. Related to: \aref{A:weights}.
 
-\item[LC\refstepcounter{lcnum}\thelcnum\label{LC:optGraphs}:] The addition of user options such as option to change the algorithm for graph construction: \iref{IM:SNCE} and \iref{IM:SCE}. Related to: \aref{A:rng}.
+\item[LC\refstepcounter{lcnum}\thelcnum\label{LC:optGraphs}:] The addition of user options such as option to change the algorithm for graph construction: \iref{IM:CEWS}. Related to: \aref{A:rng}.
 
 \item[LC\refstepcounter{lcnum}\thelcnum\label{LC:output}:] Changes to the output format. Related to: \aref{A:pvalue}.
-
-\mycomment{Give the likely changes, with a reference to the related assumption (aref), as appropriate.}
 
 \end{itemize}
 
@@ -1222,8 +1165,6 @@ the assumptions.
 \hline
 \dref{GD:RNG}             &X& &  X& & &  \\ \hline
 \ddref{DD:ED}             &X& &  X& & &  \\ \hline
-\iref{IM:SCE}             &X& X& X& & & \\ \hline
-\iref{IM:SNCE}            &X& X& X& & & \\ \hline
 \iref{IM:CEWS}            &X& X& X& & & \\ \hline
 \lcref{LC:optWeights}     & &  &  &X & &  \\ \hline
 \lcref{LC:optGraphs}      & &  &  & &X &  \\ \hline
@@ -1237,15 +1178,13 @@ the assumptions.
 
 \begin{table}[H]
 \centering
-\begin{tabular}{|c|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|}
 \hline        
-	& \dref{GD:RNG} & \ddref{DD:ED} & \iref{IM:SCE} & \iref{IM:SNCE} & \iref{IM:CEWS}  \\
+	& \dref{GD:RNG} & \ddref{DD:ED}  & \iref{IM:CEWS}  \\
 \hline
-\dref{GD:RNG}    & & x& x& x& \\ \hline
-\ddref{DD:ED}    & x& & & & \\ \hline
-\iref{IM:SCE}    & x& & & &x \\ \hline
-\iref{IM:SNCE}   & x& & & &x \\ \hline
-\iref{IM:CEWS}   & & &x &x & \\ \hline
+\dref{GD:RNG}    & &x&x \\ \hline
+\ddref{DD:ED}    &x& &  \\ \hline
+\iref{IM:CEWS}   &x& &  \\ \hline
 \end{tabular}
 
 \caption{Traceability Matrix Showing the Connections Between Items of Different Sections}
@@ -1256,15 +1195,13 @@ the assumptions.
 \centering
 \begin{tabular}{|c|c|c|c|}
 \hline
-	& \iref{IM:SCE} & \iref{IM:SNCE} & \iref{IM:CEWS} \\
+	& \iref{IM:CEWS} \\
 \hline
-\iref{IM:SCE}           &  & &X \\ \hline
-\iref{IM:SNCE}          &  & &X \\ \hline
-\iref{IM:CEWS}          & x& x& \\ \hline
-\rref{R:inputs}         &X &X & \\ \hline
-\rref{R:calculate}      &X &X &X \\ \hline
-\rref{R:verifyOutput}   &  & &X \\ \hline
-\rref{R:output}         &  & &X \\ \hline
+\iref{IM:CEWS}          & \\ \hline
+\rref{R:inputs}         &X \\ \hline
+\rref{R:calculate}      &X \\ \hline
+\rref{R:verifyOutput}   &X \\ \hline
+\rref{R:output}         &X \\ \hline
 
 \hline
 \end{tabular}
