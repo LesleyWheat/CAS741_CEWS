@@ -1,5 +1,9 @@
 \documentclass[12pt]{article}
 
+%Page Size
+\usepackage{geometry}
+\geometry{a4paper}
+
 \usepackage{amsmath, mathtools}
 \usepackage{amsfonts}
 \usepackage{amssymb}
@@ -174,9 +178,9 @@ systems.  The symbols are listed in alphabetical order.
 \renewcommand{\arraystretch}{1.2}
 %\noindent \begin{tabularx}{1.0\textwidth}{l l X}
 \noindent \begin{longtable*}{l l p{12cm}} \toprule
-\textbf{symbol} & \textbf{unit} & \textbf{description}\\
+\textbf{Symbol} & \textbf{Unit} & \textbf{Description}\\
 \midrule 
-$J_N$ & N/A & Normalized CEWS \\
+$J_N$ & N/A & Normalized Multiclass Cut Edge Weight Measurement \\
 $I(...)$ & N/A & Indicator Function \\
 \bottomrule
 \end{longtable*}
@@ -188,7 +192,7 @@ $I(...)$ & N/A & Indicator Function \\
 \renewcommand{\arraystretch}{1.2}
 \begin{tabular}{l l} 
   \toprule		
-  \textbf{symbol} & \textbf{description}\\
+  \textbf{Symbol} & \textbf{Description}\\
   \midrule 
   A & Assumption\\
   DD & Data Definition\\
@@ -209,13 +213,10 @@ $I(...)$ & N/A & Indicator Function \\
 
 This document uses notation used in \cite{zighed_statistical_2005}.
 
-\mycomment{This section is optional, but should be included for projects that make use
-  of notation to convey mathematical information.  For instance, if typographic
-  conventions (like bold face font) are used to distinguish matrices, this
-  should be stated here.  If symbols are used to show mathematical operations,
-  these should be summarized here.  In some cases the easiest way to summarize
-  the notation is to point to a text or other source that explains the
-  notation.}
+\mycomment{This section is optional, but should be included for projects that make use of notation to convey mathematical information.  
+For instance, if typographic conventions (like bold face font) are used to distinguish matrices, this should be stated here.  
+If symbols are used to show mathematical operations, these should be summarized here.  
+In some cases the easiest way to summarize the notation is to point to a text or other source that explains the notation.}
 
 \mycomment{This section was added to the template because some students use very
   domain specific notation.  This notation will not be readily understandable to
@@ -283,13 +284,28 @@ This document uses notation used in \cite{zighed_statistical_2005}.
   consistent, complete, validatable, abstract and traceable.}
 
 \mycomment{The overall goal of the SRS is that someone that meets the Characteristics
-  of the Intended Reader (Section~\ref{sec_IntendedReader}) can learn,
+  of the Intended Reader (Section~\ref{sec:IntendedReader}) can learn,
   understand and verify the captured domain knowledge.  They should not have to
   trust the authors of the SRS on any statements.  They should be able to
   independently verify/derive every statement made.}
 
 \section{Introduction}
 
+Classification is a common machine learning problem and there are many techniques for solving classification problems. 
+Unfortunately, not all classification problems are easy and it can be difficult to explain why classifiers preform poorly on certain datasets. 
+Data complexity has been defined as a characteristic of the data that relates to the difficulty of the classification problem \cite{luengo_automatic_2015}. 
+To further refine this definition, we consider data complexity to be represented by aspects of the data that introduce difficulty for the classifiers. 
+
+One of these aspects is separability, an intrinsic characteristic that describes how the data points from different classes mix together \cite{guan_novel_2021}. 
+A classic measurement for separability is Fraction of Points on Class Boundary.
+Based on the work of Friedman and Rafsky \cite{friedman_multivariate_1979} and documented by Basu and Ho\cite{ho_complexity_2002}, this measurement constructs a minimum spanning tree over the dataset then calculates the number of points with a connection to another class over all points.
+
+The Cut Edge Weight Statistic measurement \cite{zighed_statistical_2005} is a variation of the Fraction of Points on Class Boundary, proposed by Zighed et al. 
+The algorithm for the normalized measurement begins by constructing a Toussaint’s Relative Neighbourhood Graph \cite{toussaint_relative_1980} over the entire dataset then computing the number of edges which connect different classes over the total number of edges. 
+This measurement is a viable way of measuring separability because it has a high coefficient of determination ($R^2$) with the mean error rate of several classifiers.
+
+The introduction contains the purpose of this document, the scope of requirements, characteristics of the indented reader and the organization of this complete
+document.
 
 \mycomment{The introduction section is written to introduce the problem.  It starts
   general and focuses on the problem domain. The general advice is to start with
@@ -299,9 +315,11 @@ expect in the Introduction section.}
 
 \subsection{Purpose of Document}
 
+The purpose of this document is to provide information about the design and functionality of CEWS System to the Intended Reader (Section \ref{sec:IntendedReader}).
+
 \mycomment{This section summarizes the purpose of the SRS document.  It does not focus
   on the problem itself.  The problem is described in the ``Problem
-  Description'' section (Section~\ref{Sec_pd}).  The purpose is for the document
+  Description'' section (Section~\ref{sec:pd}).  The purpose is for the document
   in the context of the project itself, not in the context of this course.
   Although the ``purpose'' of the document is to get a grade, you should not
   mention this.  Instead, ``fake it'' as if this is a real project.  The purpose
@@ -310,6 +328,8 @@ expect in the Introduction section.}
   etc.}
 
 \subsection{Scope of Requirements} 
+
+The domain of this problem is restricted to generating the normalized multiclass CEWS Measurement \cite{zighed_statistical_2005}. Notable exclusions include the calculation of a p-value, variations of the calculation using different weighing parameters and different graph generation algorithms. The scope excludes asymptotic cost limitations and efficiency requirements. 
 
 \mycomment{Modelling the real world requires simplification.  The full complexity of
   the actual physics, chemistry, biology is too much for existing models, and
@@ -321,41 +341,40 @@ expect in the Introduction section.}
   properties, etc.}  
 
 \mycomment{The scope section is related to the assumptions section
-  (Section~\ref{sec_assumpt}).  However, the scope and the assumptions are not
+  (Section~\ref{sec:assumpt}).  However, the scope and the assumptions are not
   at the same level of abstraction.  The scope is at a high level.  The focus is
   on the ``big picture'' assumptions.  The assumptions section lists, and
   describes, all of the assumptions.}
 
-\subsection{Characteristics of Intended Reader} \label{sec_IntendedReader}
+\subsection{Characteristics of Intended Reader} \label{sec:IntendedReader}
 
-\mycomment{This section summarizes the skills and knowledge of the readers of the
-  SRS.  It does NOT have the same purpose as the ``User Characteristics''
-  section (Section~\ref{SecUserCharacteristics}).  The intended readers are the
-  people that will read, review and maintain the SRS.  They are the people that
-  will conceivably design the software that is intended to meet the
-  requirements.  The user, on the other hand, is the person that uses the
-  software that is built.  They may never read this SRS document.  Of course,
-  the same person could be a ``user'' and an ``intended reader.''}
+The reader should have a good understanding of classification (graduate level) and a base understanding of data analysis, machine learning and statistics.
 
-\mycomment{The intended reader characteristics should be written as unambiguously and
-  as specifically as possible.  Rather than say, the user should have an
+\mycomment{This section summarizes the skills and knowledge of the readers of the SRS.  
+It does NOT have the same purpose as the ``User Characteristics'' section (Section~\ref{sec:UserCharacteristics}).  
+The intended readers are the people that will read, review and maintain the SRS.  
+They are the people that will conceivably design the software that is intended to meet the requirements.  
+The user, on the other hand, is the person that uses the software that is built.  
+They may never read this SRS document.  Of course, the same person could be a ``user'' and an ``intended reader.''}
+
+\mycomment{The intended reader characteristics should be written as unambiguously and as specifically as possible.  Rather than say, the user should have an
   understanding of physics, say what kind of physics and at what level.  For
   instance, is high school physics adequate, or should the reader have had a
   graduate course on advanced quantum mechanics?}
 
 \subsection{Organization of Document}
 
-\mycomment{This section provides a roadmap of the SRS document.  It will help the
-  reader orient themselves.  It will provide direction that will help them
-  select which sections they want to read, and in what order.  This section will
-  be similar between project.}
+This document includes a general system description, a specific system description, a requirements section, a section on likely changes, a section on unlikely changes and a section on traceability.
+
+\mycomment{This section provides a roadmap of the SRS document. 
+It will help the reader orient themselves.  
+It will provide direction that will help them select which sections they want to read, and in what order.
+This section will be similar between project.}
 
 \section{General System Description}
 
-This section provides general information about the system.  It identifies the
-interfaces between the system and its environment, describes the user
-characteristics and lists the system constraints.  \mycomment{This text can likely be
-  borrowed verbatim.}
+This section provides general information about the system.  
+It identifies the interfaces between the system and its environment, describes the user characteristics and lists the system constraints. 
 
 \mycomment{The purpose of this section is to provide general information about the
   system so the specific requirements in the next section will be easier to
@@ -366,6 +385,8 @@ characteristics and lists the system constraints.  \mycomment{This text can like
   same, while specific details are changed between family members.}
 
 \subsection{System Context}
+
+The CEWS System will exist as a standalone product or as a module. The system context is illustrated in Figure \ref{Fig_SystemContext}. 
 
 \mycomment{Your system context will include a figure that shows the abstract view of
   the software.  Often in a scientific context, the program can be viewed
@@ -385,7 +406,7 @@ characteristics and lists the system constraints.  \mycomment{This text can like
 
 \begin{figure}[h!]
 \begin{center}
- \includegraphics[width=0.8\textwidth]{SystemContext.png}
+ \includegraphics[width=0.8\textwidth]{SystemContext_2.png}
 \caption{System Context}
 \label{Fig_SystemContext} 
 \end{center}
@@ -404,35 +425,41 @@ characteristics and lists the system constraints.  \mycomment{This text can like
 \begin{itemize}
 \item User Responsibilities:
 \begin{itemize}
-\item 
+\item Provide the data.
+\item Correctly format the input data matrices as per Section \ref{sec:dataConstraints}.
+\item Resource management including supplying the system with enough resources to support the size of their dataset.
+\item Understand the problem.
+\item Preform any data pre-processing required for the relevant classification problem such as transformations, feature extraction, etc.
+\item Understand the CEWS algorithm.
+\item Understand the limitations of numerical computation. 
 \end{itemize}
 \item \progname{} Responsibilities:
 \begin{itemize}
-\item Detect data type mismatch, such as a string of characters instead of a
-  floating point number
-\item 
+\item Read input data.
+\item Detect data type mismatch or if input data violates any constraints.
+\item Preform the analysis.
+\item Preform basic error checking on the output.
+\item Return the output value.
 \end{itemize}
 \end{itemize}
 
-\subsection{User Characteristics} \label{SecUserCharacteristics}
+\subsection{User Characteristics} \label{sec:UserCharacteristics}
+
+The end user of CEWS System should have a good understanding of classification and machine learning, preferably with an undergraduate degree in software.
 
 \mycomment{This section summarizes the knowledge/skills expected of the user.
-  Measuring usability, which is often a required non-function requirement,
-  requires knowledge of a typical user.  As mentioned above, the user is a
-  different role from the ``intended reader,'' as given in
-  Section~\ref{sec_IntendedReader}.  As in Section~\ref{sec_IntendedReader}, the
-  user characteristics should be specific an unambiguous.  For instance, ``The
-  end user of \progname{} should have an understanding of undergraduate Level 1
-  Calculus and Physics.''}
+Measuring usability, which is often a required non-function requirement, requires knowledge of a typical user.  
+As mentioned above, the user is a different role from the ``intended reader,'' as given in Section~\ref{sec:IntendedReader}.
+As in Section~\ref{sec:IntendedReader}, the user characteristics should be specific an unambiguous.  For instance, ``The end user of \progname{} should have an understanding of undergraduate Level 1 Calculus and Physics.''}
 
 \subsection{System Constraints}
 
-\mycomment{System constraints differ from other type of requirements because they
-  limit the developers' options in the system design and they identify how the
-  eventual system must fit into the world. This is the only place in the SRS
-  where design decisions can be specified.  That is, the quality requirement for
-  abstraction is relaxed here.  However, system constraints should only be
-  included if they are truly required.}
+At this time, there are no known constraints for this system..
+
+\mycomment{System constraints differ from other type of requirements because they limit the developers' options in the system design and they identify how the eventual system must fit into the world.
+This is the only place in the SRS where design decisions can be specified. 
+That is, the quality requirement for abstraction is relaxed here.
+However, system constraints should only be included if they are truly required.}
 
 \section{Specific System Description}
 
@@ -442,9 +469,9 @@ specification, which presents the assumptions, theories, definitions and finally
 the instance models.  \mycomment{Add any project specific details that are relevant
   for the section overview.}
 
-\subsection{Problem Description} \label{Sec_pd}
+\subsection{Problem Description} \label{sec:pd}
 
-\progname{} is intended to solve ... \mycomment{What problem does your program solve?
+\progname{} is intended to solve the calculation of the normalized multiclass CEWS measurement for a dataset. \mycomment{What problem does your program solve?
 The description here should be in the problem space, not the solution space.}
 
 \subsubsection{Terminology and  Definitions}
@@ -460,15 +487,19 @@ sections and their meaning, with the purpose of reducing ambiguity and making it
 easier to correctly understand the requirements:
 
 \begin{itemize}
-\item Data point/Example : An identifiable element in a data set which has features associated with it
-\item Data set/Sample: A set of examples from a population
-\item Feature : An individual measurable property of an example
-\item Class Label : Represents the class an example belongs to
-\item: 
-
+\item Data point/Example/Samples: An identifiable element in a data set which has features associated with it.
+\item Data set: A set of examples from a population.
+\item Feature : An individual measurable property of an example.
+\item Class Label : Represents the class an example belongs to.
+\item Classification: the problem of identifying which of a set of categories an example belongs to.
+\item Data complexity: aspects of the data that classifiers have difficultly with. \cite{luengo_automatic_2015}
+\item Separability: an intrinsic characteristic of a dataset and describes how the data points from different classes mix together. \cite{guan_novel_2021}
+\item Boolean variable : a variable that has one of two possible values.
 \end{itemize}
 
-\subsubsection{Physical System Description} \label{sec_phySystDescrip}
+\subsubsection{Physical System Description} \label{sec:phySystDescrip}
+
+There is no physical system.
 
 \mycomment{The purpose of this section is to clearly and unambiguously state the
   physical system that is to be modelled. Effective problem solving requires a
@@ -481,10 +512,9 @@ easier to correctly understand the requirements:
   interesting properties specified clearly. The physical description can also
   include interactions of the elements, such as the following: i) the
   interactions between the elements and their physical environment; ii) the
-  interactions between elements; and, iii) the initial or boundary conditions.}
+  interactions between elements; and, iii) the initial or boundary conditions.
 
-The physical system of \progname{}, as shown in Figure~?,
-includes the following elements:
+The physical system of \progname{}, as shown in Figure~?, includes the following elements:
 
 \begin{itemize}
 
@@ -493,23 +523,13 @@ includes the following elements:
 \item[PS2:] ...
 
 \end{itemize}
+}
 
-\mycomment{A figure here makes sense for most SRS documents}
-
-% \begin{figure}[h!]
-% \begin{center}
-% %\rotatebox{-90}
-% {
-%  \includegraphics[width=0.5\textwidth]{<FigureName>}
-% }
-% \caption{\label{<Label>} <Caption>}
-% \end{center}
-% \end{figure}
 
 \subsubsection{Goal Statements}
 
 \mycomment{The goal statements refine the ``Problem Description''
-  (Section~\ref{Sec_pd}).  A goal is a functional objective the system under
+  (Section~\ref{sec:pd}).  A goal is a functional objective the system under
   consideration should achieve. Goals provide criteria for sufficient
   completeness of a requirements specification and for requirements
   pertinence. Goals will be refined in Section “Instanced Models”
@@ -518,11 +538,11 @@ includes the following elements:
   amount of technical language.  They should be understandable by non-domain
   experts.}
 
-\noindent Given the \mycomment{inputs}, the goal statements are:
+\noindent Given the dataset, the goal statements are:
 
 \begin{itemize}
 
-\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_meaningfulLabel}:] \mycomment{One
+\item[GS\refstepcounter{goalnum}\thegoalnum \label{G:CEWS}:]  Calculate the normalized multiclass CEWS measurement. \mycomment{One
     sentence description of the goal.  There may be more than one.  Each Goal
     should have a meaningful label.}
 
@@ -572,16 +592,16 @@ includes the following elements:
   ``uses'' above.  The figure adds ``Likely Changes,'' which are able to
   reference (use) Assumptions.}
 
-\begin{figure}[H]
-  \includegraphics[scale=0.9]{RelationsBetweenTM_GD_IM_DD_A.pdf}
-\end{figure}
+%\begin{figure}[H]
+  %\includegraphics[scale=0.9]{RelationsBetweenTM_GD_IM_DD_A.pdf}
+%\end{figure}
 
 The instance models that govern \progname{} are presented in
 Subsection~\ref{sec_instance}.  The information to understand the meaning of the
 instance models and their derivation is also presented, so that the instance
 models can be verified.
 
-\subsubsection{Assumptions} \label{sec_assumpt}
+\subsubsection{Assumptions} \label{sec:assumpt}
 
 \mycomment{The assumptions are a refinement of the scope.  The scope is general, where
   the assumptions are specific.  All assumptions should be listed, even those
@@ -600,14 +620,22 @@ likely change [LC], in which the respective assumption is used.
 \begin{itemize}
 
 \item[A\refstepcounter{assumpnum}\theassumpnum \label{A:fp}:]
-Rational numbers can be represented exactly in a base 2 computer system. Operations preformed on rational numbers in a computer system is exact. Any computation rounding error is negligible. 
+All rational numbers can be represented in a base 2 computer system. Operations preformed on rational numbers in a computer system is exact. Any computation rounding error is negligible and does not need to be taken into account.
 
 \item[A\refstepcounter{assumpnum}\theassumpnum \label{A:CWN}:]
 Class labels are represented as whole numbers. All examples from one class share the same class label.
 
-\item[A\refstepcounter{assumpnum}\theassumpnum \label{A:CWN}:]
-Each example has the same number of observations. No observations are null. 
+\item[A\refstepcounter{assumpnum}\theassumpnum \label{A:NOF}:]
+Each example has the same number of features. No features are null. 
 
+\item[A\refstepcounter{assumpnum}\theassumpnum \label{A:weights}:]
+The user does not want to use weights for the edge calculation.
+
+\item[A\refstepcounter{assumpnum}\theassumpnum \label{A:rng}:]
+The user wants to use a relative neighbourhood graph as the base graph.
+
+\item[A\refstepcounter{assumpnum}\theassumpnum \label{A:pvalue}:]
+The user doesn't want the statistic p-value.
 
   \mycomment{Short description of each assumption.  Each assumption
     should have a meaningful label.  Use cross-references to identify the
@@ -617,14 +645,14 @@ Each example has the same number of observations. No observations are null.
 
 \end{itemize}
 
-\subsubsection{Theoretical Models}\label{sec_theoretical}
+\subsubsection{Theoretical Models}\label{sec:theoretical}
 
 No theoretical models are used.
 
 \mycomment{
 \mycomment{Theoretical models are sets of abstract mathematical equations or axioms
   for solving the problem described in Section ``Physical System Description''
-  (Section~\ref{sec_phySystDescrip}). Examples of theoretical models are
+  (Section~\ref{sec:phySystDescrip}). Examples of theoretical models are
   physical laws, constitutive equations, relevant conversion factors, etc.}
 
 This section focuses on the general equations and laws that \progname{} is based
@@ -732,13 +760,15 @@ Number& GD\refstepcounter{defnum}\thedefnum \label{GD:RNG}\\
 \hline
 Label &\bf Toussaint’s Relative Neighbourhood Graph \\ \hline
 SI Units& N/A \\ \hline
-Equation & $E_{RNG}: d(a,b) \leq \max (d(a,c), d(b,c)) \forall c, c \neq a, b$  \\ \hline
+Equation & $E_{RNG}(P, i, j) = [ d(p_i,p_j) \leq \max (d(p_i,c), d(p_j,c)) \forall c $ \\
+& where $c \in P, c \neq p_i, c \neq p_j ]$\\
+& Connection matrix: $V = (v_{ij}), i = 1,2, ... ,n; j = 1,2, ... , n;$ \\
+& where $v_{ij} = I(E_{RNG}(P, i, j))$ \\ \hline
 Description &
-RNG is type of graph constructed 
-\\
-& $V$ is a set of point in real space with $p$ dimensions.\\
-& $V_{RNG}$ is a graph with vertices set $V$ and the set of edges of points $(a,b)$ that met the criteria of $E_{RNG}$.\\
-& $d(u,v)$ is the Euclidean distance between points $u$ and $v$ given by \dref{DD:ED}.\\
+RNG is an undirected graph constructed by connecting an edge between two points when a third point does not exist that is closer to both.\\
+& $P$ is a set of $n$ points in real space with dimensions $m$.\\
+& $V$ is the connection matrix where $v_{ij} =  1$ if there is an edge and $v_{ij} =  0$ if not.\\
+& $d(a,b)$ is the Euclidean distance between points $a$ and $b$ given by \ddref{DD:ED}.\\
 \hline
   Source & \cite{zighed_statistical_2005} \\ \hline
   Ref.\ By & \iref{IM:SNCE} \iref{IM:SCE} \\ \hline
@@ -828,12 +858,12 @@ Symbol &$d(a,b)$\\ \hline
 \subsubsection{Instance Models} \label{sec_instance}    
 
 \mycomment{The motivation for this section is to reduce the problem defined in
-  ``Physical System Description'' (Section~\ref{sec_phySystDescrip}) to one
+  ``Physical System Description'' (Section~\ref{sec:phySystDescrip}) to one
   expressed in mathematical terms. The IMs are built by refining the TMs and/or
   GDs.  This section should remain abstract.  The SRS should specify the
   requirements without considering the implementation.}
 
-This section transforms the problem defined in Section~\ref{Sec_pd} into 
+This section transforms the problem defined in Section~\ref{sec:pd} into 
 one which is expressed in mathematical terms. It uses concrete symbols defined 
 in Section~\ref{sec_datadef} to replace the abstract symbols in the models 
 identified in Sections~\ref{sec_theoretical} and~\ref{sec_gendef}.
@@ -844,105 +874,6 @@ The goals \mycomment{reference your goals} are solved by \mycomment{reference yo
   appropriate.}
 
 ~\newline
-
-% Cut edges
-
-\noindent
-\begin{minipage}{\textwidth}
-\renewcommand*{\arraystretch}{1.5}
-\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
-  \hline
-  \rowcolor[gray]{0.9}
-  Number& IM\refstepcounter{instnum}\theinstnum \label{IM:SCE}\\
-  \hline
-  Label& \bf Sum of Cut Edges\\
-  \hline
-  Input & 
-  The input data matrix, $D$, is of size $n \times m$ is formatted as: \\
- & \[
-  D_{n \times m} =
-  \left[ {\begin{array}{cccc}
-    d_{11} & d_{12} & \cdots & d_{1m}\\
-    d_{21} & d_{22} & \cdots & d_{2m}\\
-    \vdots & \vdots & \ddots & \vdots\\
-    d_{n1} & d_{n2} & \cdots & d_{nm}\\
-  \end{array} } \right]
-\] \\
-& The class label matrix, $C$, if of size $n$ and is formatted as: \\
- & \[
-  C_=
-  \left[ {\begin{array}{c}
-    c_{1} \\
-    c_{2} \\
-    \vdots \\
-    c_{n} \\
-  \end{array} } \right]
-\] \\
-  & The input is constrained based on \ref{sec_DataConstraints}.  \\\hline
-  Output&$J$, $0 \leq J \leq n^2 $, such that\\
-  &$J = \sum_{r=1}^{k-1} \sum_{s=r+1}^{k} J_{r,s} =  \frac {1}{2} \sum_{2}^{} Z_{ij}$\\
-  \hline
-  Description & The above equation gives the formula for calculating the multiclass is the sum of cut edges. \\
-& $k$ is the number of classes.\\
-& $J_{r,s}$ is the sum of edges linking a vertex of class $r$ and a vertex of class $s$ based on \dref{GD:RNG}.\\
-& $Z_{ij}$ is $I(c_i = c_j)$, a boolean variable indicating different classes (one if the vertices $i$ and $j$ have different and zero if not).\\
-  \hline
-  Sources& \cite{zighed_statistical_2005} \cite{jaromczyk_relative_1992} \\
-  \hline
-  Ref.\ By & \iref{IM:CEWS}\\
-  \hline
-\end{tabular}
-\end{minipage}\\
-
-%non cut edges
-
-\noindent
-\begin{minipage}{\textwidth}
-\renewcommand*{\arraystretch}{1.5}
-\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
-  \hline
-  \rowcolor[gray]{0.9}
-  Number& IM\refstepcounter{instnum}\theinstnum \label{IM:SNCE}\\
-  \hline
-  Label& \bf Sum of Non Cut Edges\\
-  \hline
-  Input & 
-  The input data matrix, $D$, is of size $n \times m$ is formatted as: \\
- & \[
-  D_{n \times m} =
-  \left[ {\begin{array}{cccc}
-    d_{11} & d_{12} & \cdots & d_{1m}\\
-    d_{21} & d_{22} & \cdots & d_{2m}\\
-    \vdots & \vdots & \ddots & \vdots\\
-    d_{n1} & d_{n2} & \cdots & d_{nm}\\
-  \end{array} } \right]
-\] \\
-& The class label matrix, $C$, if of size $n$ and is formatted as: \\
- & \[
-  C_=
-  \left[ {\begin{array}{c}
-    c_{1} \\
-    c_{2} \\
-    \vdots \\
-    c_{n} \\
-  \end{array} } \right]
-\] \\
-  & The input is constrained based on \ref{sec_DataConstraints}.  \\\hline
-  Output&$I$, $0\leq I \leq  n^2 $, such that\\
-  &$I = \sum_{r=1}^{k} I_r = \frac {1}{2} \sum_{2}^{} T_{ij}$ \\
-  \hline
-  Description &
-The above equation gives the formula for calculating the the multiclass sum of non cut edges. \\
-& $k$ is the number of classes.\\
-& $I_r$ is the sum of edges linking two vertices of the same class for class $r$ based on \dref{GD:RNG}.\\
-& $T_{ij}$ is $I(c_i = c_j)$, a boolean variable indicating same class (one if the vertices $i$ and $j$ have the classes are the same and zero if not).\\
-  \hline
-  Sources& \cite{zighed_statistical_2005} \\
-  \hline
-  Ref.\ By & \iref{IM:CEWS}\\
-  \hline
-\end{tabular}
-\end{minipage}\\
 
 %CEWS
 
@@ -963,34 +894,120 @@ The above equation gives the formula for calculating the the multiclass sum of n
 Description &
 The above equation gives the formula for calculating the the multiclass normalized cut edge weight measurement.
 \\ \hline
-  Sources& \cite{zighed_statistical_2005} \cite{jaromczyk_relative_1992} \\
+  Sources& \cite{zighed_statistical_2005} \\
   \hline
   Ref.\ By & None\\
   \hline
 \end{tabular}
 \end{minipage}\\
 
+% Cut edges
+\medskip
+
+\noindent
+\begin{minipage}{\textwidth}
+\renewcommand*{\arraystretch}{1.5}
+\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+  \hline
+  \rowcolor[gray]{0.9}
+  Number& IM\refstepcounter{instnum}\theinstnum \label{IM:SCE}\\
+  \hline
+  Label& \bf Multiclass Sum of Cut Edges\\
+  \hline
+  Input & 
+  The input data matrix, $D$, and the class label matrix, $C$, based on \ref{sec:dataConstraints}.  \\\hline
+  Output&$J$, $0 \leq J \leq n^2 $, such that\\
+  &$J = \sum_{r=1}^{k-1} \sum_{s=r+1}^{k} J_{r,s}$\\
+  & $ J_{r,s}  = \sum^{n}_{i=1} \sum^n_{j=1} V_{ij} \times I(c_i = r \And c_j = s)$ \\
+  \hline
+  Description & The above equation gives the formula for calculating the multiclass sum of cut edges. \\
+& $k$ is the number of classes.\\
+& $V_{ij}$ is the RNG connection matrix for matrix $D$ given by \dref{GD:RNG}.\\
+  \hline
+  Sources& \cite{zighed_statistical_2005} \cite{jaromczyk_relative_1992} \\
+  \hline
+  Ref.\ By & \iref{IM:CEWS}\\
+  \hline
+\end{tabular}
+\end{minipage}\\
+
+%non cut edges
+\medskip
+\noindent
+\begin{minipage}{\textwidth}
+\renewcommand*{\arraystretch}{1.5}
+\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+  \hline
+  \rowcolor[gray]{0.9}
+  Number& IM\refstepcounter{instnum}\theinstnum \label{IM:SNCE}\\
+  \hline
+  Label& \bf Multiclass Sum of Non Cut Edges\\
+  \hline
+  Input & 
+  The input data matrix, $D$, and the class label matrix, $C$, based on \ref{sec:dataConstraints}.  \\\hline
+  Output&$I$, $0\leq I \leq  n^2 $, such that\\
+  &$I = \sum_{r=1}^{k} I_r $ \\
+  & $I_{r}  = \sum^{n-1}_{i=1} \sum^n_{j=i+1} V_{ij} \times I(c_i = r \And c_j = r)$ \\
+  \hline
+  Description &
+The above equation gives the formula for calculating the the multiclass sum of non cut edges. \\
+& $k$ is the number of classes.\\
+& $V_{ij}$ is the RNG connection matrix for matrix $D$ given by \dref{GD:RNG}.\\
+  \hline
+  Sources & \cite{zighed_statistical_2005} \cite{jaromczyk_relative_1992} \\
+  \hline
+  Ref.\ By & \iref{IM:CEWS}\\
+  \hline
+\end{tabular}
+\end{minipage}\\
+
   
 
-\subsubsection{Input Data Constraints} \label{sec_DataConstraints}    
+\subsubsection{Input Data Constraints} \label{sec:dataConstraints}    
 
 Table~\ref{TblInputVar} shows the data constraints on the input output
-variables.  The column for physical constraints gives the physical limitations
-on the range of values that can be taken by the variable.  The column for
-software constraints restricts the range of inputs to reasonable values.  The
-software constraints will be helpful in the design stage for picking suitable
-algorithms.  The constraints are conservative, to give the user of the model the
-flexibility to experiment with unusual situations.  The column of typical values
-is intended to provide a feel for a common scenario.  The uncertainty column
-provides an estimate of the confidence with which the physical quantities can be
-measured.  This information would be part of the input if one were performing an
-uncertainty quantification exercise.
+variables.  
+The column for physical constraints gives the physical or theoretical limitations on the range of values that can be taken by the variable. 
+The column for software constraints restricts the range of inputs to reasonable values. 
+The software constraints will be helpful in the design stage for picking suitable algorithms.  
+The constraints are conservative, to give the user of the model the flexibility to experiment with unusual situations. 
+The column of typical values is intended to provide a feel for a common scenario.  
+The uncertainty column provides an estimate of the confidence with which the physical quantities can be measured.  
+%This information would be part of the input if one were performing an uncertainty quantification exercise.
 
-The input data matrix, $D$, is of size $n \times m$, must contain rational values. The size of $n$ and $m$ are limited based on software considerations. 
+The matrices $D$ and $C$ must be iterable objects.
+$n$ is the number of examples. $m$ is the number of features. 
+The input data matrix, $D$, is of size $n \times m$ and  must contain rational numbers. $D$ is formatted as: \\
+ \[
+  D_{n \times m} =
+  \left[ {\begin{array}{cccc}
+    d_{11} & d_{12} & \cdots & d_{1m}\\
+    d_{21} & d_{22} & \cdots & d_{2m}\\
+    \vdots & \vdots & \ddots & \vdots\\
+    d_{n1} & d_{n2} & \cdots & d_{nm}\\
+  \end{array} } \right]
+\] \\
+So row $i$, $d_i$, contains sample $i$.
+The input class matrix, $C$, is of size $n \times 1$ and  must contain natural numbers. $C$ is formatted as: \\
+ & \[
+  C_=
+  \left[ {\begin{array}{c}
+    c_{1} \\
+    c_{2} \\
+    \vdots \\
+    c_{n} \\
+  \end{array} } \right]
+\] \\
+Where $c_i$ is the label for sample $i$ of matrix $D$. 
+It is the user's responsibility to set $c_i$ to the class of $d_i$.
+ 
+The size of $n$ and $m$ are limited based on the system hardware but not by CEWS itself.
+It is the user's responsibility to insure that their system has the relevant requirements to support their dataset size.
+
 
 %The specification parameters in Table~\ref{TblInputVar} are listed in Table~\ref{TblSpecParams}.
 
-\begin{table}[!h]
+\begin{table}[H]
   \caption{Input Variables} \label{TblInputVar}
   \renewcommand{\arraystretch}{1.2}
 \noindent \begin{longtable*}{l l l l c} 
@@ -998,38 +1015,40 @@ The input data matrix, $D$, is of size $n \times m$, must contain rational value
   \textbf{Var} & \textbf{Constraints} & \textbf{Software Constraints} &
                              \textbf{Typical Value} & \textbf{Uncertainty}\\
   \midrule 
-  $d_{ij}$ & $d_{ij} \in  \mathbb{R}$ &  $d_{ij} \in  \mathbb{Q}$  & N/A & N/A \\
-    $c_{i}$ & $c_{i} \in  \mathbb{N}$ &  N/A & N/A & N/A \\
+  $d_{ij}$ & $d_{ij} \in  \mathbb{R}$ &  $d_{ij} \in  \mathbb{Q}, F_{\min} \leq d_{ij} \leq F_{max}$  & N/A & N/A \\
+    $c_{i}$ & $c_{i} \in  \mathbb{N}$ &  $W_{\min} \leq c_{i} \leq W_{\max}$ & N/A & N/A \\
+    $n$ & $n \in  \mathbb{N}, n > 0$ &  N/A & N/A & N/A \\
+    $m$ & $m \in  \mathbb{N}, m > 0$ &  N/A & N/A & N/A \\
   \bottomrule
 \end{longtable*}
 \end{table}
 
 \noindent 
-\begin{description}
+%\begin{description}
 %\item[(*)] \mycomment{you might need to add some notes or clarifications}
-\end{description}
+%\end{description}
 
-\mycomment{
-\begin{table}[!h]
+\begin{table}[H]
 \caption{Specification Parameter Values} \label{TblSpecParams}
 \renewcommand{\arraystretch}{1.2}
 \noindent \begin{longtable*}{l l} 
   \toprule
   \textbf{Var} & \textbf{Value} \\
   \midrule 
-  $F_{\min}$ & -(2 -2^{−23})2^{127}\\
-  $F_{\max}$ & (2-2^{−23})2^{127}\\
-    $I_{\min}$ & 0\\
-  $I_{\max}$ &  2^{8} - 1\\
+  $F_{\min}$ & $-(2 -2^{-23})2^{127}$\\
+  $F_{\max}$ & $(2-2^{-23})2^{127}$\\
+    $W_{\min}$ & 0\\
+  $W_{\max}$ &  $2^{8} - 1$\\
   \bottomrule
 \end{longtable*}
 \end{table}
-}
 
-\subsubsection{Properties of a Correct Solution} \label{sec_CorrectSolution}
+\subsubsection{Properties of a Correct Solution} \label{sec:correctSolution}
 
 \noindent
-A correct solution must exhibit \mycomment{fill in the details}.  \mycomment{These
+A correct solution must exhibit the following behaviour
+
+\mycomment{These
   properties are in addition to the stated requirements.  There is no need to
   repeat the requirements here.  These additional properties may not exist for
   every problem.  Examples include conservation laws (like conservation of
@@ -1065,22 +1084,34 @@ qualities that the software is expected to exhibit.
 
 \noindent \begin{itemize}
 
-\item[R\refstepcounter{reqnum}\thereqnum \label{R_Inputs}:] \mycomment{Requirements
+% Read input
+\item[R\refstepcounter{reqnum}\thereqnum \label{R:inputs}:] CEWS System will read the input data.
+\begin{itemize}
+    \item Any constraint in \ref{sec:dataConstraints} is violated then CEWS System will generate an appropriate error message. 
+    \item The input matrices are formatted as iterable objects.
+\end{itemize}
+
+\mycomment{Requirements
     for the inputs that are supplied by the user.  This information has to be
     explicit.}
+    
 
-\item[R\refstepcounter{reqnum}\thereqnum \label{R_OutputInputs}:] \mycomment{It isn't
-    always required, but often echoing the inputs as part of the output is a
-    good idea.}
+%\item[R\refstepcounter{reqnum}\thereqnum \label{R_OutputInputs}:] \mycomment{It isn't always required, but often echoing the inputs as part of the output is a good idea.}
 
-\item[R\refstepcounter{reqnum}\thereqnum \label{R_Calculate}:] \mycomment{Calculation
+% Do calculation
+\item[R\refstepcounter{reqnum}\thereqnum \label{R:calculate}:] After reading the input data, CEWS System will preform the calculation in \iref{IM:CEWS}.
+\mycomment{Calculation
     related requirements.}
 
-\item[R\refstepcounter{reqnum}\thereqnum \label{R_VerifyOutput}:]
+\item[R\refstepcounter{reqnum}\thereqnum \label{R:verifyOutput}:] The CEWS System should generate an error if the calculation result exceeds the constraints in \ref{sec:correctSolution}.
   \mycomment{Verification related requirements.}
 
-\item[R\refstepcounter{reqnum}\thereqnum \label{R_Output}:] \mycomment{Output related
-    requirements.}
+% Output
+\item[R\refstepcounter{reqnum}\thereqnum \label{R:output}:] The CEWS System will generate an output.
+\begin{itemize}
+    \item In case an error occurs, an error should be raised by the program.
+    \item In case no error occurs, no error should be raised and $J_N$ will be returned as a float type.
+\end{itemize}
 
 \end{itemize}
 
@@ -1108,37 +1139,30 @@ be covered in the Verification and Validation document.}
 
 \noindent \begin{itemize}
 
-\item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR_Accuracy}:]
-  \textbf{Accuracy} \mycomment{Characterize the accuracy by giving the context/use for
-    the software.  Maybe something like, ``The accuracy of the computed
-    solutions should meet the level needed for $<$engineering or scientific
-    application$>$.  The level of accuracy achieved by \progname{} shall be
-    described following the procedure given in Section~X of the Verification and
-    Validation Plan.''  A link to the VnV plan would be a nice extra.}
+\item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR:accuracy}:]
+  \textbf{Accuracy} As per \aref{A:fp}, any calculation error should be negligible. The accuracy of the computed solutions should meet the level needed for data analysis. The absolute error should be less than 0.01.
+  \mycomment{Characterize the accuracy by giving the context/use for the software.  
+  Maybe something like, ``The accuracy of the computed solutions should meet the level needed for $<$engineering or scientific application$>$.
+  The level of accuracy achieved by \progname{} shall be described following the procedure given in Section~X of the Verification and Validation Plan.''
+  A link to the VnV plan would be a nice extra.}
 
-\item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR_Usability}:] \textbf{Usability}
+\item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR:usability}:] \textbf{Usability} A program should be able to call CEWS System by calling a function of the form CEWS($D$, $C$) and CEWS System should return the output as described in \rref{R:output}.
   \mycomment{Characterize the usability by giving the context/use for the software.
     You should likely reference the user characteristics section.  The level of
     usability achieved by the software shall be described following the
     procedure given in Section~X of the Verification and Validation Plan.  A
     link to the VnV plan would be a nice extra.}
 
-\item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR_Maintainability}:]
-  \textbf{Maintainability} \mycomment{The effort required to make any of the likely
-    changes listed for \progname{} should be less than FRACTION of the original
-    development time.  FRACTION is then a symbolic constant that can be defined
-    at the end of the report.}
+\item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR:maintainability}:]
+  \textbf{Maintainability} The program code should be readable and clear.
+  \mycomment{The effort required to make any of the likely changes listed for \progname{} should be less than FRACTION of the original development time.  
+  FRACTION is then a symbolic constant that can be defined at the end of the report.}
 
-\item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR_Portability}:]
-  \textbf{Portability} \mycomment{This NFR is easier to write than the others.  The
-    systems that \progname{} should run on should be listed here.  When possible
-    the specific versions of the potential operating environments should be
-    given.  To make the NFR verifiable a statement could be made that the tests
-    from a given section of the VnV plan can be successfully run on all of the
-    possible operating environments.}
+\item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR:portability}:]
+  \textbf{Portability}
+    The software should run on the Windows 11 operating system.
 
-\item Other NFRs that might be discussed include verifiability,
-  understandability and reusability.
+%\item Other NFRs that might be discussed include verifiability, understandability and reusability.
 
 \end{itemize}
 
@@ -1146,20 +1170,25 @@ be covered in the Verification and Validation document.}
 
 \noindent \begin{itemize}
 
-\item[LC\refstepcounter{lcnum}\thelcnum\label{LC_meaningfulLabel}:] \mycomment{Give
-    the likely changes, with a reference to the related assumption (aref), as appropriate.}
+\item[LC\refstepcounter{lcnum}\thelcnum\label{LC:optWeights}:] The addition of user options such as option to weigh the edge calculations: \iref{IM:SNCE} and \iref{IM:SCE}. Related to: \aref{A:weights}.
+
+\item[LC\refstepcounter{lcnum}\thelcnum\label{LC:optGraphs}:] The addition of user options such as option to change the algorithm for graph construction: \iref{IM:SNCE} and \iref{IM:SCE}. Related to: \aref{A:rng}.
+
+\item[LC\refstepcounter{lcnum}\thelcnum\label{LC:output}:] Changes to the output format. Related to: \aref{A:pvalue}.
+
+\mycomment{Give the likely changes, with a reference to the related assumption (aref), as appropriate.}
 
 \end{itemize}
 
-\section{Unlikely Changes}    
+%\section{Unlikely Changes}    
 
-\noindent \begin{itemize}
+%\noindent \begin{itemize}
 
-\item[LC\refstepcounter{lcnum}\thelcnum\label{LC_meaningfulLabel}:] \mycomment{Give
-    the unlikely changes.  The design can assume that the changes listed will
-    not occur.}
+%\item[LC\refstepcounter{lcnum}\thelcnum\label{ULC:IDF}:] The format of data matrices $D$ and $C$ changes.
 
-\end{itemize}
+%\mycomment{Give the unlikely changes.  The design can assume that the changes listed will not occur.}
+
+%\end{itemize}
 
 \section{Traceability Matrices and Graphs}
 
@@ -1183,87 +1212,60 @@ the assumptions.
 \mycomment{The traceability matrix is challenging to maintain manually.  Please do
   your best.  In the future tools (like Drasil) will make this much easier.}
 
-\afterpage{
-\begin{landscape}
+%\afterpage{
+%\begin{landscape}
 \begin{table}[h!]
 \centering
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|c|c|}
 \hline
-	& \aref{A_OnlyThermalEnergy}& \aref{A_hcoeff}& \aref{A_mixed}& \aref{A_tpcm}& \aref{A_const_density}& \aref{A_const_C}& \aref{A_Newt_coil}& \aref{A_tcoil}& \aref{A_tlcoil}& \aref{A_Newt_pcm}& \aref{A_charge}& \aref{A_InitTemp}& \aref{A_OpRangePCM}& \aref{A_OpRange}& \aref{A_htank}& \aref{A_int_heat}& \aref{A_vpcm}& \aref{A_PCM_state}& \aref{A_Pressure} \\
+	& \aref{A:fp} & \aref{A:CWN} & \aref{A:NOF} & \aref{A:weights} & \aref{A:rng} & \aref{A:pvalue} \\
 \hline
-\tref{T_COE}        & X& & & & & & & & & & & & & & & & & & \\ \hline
-\tref{T_SHE}        & & & & & & & & & & & & & & & & & & & \\ \hline
-\tref{T_LHE}        & & & & & & & & & & & & & & & & & & & \\ \hline
-\dref{NL}           & & X& & & & & & & & & & & & & & & & & \\ \hline
-\dref{ROCT}         & & & X& X& X& X& & & & & & & & & & & & & \\ \hline
-\ddref{FluxCoil}    & & & & & & & X& X& X& & & & & & & & & & \\ \hline
-\ddref{FluxPCM}     & & & X& X& & & & & & X& & & & & & & & & \\ \hline
-\ddref{D_HOF}       & & & & & & & & & & & & & & & & & & & \\ \hline
-\ddref{D_MF}        & & & & & & & & & & & & & & & & & & & \\ \hline
-\iref{ewat}         & & & & & & & & & & & X& X& & X& X& X& & & X \\ \hline
-\iref{epcm}         & & & & & & & & & & & & X& X& & & X& X& X& \\ \hline
-\iref{I_HWAT}       & & & & & & & & & & & & & & X& & & & & X \\ \hline
-\iref{I_HPCM}       & & & & & & & & & & & & & X& & & & & X & \\ \hline
-\lcref{LC_tpcm}     & & & & X& & & & & & & & & & & & & & & \\ \hline
-\lcref{LC_tcoil}    & & & & & & & & X& & & & & & & & & & & \\ \hline
-\lcref{LC_tlcoil}   & & & & & & & & & X& & & & & & & & & & \\ \hline
-\lcref{LC_charge}   & & & & & & & & & & & X& & & & & & & & \\ \hline
-\lcref{LC_InitTemp} & & & & & & & & & & & & X& & & & & & & \\ \hline
-\lcref{LC_htank}    & & & & & & & & & & & & & & & X& & & & \\
-\hline
+\dref{GD:RNG}             &X& &  X& & &  \\ \hline
+\ddref{DD:ED}             &X& &  X& & &  \\ \hline
+\iref{IM:SCE}             &X& X& X& & & \\ \hline
+\iref{IM:SNCE}            &X& X& X& & & \\ \hline
+\iref{IM:CEWS}            &X& X& X& & & \\ \hline
+\lcref{LC:optWeights}     & &  &  &X & &  \\ \hline
+\lcref{LC:optGraphs}      & &  &  & &X &  \\ \hline
+\lcref{LC:output}         & &  &  & & &X  \\ \hline
 \end{tabular}
 \caption{Traceability Matrix Showing the Connections Between Assumptions and Other Items}
 \label{Table:A_trace}
 \end{table}
-\end{landscape}
-}
+%\end{landscape}
+%}
 
-\begin{table}[h!]
+\begin{table}[H]
 \centering
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|c|}
 \hline        
-	& \tref{T_COE}& \tref{T_SHE}& \tref{T_LHE}& \dref{NL}& \dref{ROCT} & \ddref{FluxCoil}& \ddref{FluxPCM} & \ddref{D_HOF}& \ddref{D_MF}& \iref{ewat}& \iref{epcm}& \iref{I_HWAT}& \iref{I_HPCM} \\
+	& \dref{GD:RNG} & \ddref{DD:ED} & \iref{IM:SCE} & \iref{IM:SNCE} & \iref{IM:CEWS}  \\
 \hline
-\tref{T_COE}     & & & & & & & & & & & & & \\ \hline
-\tref{T_SHE}     & & & X& & & & & & & & & & \\ \hline
-\tref{T_LHE}     & & & & & & & & & & & & & \\ \hline
-\dref{NL}        & & & & & & & & & & & & & \\ \hline
-\dref{ROCT}      & X& & & & & & & & & & & & \\ \hline
-\ddref{FluxCoil} & & & & X& & & & & & & & & \\ \hline
-\ddref{FluxPCM}  & & & & X& & & & & & & & & \\ \hline
-\ddref{D_HOF}    & & & & & & & & & & & & & \\ \hline
-\ddref{D_MF}     & & & & & & & & X& & & & & \\ \hline
-\iref{ewat}      & & & & & X& X& X& & & & X& & \\ \hline
-\iref{epcm}      & & & & & X& & X& & X& X& & & X \\ \hline
-\iref{I_HWAT}    & & X& & & & & & & & & & & \\ \hline
-\iref{I_HPCM}    & & X& X& & & & X& X& X& & X& & \\
-\hline
+\dref{GD:RNG}    & & x& x& x& \\ \hline
+\ddref{DD:ED}    & x& & & & \\ \hline
+\iref{IM:SCE}    & x& & & &x \\ \hline
+\iref{IM:SNCE}   & x& & & &x \\ \hline
+\iref{IM:CEWS}   & & &x &x & \\ \hline
 \end{tabular}
+
 \caption{Traceability Matrix Showing the Connections Between Items of Different Sections}
 \label{Table:trace}
 \end{table}
 
-\begin{table}[h!]
+\begin{table}[H]
 \centering
-\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|}
 \hline
-	& \iref{ewat}& \iref{epcm}& \iref{I_HWAT}& \iref{I_HPCM}& \ref{sec_DataConstraints}& \rref{R_RawInputs}& \rref{R_MassInputs} \\
+	& \iref{IM:SCE} & \iref{IM:SNCE} & \iref{IM:CEWS} \\
 \hline
-\iref{ewat}            & & X& & & & X& X \\ \hline
-\iref{epcm}            & X& & & X& & X& X \\ \hline
-\iref{I_HWAT}          & & & & & & X& X \\ \hline
-\iref{I_HPCM}          & & X& & & & X& X \\ \hline
-\rref{R_RawInputs}     & & & & & & & \\ \hline
-\rref{R_MassInputs}    & & & & & & X& \\ \hline
-\rref{R_CheckInputs}   & & & & & X& & \\ \hline
-\rref{R_OutputInputs}  & X& X& & & & X& X \\ \hline
-\rref{R_TempWater}     & X& & & & & & \\ \hline 
-\rref{R_TempPCM}       & & X& & & & & \\ \hline
-\rref{R_EnergyWater}   & & & X& & & & \\ \hline
-\rref{R_EnergyPCM}     & & & & X& & & \\ \hline
-\rref{R_VerifyOutput}  & & & X& X& & & \\ \hline
-\rref{R_timeMeltBegin} & & X& & & & & \\ \hline
-\rref{R_timeMeltEnd}   & & X& & & & & \\ 
+\iref{IM:SCE}           &  & &X \\ \hline
+\iref{IM:SNCE}          &  & &X \\ \hline
+\iref{IM:CEWS}          & x& x& \\ \hline
+\rref{R:inputs}         &X &X & \\ \hline
+\rref{R:calculate}      &X &X &X \\ \hline
+\rref{R:verifyOutput}   &  & &X \\ \hline
+\rref{R:output}         &  & &X \\ \hline
+
 \hline
 \end{tabular}
 \caption{Traceability Matrix Showing the Connections Between Requirements and Instance Models}
@@ -1301,7 +1303,7 @@ instance models, requirements, and data constraints on each other.
 % 	\end{center}
 % \end{figure}
 
-\section{Development Plan}
+%\section{Development Plan}
 
 \mycomment{This section is optional.  It is used to explain the plan for developing
   the software.  In particular, this section gives a list of the order in which
@@ -1311,7 +1313,7 @@ instance models, requirements, and data constraints on each other.
   organized as a prioritized list of requirements, or it could should the
   requirements that will be implemented for ``phase 1'', ``phase 2'', etc.}
 
-\section{Values of Auxiliary Constants}
+%\section{Values of Auxiliary Constants}
 
 \mycomment{Show the values of the symbolic parameters introduced in the report.}
 
@@ -1368,25 +1370,5 @@ Their values are defined in this section for easy maintenance.}
   requirement could be more abstract
 \end{itemize}
 }
-
-\newpage{}
-\section*{Appendix --- Reflection}
-
-The information in this section will be used to evaluate the team members on the
-graduate attribute of Lifelong Learning.  Please answer the following questions:
-
-\begin{enumerate}
-  \item What knowledge and skills will the team collectively need to acquire to
-  successfully complete this capstone project?  Examples of possible knowledge
-  to acquire include domain specific knowledge from the domain of your
-  application, or software engineering knowledge, mechatronics knowledge or
-  computer science knowledge.  Skills may be related to technology, or writing,
-  or presentation, or team management, etc.  You should look to identify at
-  least one item for each team member.
-  \item For each of the knowledge areas and skills identified in the previous
-  question, what are at least two approaches to acquiring the knowledge or
-  mastering the skill?  Of the identified approaches, which will each team
-  member pursue, and why did they make this choice?
-\end{enumerate}
 
 \end{document}
