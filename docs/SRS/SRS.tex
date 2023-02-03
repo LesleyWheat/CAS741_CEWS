@@ -21,7 +21,7 @@
 \usepackage{pdflscape}
 \usepackage{afterpage}
 
-\usepackage[round]{natbib}
+%\usepackage[round]{natbib}
 
 % multiline comments
 \newcommand{\mycomment}[1]{}
@@ -29,7 +29,7 @@
 %\usepackage{refcheck}
 
 \hypersetup{
-    bookmarks=true,         % show bookmarks bar?
+    %bookmarks=true,         % show bookmarks bar?
       colorlinks=true,       % false: boxed links; true: colored links
     linkcolor=red,          % color of internal links (change box color with linkbordercolor)
     citecolor=green,        % color of links to bibliography
@@ -154,7 +154,9 @@
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-2023-01-24 & 1.0 & Creation \\
+2023-01-24 & 0.0 & Creation \\
+2023-02-01 & 0.1 & Revise Instance Models \\
+2023-02-03 & 1.0 & Version 1 Release \\
 \bottomrule
 \end{tabularx}
 
@@ -180,8 +182,8 @@ systems.  The symbols are listed in alphabetical order.
 \noindent \begin{longtable*}{l l p{12cm}} \toprule
 \textbf{Symbol} & \textbf{Unit} & \textbf{Description}\\
 \midrule 
-$J_N$ & N/A & Normalized Multiclass Cut Edge Weight Measurement \\
 $I(...)$ & N/A & Indicator Function \\
+$J_N$ & N/A & Normalized Multiclass Cut Edge Weight Measurement \\
 \bottomrule
 \end{longtable*}
 \mycomment{Use your problems actual symbols.  The si package is a good idea to use for
@@ -195,6 +197,7 @@ $I(...)$ & N/A & Indicator Function \\
   \textbf{Symbol} & \textbf{Description}\\
   \midrule 
   A & Assumption\\
+  CEWS & Cut Edge Weight Statistic\\
   DD & Data Definition\\
   GD & General Definition\\
   GS & Goal Statement\\
@@ -204,7 +207,6 @@ $I(...)$ & N/A & Indicator Function \\
   R & Requirement\\
   RNG & Relative Neighbourhood Graph\\
   SRS & Software Requirements Specification\\
-  CEWS & Cut Edge Weight Statistic\\
   T & Theoretical Model\\
   \bottomrule
 \end{tabular}\\
@@ -301,8 +303,16 @@ A classic measurement for separability is Fraction of Points on Class Boundary.
 Based on the work of Friedman and Rafsky \cite{friedman_multivariate_1979} and documented by Basu and Ho\cite{ho_complexity_2002}, this measurement constructs a minimum spanning tree over the dataset then calculates the number of points with a connection to another class over all points.
 
 The Cut Edge Weight Statistic measurement \cite{zighed_statistical_2005} is a variation of the Fraction of Points on Class Boundary, proposed by Zighed et al. 
-The algorithm for the normalized measurement begins by constructing a Toussaint’s Relative Neighbourhood Graph \cite{toussaint_relative_1980} over the entire dataset then computing the number of edges which connect different classes over the total number of edges. 
+The algorithm for the normalized measurement begins by constructing a Toussaint’s Relative Neighbourhood Graph \cite{toussaint_relative_1980} over the entire dataset then computing the number of edges which connect different classes (the "cut edges") over the total number of edges. 
 This measurement is a viable way of measuring separability because it has a high coefficient of determination ($R^2$) with the mean error rate of several classifiers.
+
+\begin{figure}[h!]
+\begin{center}
+ \includegraphics[width=0.7\textwidth]{RNG_CEWS_Example.png}
+\caption{An visualization of the RNG for a binary classification problem represented by black and white points. (a) An example of a 2D RNG graph construction. (b) Identifying cut edges with dotted lines.}
+\label{Fig_RNG} 
+\end{center}
+\end{figure}
 
 The introduction contains the purpose of this document, the scope of requirements, characteristics of the indented reader and the organization of this complete
 document.
@@ -406,7 +416,7 @@ The CEWS System will exist as a standalone product or as a module. The system co
 
 \begin{figure}[h!]
 \begin{center}
- \includegraphics[width=0.8\textwidth]{SystemContext_2.png}
+ \includegraphics[width=0.7\textwidth]{SystemContext_2.png}
 \caption{System Context}
 \label{Fig_SystemContext} 
 \end{center}
@@ -422,7 +432,9 @@ The CEWS System will exist as a standalone product or as a module. The system co
   For instance, saying ``material properties'' provides some information, but it
   stays away from the detail of listing every required properties.}
 
+
 \begin{itemize}
+\begin{samepage}
 \item User Responsibilities:
 \begin{itemize}
 \item Provide the data.
@@ -433,6 +445,9 @@ The CEWS System will exist as a standalone product or as a module. The system co
 \item Understand the CEWS algorithm.
 \item Understand the limitations of numerical computation. 
 \end{itemize}
+\end{samepage}
+
+\begin{samepage}
 \item \progname{} Responsibilities:
 \begin{itemize}
 \item Read input data.
@@ -441,11 +456,12 @@ The CEWS System will exist as a standalone product or as a module. The system co
 \item Preform basic error checking on the output.
 \item Return the output value.
 \end{itemize}
+\end{samepage}
 \end{itemize}
 
 \subsection{User Characteristics} \label{sec:UserCharacteristics}
 
-The end user of CEWS System should have a good understanding of classification and machine learning, preferably with an undergraduate degree in software.
+The end user of CEWS System should have a good understanding of classification and machine learning, preferably with an undergraduate degree in software or math.
 
 \mycomment{This section summarizes the knowledge/skills expected of the user.
 Measuring usability, which is often a required non-function requirement, requires knowledge of a typical user.  
@@ -491,10 +507,10 @@ easier to correctly understand the requirements:
 \item Data set: A set of examples from a population.
 \item Feature : An individual measurable property of an example.
 \item Class Label : Represents the class an example belongs to.
-\item Classification: the problem of identifying which of a set of categories an example belongs to.
-\item Data complexity: aspects of the data that classifiers have difficultly with. \cite{luengo_automatic_2015}
-\item Separability: an intrinsic characteristic of a dataset and describes how the data points from different classes mix together. \cite{guan_novel_2021}
-\item Boolean variable : a variable that has one of two possible values.
+\item Classification: The problem of identifying which of a set of categories an example belongs to.
+\item Data complexity: Aspects of the data that classifiers have difficultly with. \cite{luengo_automatic_2015}
+\item Separability: An intrinsic characteristic of a dataset and describes how the data points from different classes mix together. \cite{guan_novel_2021}
+\item Boolean variable : A variable that has one of two possible values.
 \end{itemize}
 
 \subsubsection{Physical System Description} \label{sec:phySystDescrip}
@@ -533,7 +549,7 @@ The physical system of \progname{}, as shown in Figure~?, includes the following
   consideration should achieve. Goals provide criteria for sufficient
   completeness of a requirements specification and for requirements
   pertinence. Goals will be refined in Section “Instanced Models”
-  (Section~\ref{sec_instance}). Large and complex goals should be decomposed
+  (Section~\ref{sec:instance}). Large and complex goals should be decomposed
   into smaller sub-goals.  The goals are written abstractly, with a minimal
   amount of technical language.  They should be understandable by non-domain
   experts.}
@@ -597,7 +613,7 @@ The physical system of \progname{}, as shown in Figure~?, includes the following
 %\end{figure}
 
 The instance models that govern \progname{} are presented in
-Subsection~\ref{sec_instance}.  The information to understand the meaning of the
+Subsection~\ref{sec:instance}.  The information to understand the meaning of the
 instance models and their derivation is also presented, so that the instance
 models can be verified.
 
@@ -742,7 +758,7 @@ None
 
 ~\newline
 }
-\subsubsection{General Definitions}\label{sec_gendef}
+\subsubsection{General Definitions}\label{sec:gendef}
 
 This section collects and equations that will be used in building the
 instance models.
@@ -827,7 +843,7 @@ The above equation gives the formula for calculating the the multiclass sum of n
 }
 
 
-\subsubsection{Data Definitions}\label{sec_datadef}
+\subsubsection{Data Definitions}\label{sec:datadef}
 
 This section collects and defines all the data needed to build the instance
 models. The dimension of each quantity is also given. 
@@ -855,7 +871,7 @@ Symbol &$d(a,b)$\\ \hline
 \end{tabular}
 \end{minipage}\\
 
-\subsubsection{Instance Models} \label{sec_instance}    
+\subsubsection{Instance Models} \label{sec:instance}    
 
 \mycomment{The motivation for this section is to reduce the problem defined in
   ``Physical System Description'' (Section~\ref{sec:phySystDescrip}) to one
@@ -865,11 +881,12 @@ Symbol &$d(a,b)$\\ \hline
 
 This section transforms the problem defined in Section~\ref{sec:pd} into 
 one which is expressed in mathematical terms. It uses concrete symbols defined 
-in Section~\ref{sec_datadef} to replace the abstract symbols in the models 
-identified in Sections~\ref{sec_theoretical} and~\ref{sec_gendef}.
+in Section~\ref{sec:datadef} to replace the abstract symbols in the models 
+identified in Sections~\ref{sec:theoretical} and~\ref{sec:gendef}.
+The goals \mycomment{reference your goals} are solved by \iref{IM:CEWS}, which is the implementation of the cut edge weight statistic measurement.
 
-The goals \mycomment{reference your goals} are solved by \mycomment{reference your instance
-  models}.  \mycomment{other details, with cross-references where appropriate.}
+\mycomment{reference your instance models}  
+\mycomment{other details, with cross-references where appropriate.}
 \mycomment{Modify the examples below for your problem, and add additional models as
   appropriate.}
 
@@ -932,9 +949,10 @@ The input data matrix, $D$, is of size $n \times m$ and  must contain rational n
     d_{n1} & d_{n2} & \cdots & d_{nm}\\
   \end{array} } \right]
 \] \\
+\begin{minipage}{\textwidth}
 So row $i$, $d_i$, contains sample $i$.
 The input class matrix, $C$, is of size $n \times 1$ and  must contain natural numbers. $C$ is formatted as: \\
- & \[
+ \[
   C_=
   \left[ {\begin{array}{c}
     c_{1} \\
@@ -943,8 +961,10 @@ The input class matrix, $C$, is of size $n \times 1$ and  must contain natural n
     c_{n} \\
   \end{array} } \right]
 \] \\
+\end{minipage}
 Where $c_i$ is the label for sample $i$ of matrix $D$. 
 It is the user's responsibility to set $c_i$ to the class of $d_i$.
+
  
 The size of $n$ and $m$ are limited based on the system hardware but not by CEWS itself.
 It is the user's responsibility to insure that their system has the relevant requirements to support their dataset size.
@@ -988,6 +1008,7 @@ It is the user's responsibility to insure that their system has the relevant req
 \end{longtable*}
 \end{table}
 
+\begin{minipage}{\textwidth}
 \subsubsection{Properties of a Correct Solution} \label{sec:correctSolution}
 
 \noindent
@@ -1000,7 +1021,7 @@ A correct solution must exhibit the following behaviour
   energy or mass) and known constraints on outputs, which are usually summarized
   in tabular form.  A sample table is shown in Table~\ref{TblOutputVar}}
 
-\begin{table}[!h]
+\begin{table}[H]
 \caption{Output Variables} \label{TblOutputVar}
 \renewcommand{\arraystretch}{1.2}
 \noindent \begin{longtable*}{l l} 
@@ -1011,6 +1032,8 @@ A correct solution must exhibit the following behaviour
   \bottomrule
 \end{longtable*}
 \end{table}
+
+\end{minipage}
 
 \mycomment{This section is not for test cases or techniques for verification and
   validation.  Those topics will be addressed in the Verification and Validation
@@ -1164,8 +1187,8 @@ the assumptions.
 	& \aref{A:fp} & \aref{A:CWN} & \aref{A:NOF} & \aref{A:weights} & \aref{A:rng} & \aref{A:pvalue} \\
 \hline
 \dref{GD:RNG}             &X& &  X& & &  \\ \hline
-\ddref{DD:ED}             &X& &  X& & &  \\ \hline
-\iref{IM:CEWS}            &X& X& X& & & \\ \hline
+\ddref{DD:ED}             &X& &  & & &  \\ \hline
+\iref{IM:CEWS}            &X&X&X&X&X&X \\ \hline
 \lcref{LC:optWeights}     & &  &  &X & &  \\ \hline
 \lcref{LC:optGraphs}      & &  &  & &X &  \\ \hline
 \lcref{LC:output}         & &  &  & & &X  \\ \hline
@@ -1182,9 +1205,9 @@ the assumptions.
 \hline        
 	& \dref{GD:RNG} & \ddref{DD:ED}  & \iref{IM:CEWS}  \\
 \hline
-\dref{GD:RNG}    & &x&x \\ \hline
-\ddref{DD:ED}    &x& &  \\ \hline
-\iref{IM:CEWS}   &x& &  \\ \hline
+\dref{GD:RNG}    & &X&X \\ \hline
+\ddref{DD:ED}    &X& &  \\ \hline
+\iref{IM:CEWS}   &X& &  \\ \hline
 \end{tabular}
 
 \caption{Traceability Matrix Showing the Connections Between Items of Different Sections}
@@ -1209,6 +1232,7 @@ the assumptions.
 \label{Table:R_trace}
 \end{table}
 
+\mycomment{
 The purpose of the traceability graphs is also to provide easy references on
 what has to be additionally modified if a certain component is changed.  The
 arrows in the graphs represent dependencies. The component at the tail of an
@@ -1218,6 +1242,7 @@ changed. Figure~\ref{Fig_ATrace} shows the dependencies of theoretical models,
 general definitions, data definitions, instance models, likely changes, and
 assumptions on each other. Figure~\ref{Fig_RTrace} shows the dependencies of
 instance models, requirements, and data constraints on each other.
+}
 
 % \begin{figure}[h!]
 % 	\begin{center}
