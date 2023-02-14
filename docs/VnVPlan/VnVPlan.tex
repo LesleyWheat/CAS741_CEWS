@@ -1,8 +1,26 @@
 \documentclass[12pt, titlepage]{article}
 
-\usepackage{booktabs}
-\usepackage{tabularx}
+%Page Size
+\usepackage{geometry}
+\geometry{a4paper}
+
+\usepackage{amsmath, mathtools}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{colortbl}
+\usepackage{xr}
 \usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{xfrac}
+\usepackage{tabularx}
+\usepackage{float}
+\usepackage{siunitx}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{pdflscape}
+\usepackage{afterpage}
+
 \hypersetup{
     colorlinks,
     citecolor=blue,
@@ -10,7 +28,7 @@
     linkcolor=red,
     urlcolor=blue
 }
-\usepackage[round]{natbib}
+%\usepackage[round]{natbib}
 
 \input{../Comments}
 \input{../Common}
@@ -30,8 +48,8 @@
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-Date 1 & 1.0 & Notes\\
-Date 2 & 1.1 & Notes\\
+2023-02-10 & 0.0 & Creation\\
+2023-02-14 & 1.0 & Version 1.0\\
 \bottomrule
 \end{tabularx}
 
@@ -39,11 +57,13 @@ Date 2 & 1.1 & Notes\\
 
 \tableofcontents
 
-\listoftables
-\wss{Remove this section if it isn't needed}
+\newpage
 
-\listoffigures
-\wss{Remove this section if it isn't needed}
+\listoftables
+\mycomment{Remove this section if it isn't needed}
+
+%\listoffigures
+\mycomment{Remove this section if it isn't needed}
 
 \newpage
 
@@ -55,92 +75,90 @@ Date 2 & 1.1 & Notes\\
   \textbf{symbol} & \textbf{description}\\
   \midrule 
   T & Test\\
+  CEWS & Cut Edge Weight Statistic\\
+  $J_N$ & Normalized Multiclass Cut Edge Weight Measurement\\
+  $D$ & Input Data Matrix\\
+  $C$ & Input Class Matrix\\
+  FR & Functional Requirement \\
+  NFR & Non Functional Requirement \\
   \bottomrule
 \end{tabular}\\
 
-\wss{symbols, abbreviations or acronyms --- you can simply reference the SRS
+\mycomment{symbols, abbreviations or acronyms --- you can simply reference the SRS
   \citep{SRS} tables, if appropriate}
 
-\wss{Remove this section if it isn't needed}
+\mycomment{Remove this section if it isn't needed}
 
 \newpage
 
 \pagenumbering{arabic}
 
-This document ... \wss{provide an introductory blurb and roadmap of the
-  Verification and Validation plan}
+This document outlines the verification and validation plan for testing the CEWS System.
 
 \section{General Information}
 
 \subsection{Summary}
 
-\wss{Say what software is being tested.  Give its name and a brief overview of
-  its general functions.}
+This document contains the verification and validation plan for CEWS System, a program for calculating the CEWS measurement for a dataset as shown in \cite{zighed_statistical_2005}.
+CEWS System takes a set of data points $D$ and a list of class labels $C$ as inputs and computes the Normalized Multiclass Cut Edge Weight Measurement $J_N$.
 
 \subsection{Objectives}
 
-\wss{State what is intended to be accomplished.  The objective will be around
-  the qualities that are most important for your project.  You might have
-  something like: ``build confidence in the software correctness,''
-  ``demonstrate adequate usability.'' etc.  You won't list all of the qualities,
-  just those that are most important.}
+The objective of this document is to build confidence in the software’s correctness.
+This document provides the test plan used to verify and validate the final product.
+Therefore, it should aim to encompass all validation and verification components required for testing.
 
 \subsection{Relevant Documentation}
 
-\wss{Reference relevant documentation.  This will definitely include your SRS
-  and your other project documents (design documents, like MG, MIS, etc).  You
-  can include these even before they are written, since by the time the project
-  is done, they will be written.}
-
-\citet{SRS}
+Relevant documentation includes the system requirements specification found here: \href{https://github.com/LesleyWheat/CAS741_CEWS/tree/main/docs/SRS}{GitHub Link}.
 
 \section{Plan}
 
-\wss{Introduce this section.   You can provide a roadmap of the sections to
+\mycomment{Introduce this section.   You can provide a roadmap of the sections to
   come.}
 
-\subsection{Verification and Validation Team}
+\subsection{Verification and Validation Team} \label{sec:VnV_team}
 
-\wss{Your teammates.  Maybe your supervisor.
+\mycomment{Your teammates.  Maybe your supervisor.
   You shoud do more than list names.  You should say what each person's role is
   for the project's verification.  A table is a good way to summarize this information.}
 
+The verification and validation team includes the domain expert Joachim de Fourestier, the verification and validation reviewer Mina Mahdipour, and Dr. Spencer Smith.
+
 \subsection{SRS Verification Plan}
 
-\wss{List any approaches you intend to use for SRS verification.  This may include
-  ad hoc feedback from reviewers, like your classmates, or you may plan for 
-  something more rigorous/systematic.}
-
-\wss{Maybe create an SRS checklist?}
+The SRS will be reviewed by the SRS review team, consisting of the domain expert Joachim de Fourestier and the SRS reviewer, Sam Joseph Crawford, and Dr. Spencer Smith.
 
 \subsection{Design Verification Plan}
 
-\wss{Plans for design verification}
-
-\wss{The review will include reviews by your classmates}
-
-\wss{Create a checklists?}
+The design document MIS will be reviewed by the MIS review team, consisting of the domain expert Joachim de Fourestier and the MIS reviewer, Deesha Vipulkumar Patel, and Dr. Spencer Smith.
 
 \subsection{Verification and Validation Plan Verification Plan}
 
-\wss{The verification and validation plan is an artifact that should also be verified.}
+This document will be reviewed by the VnV team members in Section \ref{sec:VnV_team}.
 
-\wss{The review will include reviews by your classmates}
+\mycomment{The verification and validation plan is an artifact that should also be verified.}
 
-\wss{Create a checklists?}
+\mycomment{The review will include reviews by your classmates}
+
+\mycomment{Create a checklists?}
 
 \subsection{Implementation Verification Plan}
 
-\wss{You should at least point to the tests listed in this document and the unit
+Individual tests are outlined in sections 5.1 through 5.2. 
+The tests will either be performed manually or with someone reviewing the code.
+
+\mycomment{You should at least point to the tests listed in this document and the unit
   testing plan.}
 
-\wss{In this section you would also give any details of any plans for static verification of
+\mycomment{In this section you would also give any details of any plans for static verification of
   the implementation.  Potential techniques include code walkthroughs, code
   inspection, static analyzers, etc.}
 
 \subsection{Automated Testing and Verification Tools}
+The VnV proccess will use no tools.
 
-\wss{What tools are you using for automated testing.  Likely a unit testing
+\mycomment{What tools are you using for automated testing.  Likely a unit testing
   framework and maybe a profiling tool, like ValGrind.  Other possible tools
   include a static analyzer, make, continuous integration tools, test coverage
   tools, etc.  Explain your plans for summarizing code coverage metrics.
@@ -149,144 +167,319 @@ This document ... \wss{provide an introductory blurb and roadmap of the
   that verify that coding standards have been respected, like flake9 for
   Python.}
 
-\wss{If you have already done this in the development plan, you can point to
+\mycomment{If you have already done this in the development plan, you can point to
 that document.}
 
-\wss{The details of this section will likely evolve as you get closer to the
+\mycomment{The details of this section will likely evolve as you get closer to the
   implementation.}
 
 \subsection{Software Validation Plan}
 
-\wss{If there is any external data that can be used for validation, you should
+To test the output of the software, results from the paper \cite{zighed_statistical_2005} will be used as a pseudo-oracle.
+The following benchmark datasets from the UCI Machine Learning Repository will be used: Breast Cancer, BUPA liver, Glass Ident, Haberman, Image seg, Ionosphere, Iris (Bezdek), Iris plants, Musk "Clean1", Pima Indians, Waveform, Wine recognition and Yeast.
+
+\mycomment{If there is any external data that can be used for validation, you should
   point to it here.  If there are no plans for validation, you should state that
   here.}
 
-\wss{You might want to use review sessions with the stakeholder to check that
+\mycomment{You might want to use review sessions with the stakeholder to check that
 the requirements document captures the right requirements.  Maybe task based
 inspection?}
 
-\wss{This section might reference back to the SRS verification section.}
+\mycomment{This section might reference back to the SRS verification section.}
 
+%---------------------------------------------------------------------------------
 \section{System Test Description}
 	
 \subsection{Tests for Functional Requirements}
 
-\wss{Subsets of the tests may be in related, so this section is divided into
+\mycomment{Subsets of the tests may be in related, so this section is divided into
   different areas.  If there are no identifiable subsets for the tests, this
   level of document structure can be removed.}
 
-\wss{Include a blurb here to explain why the subsections below
+\mycomment{Include a blurb here to explain why the subsections below
   cover the requirements.  References to the SRS would be good here.}
 
-\subsubsection{Area of Testing1}
+\subsubsection{Area of Testing 1: FR1, FR4}
 
-\wss{It would be nice to have a blurb here to explain why the subsections below
+This area of testing will address inputs to the program.
+
+Functional requirement 1 states: CEWS System will read the input data. Also functional requirement 4 states: The CEWS System will generate an output.
+
+\mycomment{It would be nice to have a blurb here to explain why the subsections below
   cover the requirements.  References to the SRS would be good here.  If a section
   covers tests for input constraints, you should reference the data constraints
   table in the SRS.}
 		
-\paragraph{Title for Test}
+\paragraph{Tests for FR1}
 
 \begin{enumerate}
 
-\item{test-id1\\}
+\item{T1 - Normal Input\\}
 
-Control: Manual versus Automatic
+Control: Manual
+					
+Initial State: Pending Input
+					
+Input: $D$ and $C$ have the same number of samples and features, $C$ contains at least two classes.
+					
+Output: No error generated, program proceeds to next state.
+
+Test Case Derivation: FR1, FR4
+					
+How test will be performed: Manual
+					
+\item{T2 - Data Mismatch\\}
+
+Control: Manual
 					
 Initial State: 
 					
-Input: 
+Input: $D$ and $C$ have different number of samples or $D$ has a different number of features.
 					
-Output: \wss{The expected result for the given inputs}
+Output: Generate error about incorrect data format.
 
-Test Case Derivation: \wss{Justify the expected value given in the Output field}
-					
-How test will be performed: 
-					
-\item{test-id2\\}
+Test Case Derivation: FR1, FR4
 
-Control: Manual versus Automatic
+How test will be performed: Manual
+
+\item{T3 - Single Class\\}
+
+Control: Manual
 					
 Initial State: 
 					
-Input: 
+Input: $C$ contains only one class
 					
-Output: \wss{The expected result for the given inputs}
+Output: Generate error about lack of classes.
 
-Test Case Derivation: \wss{Justify the expected value given in the Output field}
+Test Case Derivation: FR1, FR4
 
-How test will be performed: 
+How test will be performed: Manual
+
+\item{T4 - Empty Data\\}
+
+Control: Manual
+					
+Initial State: Pending Input
+					
+Input: $C$ or $D$ is null.
+					
+Output: Generate warning about empty data object.
+
+Test Case Derivation: FR1, FR4
+
+How test will be performed: Manual
+
+\item{T5 - Value out of range\\}
+
+Control: Manual
+					
+Initial State: Pending Input
+					
+Input: $C$ contains a value larger than $W_{\max}$ or smaller than $W_{\min}$. $D$ contains a value larger than $F_{\max}$ or smaller than $F_{\min}$. (Table \ref{Tabel:constants})
+					
+Output: Generate warning about data value out of range.
+
+Test Case Derivation: FR1, FR4
+
+How test will be performed: Manual
 
 \end{enumerate}
 
-\subsubsection{Area of Testing2}
+\subsubsection{Area of Testing 2: FR2, FR3, FR4}
+This area of testing addresses the result of the program.
+Functional Requirement 2 states: CEWS System will preform the calculation.
 
-...
+Functional Requirement 3 states: The CEWS System should generate an error if the calculation result exceeds the constraints.
+
+Functional Requirement 4 states: The CEWS System will generate an output.
+
+\begin{enumerate}
+
+\item{T6 - UCI Dataset Tests\\}
+
+Control: Manual
+					
+Initial State: Pending Input
+					
+Input: UCI Machine Learning Repository datasets: Breast Cancer, BUPA liver, Glass Ident, Haberman, Image seg, Ionosphere, Iris (Bezdek), Iris plants, Musk "Clean1", Pima Indians, Waveform, Wine recognition and Yeast.
+					
+Output: Normalized CEWS Measurement $J_N$.
+
+Test Case Derivation: FR2, FR3, FR4
+					
+How test will be performed:
+\begin{enumerate}
+\item Format a dataset
+\item Input the reformatted dataset to the system
+\item Check the output value against the results in Table \ref{Table:benchmarks}.
+\end{enumerate}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|} \hline
+Dataset & Expected Result \\ \hline \hline
+\iref{Breast Cancer} & 0.008\\ \hline
+\rref{BUPA liver} & 0.401 \\ \hline
+\rref{Glass Ident.} & 0.356 \\ \hline
+\rref{Haberman}   & 0.331 \\ \hline
+\rref{Image seg.} & 0.224 \\ \hline
+\rref{Ionosphere} & 0.137\\ \hline
+\rref{Iris (Bezdek)} & 0.090 \\ \hline
+\rref{Iris Plants} & 0.087 \\ \hline
+\rref{Musk "Clean1"} & 0.167 \\ \hline
+\rref{Pima Indians} & 0.310 \\ \hline
+\rref{Waveform} & 0.255 \\ \hline
+\rref{Wine recognition} & 0.093\\ \hline
+\rref{Yeast} & 0.524 \\ \hline
+\end{tabular}
+\caption{CEWS Result on Benchmark Datasets from \cite{zighed_statistical_2005}}
+\label{Table:benchmarks}
+\end{table}
+
+\end{enumerate}
+
 
 \subsection{Tests for Nonfunctional Requirements}
 
-\wss{The nonfunctional requirements for accuracy will likely just reference the
+\mycomment{The nonfunctional requirements for accuracy will likely just reference the
   appropriate functional tests from above.  The test cases should mention
   reporting the relative error for these tests.  Not all projects will
   necessarily have nonfunctional requirements related to accuracy}
 
-\wss{Tests related to usability could include conducting a usability test and
+\mycomment{Tests related to usability could include conducting a usability test and
   survey.  The survey will be in the Appendix.}
 
-\wss{Static tests, review, inspections, and walkthroughs, will not follow the
+\mycomment{Static tests, review, inspections, and walkthroughs, will not follow the
 format for the tests given below.}
 
-\subsubsection{Area of Testing1}
+\subsubsection{Area of Testing 1: NFR1}
+
+Non Functional Requirement 1 states: The accuracy of the computed solutions should meet the level needed for data analysis.
+The absolute error should be less than 0.01.
+
 		
-\paragraph{Title for Test}
+%\paragraph{Title for Test}
 
 \begin{enumerate}
 
-\item{test-id1\\}
+\item{T7: Accuracy\\}
 
-Type: Functional, Dynamic, Manual, Static etc.
+Type: Manual
 					
-Initial State: 
+Initial State: Pending input
 					
-Input/Condition: 
+Input/Condition: UCI Datasets listed in Table \ref{Table:benchmarks}.
 					
-Output/Result: 
+Output/Result: Less than 0.01 difference in results from Table \ref{Table:benchmarks}.
 					
-How test will be performed: 
-					
-\item{test-id2\\}
-
-Type: Functional, Dynamic, Manual, Static etc.
-					
-Initial State: 
-					
-Input: 
-					
-Output: 
-					
-How test will be performed: 
+How test will be performed: Manual
 
 \end{enumerate}
 
-\subsubsection{Area of Testing2}
+\subsubsection{Area of Testing 2: NFR2}
 
-...
+Non Functional Requirement 2 states: A program should be able to call CEWS System by calling a function of the form CEWS($D$, $C$) and CEWS System should return the output as described in FR4.
+
+\begin{enumerate}
+
+\item{T8: Usability\\}
+
+Type: Manual
+					
+Initial State: Off
+					
+Input/Condition: Simulated dataset
+					
+Output/Result: $J_N$
+					
+How test will be performed: Manually, the user will attempt to call the program's function.
+
+\end{enumerate}
+
+\subsubsection{Area of Testing 3: NFR3}
+
+Non Functional Requirement 3 states: The program code should be readable and clear.
+
+\begin{enumerate}
+
+\item{T9: Maintainability\\}
+
+Type: Manual
+					
+Initial State: None
+					
+Input/Condition: None
+					
+Output/Result: None
+					
+How test will be performed: The author will review the code.
+
+\end{enumerate}
+
+\subsubsection{Area of Testing 4: NFR4}
+
+Non Functional Requirement 4 states: The software should run on the Windows 11 operating system
+
+\begin{enumerate}
+
+\item{T9: Maintainability\\}
+
+Type: Manual
+					
+Initial State: Off
+					
+Input/Condition: Simulated dataset
+					
+Output/Result: $J_N$
+					
+How test will be performed: Manually on a computer running Windows 11.
+
+\end{enumerate}
 
 \subsection{Traceability Between Test Cases and Requirements}
 
-\wss{Provide a table that shows which test cases are supporting which
+\mycomment{Provide a table that shows which test cases are supporting which
   requirements.}
+
+%\afterpage{
+%\begin{landscape}
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+	& T1 & T2 & T3 & T4 & T5 & T6 & T7 & T8 & T9\\
+\hline
+FR1  &X&X&X&X&X& & & &  \\ \hline
+FR2  & & & & &X& & & &  \\ \hline
+FR3  & & & & &X& & & & \\ \hline
+FR4  & &X&X&X&X& & & &  \\ \hline
+NFR1 & & & & & &X& & &  \\ \hline
+NFR2 & & & & & & &X& &  \\ \hline
+NFR3 & & & & & & & &X&  \\ \hline
+NFR4 & & & & & & & & &X  \\ \hline
+\end{tabular}
+\caption{Which test cases are supporting which requirements}
+\label{Table:test_support}
+\end{table}
+%\end{landscape}
+%}
+
 
 \section{Unit Test Description}
 
-\wss{Reference your MIS (detailed design document) and explain your overall
+This section is intentionally left blank until the MIS is completed.
+
+\mycomment{
+\mycomment{Reference your MIS (detailed design document) and explain your overall
   philosophy for test case selection.}  
-\wss{This section should not be filled in until after the MIS (detailed design
+\mycomment{This section should not be filled in until after the MIS (detailed design
   document) has been completed.}
 
 \subsection{Unit Testing Scope}
 
-\wss{What modules are outside of the scope.  If there are modules that are
+\mycomment{What modules are outside of the scope.  If there are modules that are
   developed by someone else, then you would say here if you aren't planning on
   verifying them.  There may also be modules that are part of your software, but
   have a lower priority for verification than others.  If this is the case,
@@ -294,13 +487,13 @@ How test will be performed:
 
 \subsection{Tests for Functional Requirements}
 
-\wss{Most of the verification will be through automated unit testing.  If
+\mycomment{Most of the verification will be through automated unit testing.  If
   appropriate specific modules can be verified by a non-testing based
   technique.  That can also be documented in this section.}
 
 \subsubsection{Module 1}
 
-\wss{Include a blurb here to explain why the subsections below cover the module.
+\mycomment{Include a blurb here to explain why the subsections below cover the module.
   References to the MIS would be good.  You will want tests from a black box
   perspective and from a white box perspective.  Explain to the reader how the
   tests were selected.}
@@ -309,31 +502,31 @@ How test will be performed:
 
 \item{test-id1\\}
 
-Type: \wss{Functional, Dynamic, Manual, Automatic, Static etc. Most will
+Type: \mycomment{Functional, Dynamic, Manual, Automatic, Static etc. Most will
   be automatic}
 					
 Initial State: 
 					
 Input: 
 					
-Output: \wss{The expected result for the given inputs}
+Output: \mycomment{The expected result for the given inputs}
 
-Test Case Derivation: \wss{Justify the expected value given in the Output field}
+Test Case Derivation: \mycomment{Justify the expected value given in the Output field}
 
 How test will be performed: 
 					
 \item{test-id2\\}
 
-Type: \wss{Functional, Dynamic, Manual, Automatic, Static etc. Most will
+Type: \mycomment{Functional, Dynamic, Manual, Automatic, Static etc. Most will
   be automatic}
 					
 Initial State: 
 					
 Input: 
 					
-Output: \wss{The expected result for the given inputs}
+Output: \mycomment{The expected result for the given inputs}
 
-Test Case Derivation: \wss{Justify the expected value given in the Output field}
+Test Case Derivation: \mycomment{Justify the expected value given in the Output field}
 
 How test will be performed: 
 
@@ -347,11 +540,11 @@ How test will be performed:
 
 \subsection{Tests for Nonfunctional Requirements}
 
-\wss{If there is a module that needs to be independently assessed for
+\mycomment{If there is a module that needs to be independently assessed for
   performance, those test cases can go here.  In some projects, planning for
   nonfunctional tests of units will not be that relevant.}
 
-\wss{These tests may involve collecting performance data from previously
+\mycomment{These tests may involve collecting performance data from previously
   mentioned functional tests.}
 
 \subsubsection{Module ?}
@@ -360,7 +553,7 @@ How test will be performed:
 
 \item{test-id1\\}
 
-Type: \wss{Functional, Dynamic, Manual, Automatic, Static etc. Most will
+Type: \mycomment{Functional, Dynamic, Manual, Automatic, Static etc. Most will
   be automatic}
 					
 Initial State: 
@@ -390,12 +583,14 @@ How test will be performed:
 ...
 
 \subsection{Traceability Between Test Cases and Modules}
+}
+\mycomment{Provide evidence that all of the modules have been considered.}
 
-\wss{Provide evidence that all of the modules have been considered.}
-				
-\bibliographystyle{plainnat}
-
-\bibliography{../../refs/References}
+\newpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\bibliographystyle{IEEEtran}
+\bibliography{refs/theoryrefs}
 
 \newpage
 
@@ -408,10 +603,28 @@ This is where you can place additional information.
 The definition of the test cases will call for SYMBOLIC\_CONSTANTS.
 Their values are defined in this section for easy maintenance.
 
-\subsection{Usability Survey Questions?}
+\begin{table}[H]
+\caption{Table of SYMBOLIC\_CONSTANTS} \label{Tabel:constants}
+\renewcommand{\arraystretch}{1.2}
+\noindent \begin{longtable*}{l l} 
+  \toprule
+  \textbf{Var} & \textbf{Value} \\
+  \midrule 
+  $F_{\min}$ & $-(2 -2^{-23})2^{127}$\\
+  $F_{\max}$ & $(2-2^{-23})2^{127}$\\
+    $W_{\min}$ & 0\\
+  $W_{\max}$ &  $2^{8} - 1$\\
+  $J_{\max}$ & 1\\
+  $J_{\min}$ & 0\\
+  \bottomrule
+\end{longtable*}
+\end{table}
 
-\wss{This is a section that would be appropriate for some projects.}
+%\subsection{Usability Survey Questions?}
 
+\mycomment{This is a section that would be appropriate for some projects.}
+
+\mycomment{
 \newpage{}
 \section*{Appendix --- Reflection}
 
@@ -435,5 +648,5 @@ graduate attribute of Lifelong Learning.  Please answer the following questions:
   mastering the skill?  Of the identified approaches, which will each team
   member pursue, and why did they make this choice?
 \end{enumerate}
-
+}
 \end{document}
