@@ -357,7 +357,7 @@ format for the tests given below.}
 \subsubsection{Area of Testing 1: NFR1}
 
 Non Functional Requirement 1 states: The accuracy of the computed solutions should meet the level needed for data analysis.
-The absolute error should be less than 0.01.
+The absolute error should be less than ACCURACY\_ERR\_ABS.
 
 		
 %\paragraph{Title for Test}
@@ -372,7 +372,7 @@ Initial State: Pending input
 					
 Input/Condition: UCI Datasets listed in Table \ref{Table:benchmarks}.
 					
-Output/Result: Less than 0.01 difference in results from Table \ref{Table:benchmarks}.
+Output/Result: Less than ACCURACY\_ERR\_ABS difference in results from Table \ref{Table:benchmarks}.
 					
 How test will be performed: Manual
 
@@ -616,6 +616,7 @@ Their values are defined in this section for easy maintenance.
   $W_{\max}$ &  $2^{8} - 1$\\
   $J_{\max}$ & 1\\
   $J_{\min}$ & 0\\
+  ACCURACY\_ERR\_ABS & 0.01 \\
   \bottomrule
 \end{longtable*}
 \end{table}
