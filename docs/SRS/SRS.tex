@@ -177,7 +177,7 @@ The choice of symbols was made to be consistent with the statistics literature.
 \noindent \begin{longtable*}{l l p{12cm}} \toprule
 \textbf{Symbol} & \textbf{Unit} & \textbf{Description}\\
 \midrule 
-$I(...)$ & N/A & Indicator Function \\ %Ellipsis
+$I(...)$ & N/A & Indicator Function, returns 1 if its argument is true and 0 otherwise \\ %Ellipsis
 $J_N$ & N/A & Normalized Multiclass Cut Edge Weight Measurement \\
 \bottomrule
 \end{longtable*}
@@ -208,7 +208,7 @@ $J_N$ & N/A & Normalized Multiclass Cut Edge Weight Measurement \\
 
 \subsection{Mathematical Notation}
 
-This document uses notation used in \cite{zighed_statistical_2005}.
+This document uses notation used in \cite{zighed_statistical_2005} and \cite{lorena_how_2020}.
 
 \mycomment{This section is optional, but should be included for projects that make use of notation to convey mathematical information.  
 For instance, if typographic conventions (like bold face font) are used to distinguish matrices, this should be stated here.  
@@ -289,23 +289,23 @@ In some cases the easiest way to summarize the notation is to point to a text or
 \section{Introduction}
 
 Classification is a common machine learning problem and there are many techniques for solving classification problems. 
-Unfortunately, not all classification problems are easy and it can be difficult to explain why classifiers preform poorly on certain datasets. 
+Unfortunately, not all classification problems are easy and it can be difficult to explain why classifiers perform poorly on certain datasets. 
 Data complexity has been defined as a characteristic of the data that relates to the difficulty of the classification problem \cite{luengo_automatic_2015}. 
 To further refine this definition, we consider data complexity to be represented by aspects of the data that introduce difficulty for the classifiers. 
 
-One of these aspects is separability, an intrinsic characteristic that describes how the data points from different classes mix together \cite{guan_novel_2021}. 
+One of these aspects is separability, an intrinsic characteristic that describes how the observations from different classes mix together \cite{guan_novel_2021}. 
 A classic measurement for separability is Fraction of Points on Class Boundary.
-Based on the work of Friedman and Rafsky \cite{friedman_multivariate_1979} and documented by Basu and Ho\cite{ho_complexity_2002}, this measurement constructs a minimum spanning tree over the dataset then calculates the number of points with a connection to another class over all points.
+Based on the work of Friedman and Rafsky \cite{friedman_multivariate_1979} and documented by Basu and Ho \cite{ho_complexity_2002}, this measurement constructs a minimum spanning tree over the dataset then calculates the number of points with a connection to another class over all points.
 
-The Cut Edge Weight Statistic measurement \cite{zighed_statistical_2005} is a variation of the Fraction of Points on Class Boundary, proposed by Zighed et al. 
-The algorithm for the normalized measurement begins by constructing a Toussaint’s Relative Neighbourhood Graph \cite{toussaint_relative_1980} over the entire dataset then computing the number of edges which connect different classes (the "cut edges") over the total number of edges. 
+The Cut Edge Weight Statistic measurement is a variation of the Fraction of Points on Class Boundary, proposed by Zighed et al. \cite{zighed_statistical_2005} 
+The algorithm for the normalized measurement begins by constructing a Toussaint’s Relative Neighbourhood Graph \cite{toussaint_relative_1980} over the entire dataset then computing the number of edges which connect different classes (the "cut edges") over the total number of edges (shown in Figure \ref{fig:RNG}). 
 This measurement is a viable way of measuring separability because it has a high coefficient of determination ($R^2$) with the mean error rate of several classifiers.
 
 \begin{figure}[h!]
 \begin{center}
  \includegraphics[width=0.7\textwidth]{RNG_CEWS_Example.png}
 \caption{An visualization of the RNG for a binary classification problem represented by black and white points. (a) An example of a 2D RNG graph construction. (b) Identifying cut edges with dotted lines.}
-\label{Fig_RNG} 
+\label{fig:RNG} 
 \end{center}
 \end{figure}
 
@@ -334,7 +334,7 @@ The purpose of this document is to provide information about the design and func
 
 \subsection{Scope of Requirements} 
 
-The domain of this problem is restricted to generating the normalized multiclass CEWS Measurement \cite{zighed_statistical_2005}. Notable exclusions include the calculation of a p-value, variations of the calculation using different weighing parameters and different graph generation algorithms. The scope excludes asymptotic cost limitations and efficiency requirements. 
+The domain of this problem is restricted to generating the normalized multiclass CEWS Measurement \cite{zighed_statistical_2005}. Notable exclusions include the calculation of a $p$-value, variations of the calculation using different weighing parameters and different graph generation algorithms. The scope excludes asymptotic cost limitations and efficiency requirements. 
 
 \mycomment{Modelling the real world requires simplification.  The full complexity of
   the actual physics, chemistry, biology is too much for existing models, and
@@ -353,7 +353,9 @@ The domain of this problem is restricted to generating the normalized multiclass
 
 \subsection{Characteristics of Intended Reader} \label{sec:IntendedReader}
 
-The reader should have a good understanding of classification (at a graduate level or equivalent experience). The reader should have a base understanding of data analysis, machine learning and statistics such as from standard undergraduate courses.
+The reader should have a good understanding of classification (at a graduate level or equivalent experience). 
+The reader should have a base understanding of data analysis, machine learning and statistics such as from standard undergraduate courses.
+The reader should be familiar with basic mathematical number types and their common symbols.
 
 \mycomment{This section summarizes the skills and knowledge of the readers of the SRS.  
 It does NOT have the same purpose as the ``User Characteristics'' section (Section~\ref{sec:UserCharacteristics}).  
@@ -389,7 +391,7 @@ It identifies the interfaces between the system and its environment, describes t
   context for a family of related models.  The general description can stay the
   same, while specific details are changed between family members.}
 
-\subsection{System Context}
+\subsection{System Context} \label{sec:systemContext}
 
 The CEWS System will exist as a standalone product or as a module. The system context is illustrated in Figure \ref{Fig_SystemContext}. 
 
@@ -432,11 +434,11 @@ The CEWS System will exist as a standalone product or as a module. The system co
 \begin{samepage}
 \item User Responsibilities:
 \begin{itemize}
-\item Provide the data.
+\item Provide the input data matrices. (Section \ref{sec:dataConstraints})
 \item Correctly format the input data matrices as per Section \ref{sec:dataConstraints}.
-\item Resource management including supplying the system with enough resources to support the size of their dataset.
+\item Manage the computer's resources including supplying the system with enough resources to support the size of their dataset.
 \item Understand the problem.
-\item Preform any data pre-processing required for the relevant classification problem such as transformations, feature extraction, etc.
+\item Perform any data pre-processing required for the relevant classification problem such as transformations, feature extraction, etc.
 \item Understand the CEWS algorithm.
 \item Understand the limitations of numerical computation. 
 \end{itemize}
@@ -446,9 +448,9 @@ The CEWS System will exist as a standalone product or as a module. The system co
 \item \progname{} Responsibilities:
 \begin{itemize}
 \item Read input data.
-\item Detect data type mismatch or if input data violates any constraints.
-\item Preform the analysis.
-\item Preform basic error checking on the output.
+\item Detect data type mismatch or if input data violates any constraints. (Section \ref{sec:dataConstraints})
+\item Perform the analysis.
+\item Perform basic error checking on the output.
 \item Return the output value.
 \end{itemize}
 \end{samepage}
@@ -456,7 +458,7 @@ The CEWS System will exist as a standalone product or as a module. The system co
 
 \subsection{User Characteristics} \label{sec:UserCharacteristics}
 
-The end user of CEWS System should have a good understanding of classification and machine learning, preferably with an undergraduate degree in software or math.
+The end user of CEWS System should have a good understanding of classification and machine learning, preferably with an undergraduate degree in software or mathematics.
 
 \mycomment{This section summarizes the knowledge/skills expected of the user.
 Measuring usability, which is often a required non-function requirement, requires knowledge of a typical user.  
@@ -465,7 +467,7 @@ As in Section~\ref{sec:IntendedReader}, the user characteristics should be speci
 
 \subsection{System Constraints}
 
-At this time, there are no known constraints for this system..
+At this time, there are no known constraints for this system.
 
 \mycomment{System constraints differ from other type of requirements because they limit the developers' options in the system design and they identify how the eventual system must fit into the world.
 This is the only place in the SRS where design decisions can be specified. 
@@ -498,14 +500,14 @@ sections and their meaning, with the purpose of reducing ambiguity and making it
 easier to correctly understand the requirements:
 
 \begin{itemize}
-\item Data point/Example/Samples: An identifiable element in a data set which has features associated with it.
-\item Data set: A set of examples from a population.
-\item Feature : An individual measurable property of an example.
-\item Class Label : Represents the class an example belongs to.
-\item Classification: The problem of identifying which of a set of categories an example belongs to.
+\item Observation: An identifiable element in a data set which has features and a class label associated with it.
+\item Dataset: A set of observations from a population including information about those observations.
+\item Feature: An individual measurable property of an observation.
+\item Class label: Represents the class an observation belongs to.
+\item Classification: The problem of identifying which of a set of categories an observation belongs to.
 \item Data complexity: Aspects of the data that classifiers have difficultly with. \cite{luengo_automatic_2015}
-\item Separability: An intrinsic characteristic of a dataset and describes how the data points from different classes mix together. \cite{guan_novel_2021}
-\item Boolean variable : A variable that has one of two possible values.
+\item Separability: An intrinsic characteristic of a dataset and describes how the observations from different classes mix together. \cite{guan_novel_2021}
+\item Boolean variable: A variable that has one of two possible values.
 \end{itemize}
 
 \subsubsection{Physical System Description} \label{sec:phySystDescrip}
@@ -631,13 +633,13 @@ likely change [LC], in which the respective assumption is used.
 \begin{itemize}
 
 \item[A\refstepcounter{assumpnum}\theassumpnum \label{A:fp}:]
-All rational numbers can be represented in a base 2 computer system. Operations preformed on rational numbers in a computer system is exact. Any computation rounding error is negligible and does not need to be taken into account.
+All rational numbers can be represented in a base-2 computer system. Operations performed on rational numbers in a computer system is exact. Any computation rounding error is negligible and does not need to be taken into account.
 
 \item[A\refstepcounter{assumpnum}\theassumpnum \label{A:CWN}:]
-Class labels are represented as whole numbers. All examples from one class share the same class label.
+Class labels are represented as whole numbers. All observations from one class share the same class label.
 
 \item[A\refstepcounter{assumpnum}\theassumpnum \label{A:NOF}:]
-Each example has the same number of features. No features are null. 
+Each observation has the same number of features. No features are null. 
 
 \item[A\refstepcounter{assumpnum}\theassumpnum \label{A:weights}:]
 The user does not want to use weights for the edge calculation.
@@ -646,7 +648,7 @@ The user does not want to use weights for the edge calculation.
 The user wants to use a relative neighbourhood graph as the base graph.
 
 \item[A\refstepcounter{assumpnum}\theassumpnum \label{A:pvalue}:]
-The user doesn't want the statistic p-value.
+The user does not want the statistic $p$-value.
 
   \mycomment{Short description of each assumption.  Each assumption
     should have a meaningful label.  Use cross-references to identify the
@@ -755,8 +757,7 @@ None
 }
 \subsubsection{General Definitions}\label{sec:gendef}
 
-This section collects and equations that will be used in building the
-instance models.
+This section collects the equations that will be used in building the instance models.
 
 % RNG
 
@@ -777,7 +778,7 @@ Equation & $E_{RNG}(P, i, j) = [ d(p_i,p_j) \leq \max (d(p_i,c), d(p_j,c)) \fora
 & where $v_{ij} = I(E_{RNG}(P, i, j))$ \\ \hline
 Description &
 RNG is an undirected graph constructed by connecting an edge between two points when a third point does not exist that is closer to both.\\
-& $P$ is a set of $n$ points in real space with dimensions $m$.\\
+& $P$ is a set of $n$ points in real space with dimension(s) $m$.\\
 & $V$ is the connection matrix where $v_{ij} =  1$ if there is an edge and $v_{ij} =  0$ if not.\\
 & $d(a,b)$ is the Euclidean distance between points $a$ and $b$ given by \ddref{DD:ED}.\\
 \hline
@@ -878,7 +879,7 @@ This section transforms the problem defined in Section~\ref{sec:pd} into
 one which is expressed in mathematical terms. It uses concrete symbols defined 
 in Section~\ref{sec:datadef} to replace the abstract symbols in the models 
 identified in Sections~\ref{sec:theoretical} and~\ref{sec:gendef}.
-The goals \mycomment{reference your goals} are solved by \iref{IM:CEWS}, which is the implementation of the cut edge weight statistic measurement.
+The goal GS\ref{G:CEWS} is solved by \iref{IM:CEWS}, which is the implementation of the cut edge weight statistic measurement.
 
 \mycomment{reference your instance models}  
 \mycomment{other details, with cross-references where appropriate.}
@@ -922,8 +923,7 @@ The goals \mycomment{reference your goals} are solved by \iref{IM:CEWS}, which i
 
 \subsubsection{Input Data Constraints} \label{sec:dataConstraints}    
 
-Table~\ref{TblInputVar} shows the data constraints on the input output
-variables.  
+Table~\ref{TblInputVar} shows the data constraints on the input variables.  
 The column for physical constraints gives the physical or theoretical limitations on the range of values that can be taken by the variable. 
 The column for software constraints restricts the range of inputs to reasonable values. 
 The software constraints will be helpful in the design stage for picking suitable algorithms.  
@@ -932,11 +932,12 @@ The column of typical values is intended to provide a feel for a common scenario
 The uncertainty column provides an estimate of the confidence with which the physical quantities can be measured.  
 %This information would be part of the input if one were performing an uncertainty quantification exercise.
 
+The user provides a dataset in the format of matrices $D$ and $C$. 
 The matrices $D$ and $C$ must be iterable objects.
-$n$ is the number of examples. $m$ is the number of features. 
+$n$ is the number of observations. $m$ is the number of features. 
 The input data matrix, $D$, is of size $n \times m$ and  must contain rational numbers. $D$ is formatted as: \\
  \[
-  D_{n \times m} =
+  D =
   \left[ {\begin{array}{cccc}
     d_{11} & d_{12} & \cdots & d_{1m}\\
     d_{21} & d_{22} & \cdots & d_{2m}\\
@@ -945,10 +946,10 @@ The input data matrix, $D$, is of size $n \times m$ and  must contain rational n
   \end{array} } \right]
 \] \\
 \begin{minipage}{\textwidth}
-So row $i$, $d_i$, contains sample $i$.
+So row $i$, $d_i$, contains observation $i$.
 The input class matrix, $C$, is of size $n \times 1$ and  must contain natural numbers. $C$ is formatted as: \\
  \[
-  C_=
+  C =
   \left[ {\begin{array}{c}
     c_{1} \\
     c_{2} \\
@@ -957,10 +958,8 @@ The input class matrix, $C$, is of size $n \times 1$ and  must contain natural n
   \end{array} } \right]
 \] \\
 \end{minipage}
-Where $c_i$ is the label for sample $i$ of matrix $D$. 
-It is the user's responsibility to set $c_i$ to the class of $d_i$.
-
- 
+Where $c_i$ is the label for observation $i$ of matrix $D$. 
+It is the user's responsibility to set class label $c_i$ to the class of observation $d_i$. (Section \ref{sec:systemContext})
 The size of $n$ and $m$ are limited based on the system hardware but not by CEWS itself.
 It is the user's responsibility to insure that their system has the relevant requirements to support their dataset size.
 
@@ -1007,7 +1006,7 @@ It is the user's responsibility to insure that their system has the relevant req
 \subsubsection{Properties of a Correct Solution} \label{sec:correctSolution}
 
 \noindent
-A correct solution must exhibit the following behaviour
+A correct solution must exhibit the following behaviour: Table \ref{tabel:OutputVar}.
 
 \mycomment{These
   properties are in addition to the stated requirements.  There is no need to
@@ -1017,7 +1016,7 @@ A correct solution must exhibit the following behaviour
   in tabular form.  A sample table is shown in Table~\ref{TblOutputVar}}
 
 \begin{table}[H]
-\caption{Output Variables} \label{TblOutputVar}
+\caption{Output Variables} \label{tabel:OutputVar}
 \renewcommand{\arraystretch}{1.2}
 \noindent \begin{longtable*}{l l} 
   \toprule
@@ -1062,7 +1061,7 @@ qualities that the software is expected to exhibit.
 %\item[R\refstepcounter{reqnum}\thereqnum \label{R_OutputInputs}:] \mycomment{It isn't always required, but often echoing the inputs as part of the output is a good idea.}
 
 % Do calculation
-\item[R\refstepcounter{reqnum}\thereqnum \label{R:calculate}:] After reading the input data, CEWS System will preform the calculation in \iref{IM:CEWS}.
+\item[R\refstepcounter{reqnum}\thereqnum \label{R:calculate}:] After reading the input data, CEWS System will perform the calculation in \iref{IM:CEWS}.
 \mycomment{Calculation
     related requirements.}
 
