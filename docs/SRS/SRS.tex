@@ -295,9 +295,9 @@ To further refine this definition, we consider data complexity to be represented
 
 One of these aspects is separability, an intrinsic characteristic that describes how the observations from different classes mix together \cite{guan_novel_2021}. 
 A classic measurement for separability is Fraction of Points on Class Boundary.
-Based on the work of Friedman and Rafsky \cite{friedman_multivariate_1979} and documented by Basu and Ho \cite{ho_complexity_2002}, this measurement constructs a minimum spanning tree over the dataset then calculates the number of points with a connection to another class over all points.
+Based on the work of Friedman and Rafsky \cite{friedman_multivariate_1979} and documented by Basu and Ho  \cite{ho_complexity_2002}, this measurement constructs a minimum spanning tree over the dataset then calculates the number of points with a connection to another class over all points.
 
-The Cut Edge Weight Statistic measurement is a variation of the Fraction of Points on Class Boundary, proposed by Zighed et al. \cite{zighed_statistical_2005} 
+The Cut Edge Weight Statistic measurement is a variation of the Fraction of Points on Class Boundary, proposed by Zighed et al. \cite{zighed_statistical_2005}.
 The algorithm for the normalized measurement begins by constructing a Toussaint’s Relative Neighbourhood Graph \cite{toussaint_relative_1980} over the entire dataset then computing the number of edges which connect different classes (the "cut edges") over the total number of edges (shown in Figure \ref{fig:RNG}). 
 This measurement is a viable way of measuring separability because it has a high coefficient of determination ($R^2$) with the mean error rate of several classifiers.
 
@@ -505,8 +505,8 @@ easier to correctly understand the requirements:
 \item Feature: An individual measurable property of an observation.
 \item Class label: Represents the class an observation belongs to.
 \item Classification: The problem of identifying which of a set of categories an observation belongs to.
-\item Data complexity: Aspects of the data that classifiers have difficultly with. \cite{luengo_automatic_2015}
-\item Separability: An intrinsic characteristic of a dataset and describes how the observations from different classes mix together. \cite{guan_novel_2021}
+\item Data complexity: Aspects of the data that classifiers have difficultly with \cite{luengo_automatic_2015}.
+\item Separability: An intrinsic characteristic of a dataset and describes how the observations from different classes mix together \cite{guan_novel_2021}.
 \item Boolean variable: A variable that has one of two possible values.
 \end{itemize}
 
