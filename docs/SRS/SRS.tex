@@ -506,7 +506,7 @@ easier to correctly understand the requirements:
 \item Class label: Represents the class an observation belongs to.
 \item Classification: The problem of identifying which of a set of categories an observation belongs to.
 \item Data complexity: Aspects of the data that classifiers have difficultly with \cite{luengo_automatic_2015}.
-\item Separability: An intrinsic characteristic of a dataset and describes how the observations from different classes mix together \cite{guan_novel_2021}.
+\item Separability: A type of data complexity that measures how the observations from different classes mix together \cite{guan_novel_2021}.
 \item Boolean variable: A variable that has one of two possible values.
 \end{itemize}
 
@@ -773,12 +773,12 @@ Number& GD\refstepcounter{defnum}\thedefnum \label{GD:RNG}\\
 Label &\bf Toussaint’s Relative Neighbourhood Graph \\ \hline
 SI Units& N/A \\ \hline
 Equation & $E_{RNG}(P, i, j) = [ d(p_i,p_j) \leq \max (d(p_i,c), d(p_j,c)) \forall c $ \\
-& where $c \in P, c \neq p_i, c \neq p_j ]$\\
+& where $c \in P, c \neq p_i, c \neq p_j  ]$\\
 & Connection matrix: $V = (v_{ij}), i = 1,2, ... ,n; j = 1,2, ... , n;$ \\
 & where $v_{ij} = I(E_{RNG}(P, i, j))$ \\ \hline
 Description &
 RNG is an undirected graph constructed by connecting an edge between two points when a third point does not exist that is closer to both.\\
-& $P$ is a set of $n$ points in real space with dimension(s) $m$.\\
+& $P$ is a set of $n$ points in real space with dimension(s) $m$ with elements $p_{i}$: $i=1,...,n$.\\
 & $V$ is the connection matrix where $v_{ij} =  1$ if there is an edge and $v_{ij} =  0$ if not.\\
 & $d(a,b)$ is the Euclidean distance between points $a$ and $b$ given by \ddref{DD:ED}.\\
 \hline
