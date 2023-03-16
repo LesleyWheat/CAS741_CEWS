@@ -53,8 +53,7 @@ urlcolor=cyan          % color of external links
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-Date 1 & 1.0 & Notes\\
-Date 2 & 1.1 & Notes\\
+2022-03-10 & 1.0 & Creation \\
 \bottomrule
 \end{tabularx}
 
@@ -62,9 +61,9 @@ Date 2 & 1.1 & Notes\\
 
 \section{Symbols, Abbreviations and Acronyms}
 
-See SRS Documentation at \wss{give url}
+See SRS Documentation at \url{https://github.com/LesleyWheat/CAS741_CEWS/blob/main/docs/SRS/SRS.pdf} .
 
-\wss{Also add any additional symbols, abbreviations or acronyms}
+\mycomment{Also add any additional symbols, abbreviations or acronyms}
 
 \newpage
 
@@ -77,15 +76,15 @@ See SRS Documentation at \wss{give url}
 \section{Introduction}
 
 The following document details the Module Interface Specifications for
-\wss{Fill in your project name and description}
+\mycomment{Fill in your project name and description}
 
 Complementary documents include the System Requirement Specifications
 and Module Guide.  The full documentation and implementation can be
-found at \url{...}.  \wss{provide the url for your repo}
+found at \url{https://github.com/LesleyWheat/CAS741_CEWS/blob/main/docs/SRS/SRS.pdf}.
 
 \section{Notation}
 
-\wss{You should describe your notation.  You can use what is below as
+\mycomment{You should describe your notation.  You can use what is below as
   a starting point.}
 
 The structure of the MIS for modules comes from \citet{HoffmanAndStrooper1995},
@@ -120,6 +119,7 @@ different types. In addition, \progname \ uses functions, which
 are defined by the data types of their inputs and outputs. Local functions are
 described by giving their type signature followed by their specification.
 
+\newpage
 \section{Module Decomposition}
 
 The following table is taken directly from the Module Guide document for this project.
@@ -131,21 +131,19 @@ The following table is taken directly from the Module Guide document for this pr
 \textbf{Level 1} & \textbf{Level 2}\\
 \midrule
 
-{Hardware-Hiding} & ~ \\
+{Hardware-Hiding Module} & ~ \\
 \midrule
 
-\multirow{7}{0.3\textwidth}{Behaviour-Hiding} & Input Parameters\\
-& Output Format\\
-& Output Verification\\
-& Temperature ODEs\\
-& Energy Equations\\ 
+\multirow{3}{0.3\textwidth}{Behaviour-Hiding Module} 
 & Control Module\\
-& Specification Parameters Module\\
+& Input Module\\
+& Output Module\\
+
 \midrule
 
-\multirow{3}{0.3\textwidth}{Software Decision} & {Sequence Data Structure}\\
-& ODE Solver\\
-& Plotting\\
+\multirow{2}{0.3\textwidth}{Software Decision Module} 
+& Calculation Module\\
+& Graph Module\\
 \bottomrule
 
 \end{tabular}
@@ -153,19 +151,20 @@ The following table is taken directly from the Module Guide document for this pr
 \label{TblMH}
 \end{table}
 
+\mycomment{
 \newpage
 ~\newpage
 
-\section{MIS of \wss{Module Name}} \label{Module} \wss{Use labels for
+\section{MIS of \mycomment{Module Name}} \label{Module} \mycomment{Use labels for
   cross-referencing}
 
-\wss{You can reference SRS labels, such as R\ref{R_Inputs}.}
+\mycomment{You can reference SRS labels, such as R\ref{R_Inputs}.}
 
-\wss{It is also possible to use \LaTeX for hypperlinks to external documents.}
+\mycomment{It is also possible to use \LaTeX for hypperlinks to external documents.}
 
 \subsection{Module}
 
-\wss{Short name for the module}
+\mycomment{Short name for the module}
 
 \subsection{Uses}
 
@@ -181,7 +180,7 @@ The following table is taken directly from the Module Guide document for this pr
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-\wss{accessProg} & - & - & - \\
+\mycomment{accessProg} & - & - & - \\
 \hline
 \end{tabular}
 \end{center}
@@ -190,42 +189,284 @@ The following table is taken directly from the Module Guide document for this pr
 
 \subsubsection{State Variables}
 
-\wss{Not all modules will have state variables.  State variables give the module
+\mycomment{Not all modules will have state variables.  State variables give the module
   a memory.}
 
 \subsubsection{Environment Variables}
 
-\wss{This section is not necessary for all modules.  Its purpose is to capture
+\mycomment{This section is not necessary for all modules.  Its purpose is to capture
   when the module has external interaction with the environment, such as for a
   device driver, screen interface, keyboard, file, etc.}
 
 \subsubsection{Assumptions}
 
-\wss{Try to minimize assumptions and anticipate programmer errors via
+\mycomment{Try to minimize assumptions and anticipate programmer errors via
   exceptions, but for practical purposes assumptions are sometimes appropriate.}
 
 \subsubsection{Access Routine Semantics}
 
-\noindent \wss{accessProg}():
+\noindent \mycomment{accessProg}():
 \begin{itemize}
-\item transition: \wss{if appropriate} 
-\item output: \wss{if appropriate} 
-\item exception: \wss{if appropriate} 
+\item transition: \mycomment{if appropriate} 
+\item output: \mycomment{if appropriate} 
+\item exception: \mycomment{if appropriate} 
 \end{itemize}
 
-\wss{A module without environment variables or state variables is unlikely to
+\mycomment{A module without environment variables or state variables is unlikely to
   have a state transition.  In this case a state transition can only occur if
   the module is changing the state of another module.}
 
-\wss{Modules rarely have both a transition and an output.  In most cases you
+\mycomment{Modules rarely have both a transition and an output.  In most cases you
   will have one or the other.}
 
 \subsubsection{Local Functions}
 
-\wss{As appropriate} \wss{These functions are for the purpose of specification.
+\mycomment{As appropriate} \mycomment{These functions are for the purpose of specification.
   They are not necessarily something that is going to be implemented
   explicitly.  Even if they are implemented, they are not exported; they only
   have local scope.}
+}
+
+% MM
+\newpage
+  \section{MIS of Control Module} \label{M_CO}
+
+\subsection{Control Module}
+
+\subsection{Uses}
+
+Input Module, Calculation Module, Output Module
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+None.
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
+\hline
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\hline
+Main & data, labels & $J_N$ & - \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+None.
+
+\subsubsection{Environment Variables}
+None.
+
+\subsubsection{Assumptions}
+
+\subsubsection{Access Routine Semantics}
+
+\noindent \mycomment{accessProg}():
+\begin{itemize}
+\item transition: \mycomment{if appropriate} 
+\item output: \mycomment{if appropriate} 
+\item exception: \mycomment{if appropriate} 
+\end{itemize}
+
+
+\subsubsection{Local Functions}
+None.
+
+% MM_
+\newpage
+  \section{MIS of Input Module} \label{M_I}
+
+\subsection{Input Module}
+
+\subsection{Uses}
+None.
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+None.
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
+\hline
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\hline
+processInput & data, labels & - & Incorrect type, data size mismatch \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+None.
+
+\subsubsection{Environment Variables}
+None.
+
+\subsubsection{Assumptions}
+
+\subsubsection{Access Routine Semantics}
+
+\noindent \mycomment{accessProg}():
+\begin{itemize}
+\item transition: \mycomment{if appropriate} 
+\item output: \mycomment{if appropriate} 
+\item exception: \mycomment{if appropriate} 
+\end{itemize}
+
+
+\subsubsection{Local Functions}
+
+
+% MM
+\newpage
+  \section{MIS of Output Module} \label{M_O}
+
+\subsection{Output Module}
+
+\subsection{Uses}
+None.
+
+\subsection{Syntax}
+\subsubsection{Exported Constants}
+None.
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
+\hline
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\hline
+checkOutput & $J_N$ & - & resultOutOfBounds \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Semantics}
+\subsubsection{State Variables}
+None.
+
+\subsubsection{Environment Variables}
+None.
+
+\subsubsection{Assumptions}
+
+\subsubsection{Access Routine Semantics}
+
+\noindent \mycomment{accessProg}():
+\begin{itemize}
+\item transition: \mycomment{if appropriate} 
+\item output: \mycomment{if appropriate} 
+\item exception: \mycomment{if appropriate} 
+\end{itemize}
+
+
+\subsubsection{Local Functions}
+None.
+
+% MM
+\newpage
+\section{MIS of Calculation Module} \label{M_CA}
+
+\subsection{Calculation Module}
+
+\subsection{Uses}
+Graph Module
+
+\subsection{Syntax}
+\subsubsection{Exported Constants}
+None.
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
+\hline
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\hline
+calcCEWS & data, labels & $J_N$ & - \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Semantics}
+\subsubsection{State Variables}
+None.
+
+\subsubsection{Environment Variables}
+None.
+
+\subsubsection{Assumptions}
+
+
+\subsubsection{Access Routine Semantics}
+
+\noindent \mycomment{accessProg}():
+\begin{itemize}
+\item transition: \mycomment{if appropriate} 
+\item output: \mycomment{if appropriate} 
+\item exception: \mycomment{if appropriate} 
+\end{itemize}
+
+
+\subsubsection{Local Functions}
+None.
+
+% MM
+\newpage
+\section{MIS of Graph Module} \label{M_G}
+
+\subsection{Graph Module}
+
+\subsection{Uses}
+None.
+
+\subsection{Syntax}
+\subsubsection{Exported Constants}
+None.
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
+\hline
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\hline
+makeGraph & data & graphObject & - \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Semantics}
+\subsubsection{State Variables}
+None.
+
+\subsubsection{Environment Variables}
+None.
+
+\subsubsection{Assumptions}
+
+\subsubsection{Access Routine Semantics}
+
+\noindent \mycomment{accessProg}():
+\begin{itemize}
+\item transition: \mycomment{if appropriate} 
+\item output: \mycomment{if appropriate} 
+\item exception: \mycomment{if appropriate} 
+\end{itemize}
+
+
+\subsubsection{Local Functions}
+None.
 
 \newpage
 
@@ -236,6 +477,6 @@ The following table is taken directly from the Module Guide document for this pr
 
 \section{Appendix} \label{Appendix}
 
-\wss{Extra information if required}
+\mycomment{Extra information if required}
 
 \end{document}

@@ -46,8 +46,7 @@
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-Date 1 & 1.0 & Notes\\
-Date 2 & 1.1 & Notes\\
+2023-03-10 & 1.0 & Creation \\
 \bottomrule
 \end{tabularx}
 
@@ -74,7 +73,7 @@ This section records information for easy reference.
   SRS & Software Requirements Specification\\
   \progname & Explanation of program name\\
   UC & Unlikely Change \\
-  \wss{etc.} & \wss{...}\\
+  \mycomment{etc.} & \mycomment{...}\\
   \bottomrule
 \end{tabular}\\
 
@@ -157,11 +156,14 @@ adapted here is called design for
 change.
 
 \begin{description}
-\item[\refstepcounter{acnum} \actheacnum \label{acHardware}:] The specific
+\item[\refstepcounter{acnum} \actheacnum \label{AC_hardware}:] The specific
   hardware on which the software is running.
-\item[\refstepcounter{acnum} \actheacnum \label{acInput}:] The format of the
-  initial input data.
-\item ...
+\item[\refstepcounter{acnum} \actheacnum \label{AC_OS}:] The system OS.
+\item[\refstepcounter{acnum} \actheacnum \label{AC_graph}:] The type of graph used for the algorithm.
+\item[\refstepcounter{acnum} \actheacnum \label{ac_weight}:] The type of weights used for the algorithm.
+\item[\refstepcounter{acnum} \actheacnum \label{AC_GPU}:] Using GPU instead of CPU for computation.
+\item[\refstepcounter{acnum} \actheacnum \label{ac_output}:] The number of output values.
+\item[\refstepcounter{acnum} \actheacnum \label{ac_input}:] The data type / location of the initial input data.
 \end{description}
 
 \subsection{Unlikely Changes} \label{SecUchange}
@@ -174,10 +176,12 @@ will potentially need to be modified. Hence, it is not intended that these
 decisions will be changed.
 
 \begin{description}
-\item[\refstepcounter{ucnum} \uctheucnum \label{ucIO}:] Input/Output devices
-  (Input: File and/or Keyboard, Output: File, Memory, and/or Screen).
-\item ...
+\item[\refstepcounter{ucnum} \uctheucnum \label{ucIO}:] The format of the
+  initial input data.
+  \item[\refstepcounter{ucnum} \uctheucnum \label{ucIO}:] Multi-threaded instead of single threaded.
 \end{description}
+
+\newpage
 
 \section{Module Hierarchy} \label{SecMH}
 
@@ -187,8 +191,12 @@ below, which are leaves in the hierarchy tree, are the modules that will
 actually be implemented.
 
 \begin{description}
-\item [\refstepcounter{mnum} \mthemnum \label{mHH}:] Hardware-Hiding Module
-\item ...
+\item [\refstepcounter{mnum} \mthemnum \label{M_HH}:] Hardware-Hiding Module
+\item [\refstepcounter{mnum} \mthemnum \label{M_CO}:] Control Module
+\item [\refstepcounter{mnum} \mthemnum \label{M_I}:] Input Module
+\item [\refstepcounter{mnum} \mthemnum \label{M_O}:] Output Module
+\item [\refstepcounter{mnum} \mthemnum \label{M_CA}:] Calculation Module
+\item [\refstepcounter{mnum} \mthemnum \label{M_G}:] Graph Module
 \end{description}
 
 
@@ -202,19 +210,16 @@ actually be implemented.
 {Hardware-Hiding Module} & ~ \\
 \midrule
 
-\multirow{7}{0.3\textwidth}{Behaviour-Hiding Module} & ?\\
-& ?\\
-& ?\\
-& ?\\
-& ?\\
-& ?\\
-& ?\\ 
-& ?\\
+\multirow{3}{0.3\textwidth}{Behaviour-Hiding Module} 
+& Control Module\\
+& Input Module\\
+& Output Module\\
+
 \midrule
 
-\multirow{3}{0.3\textwidth}{Software Decision Module} & {?}\\
-& ?\\
-& ?\\
+\multirow{2}{0.3\textwidth}{Software Decision Module} 
+& Calculation Module\\
+& Graph Module\\
 \bottomrule
 
 \end{tabular}
@@ -227,6 +232,8 @@ actually be implemented.
 The design of the system is intended to satisfy the requirements developed in
 the SRS. In this stage, the system is decomposed into modules. The connection
 between requirements and modules is listed in Table~\ref{TblRT}.
+
+\newpage
 
 \section{Module Decomposition} \label{SecMD}
 
@@ -244,7 +251,7 @@ Only the leaf modules in the hierarchy have to be implemented. If a dash
 (\emph{--}) is shown, this means that the module is not a leaf and will not have
 to be implemented.
 
-\subsection{Hardware Hiding Modules (\mref{mHH})}
+\subsection{Hardware Hiding Modules (\mref{M_HH})}
 
 \begin{description}
 \item[Secrets:]The data structure and algorithm used to implement the virtual
@@ -267,18 +274,34 @@ to be implemented.
 \item[Implemented By:] --
 \end{description}
 
-\subsubsection{Input Format Module (\mref{mInput})}
+\subsubsection{Control Module (\mref{M_CO})}
 
 \begin{description}
-\item[Secrets:]The format and structure of the input data.
-\item[Services:]Converts the input data into the data structure used by the
-  input parameters module.
-\item[Implemented By:] [Your Program Name Here]
-\item[Type of Module:] [Record, Library, Abstract Object, or Abstract Data Type]
-  [Information to include for leaf modules in the decomposition by secrets tree.]
+\item[Secrets:] The details of the program's procedure.
+\item[Services:] Provides the main program.
+\item[Implemented By:] CEWS System
+\item[Type of Module:] Library
 \end{description}
 
-\subsubsection{Etc.}
+\subsubsection{Input Module (\mref{M_I})}
+
+\begin{description}
+\item[Secrets:] The format and structure of the input data.
+\item[Services:] Validate and transform input data.
+\item[Implemented By:] CEWS System
+\item[Type of Module:] Abstract Object
+\end{description}
+
+\subsubsection{Output Module (\mref{M_O})}
+
+\begin{description}
+\item[Secrets:] Format of the output data and validation tests.
+\item[Services:] Verifies the output values.
+\item[Implemented By:] CEWS System
+\item[Type of Module:] Abstract Object
+\end{description}
+
+
 
 
 \subsection{Software Decision Module}
@@ -294,7 +317,25 @@ to be implemented.
 \item[Implemented By:] --
 \end{description}
 
-\subsubsection{Etc.}
+\subsubsection{Calculation Module (\mref{M_CA})}
+
+\begin{description}
+\item[Secrets:] The CEWS algorithm.
+\item[Services:] Calculates the CEWS.
+\item[Implemented By:] CEWS System
+\item[Type of Module:] Abstract Object
+\end{description}
+
+\subsubsection{Graph Module (\mref{M_G})}
+
+\begin{description}
+\item[Secrets:]The algorithm used to construct the graph.
+\item[Services:] Constructs graphs and provides graph data.
+\item[Implemented By:] CEWS System
+\item[Type of Module:] Abstract Object
+\end{description}
+
+\newpage
 
 \section{Traceability Matrix} \label{SecTM}
 
@@ -309,17 +350,10 @@ requirements and between the modules and the anticipated changes.
 \toprule
 \textbf{Req.} & \textbf{Modules}\\
 \midrule
-R1 & \mref{mHH}, \mref{mInput}, \mref{mParams}, \mref{mControl}\\
-R2 & \mref{mInput}, \mref{mParams}\\
-R3 & \mref{mVerify}\\
-R4 & \mref{mOutput}, \mref{mControl}\\
-R5 & \mref{mOutput}, \mref{mODEs}, \mref{mControl}, \mref{mSeqDS}, \mref{mSolver}, \mref{mPlot}\\
-R6 & \mref{mOutput}, \mref{mODEs}, \mref{mControl}, \mref{mSeqDS}, \mref{mSolver}, \mref{mPlot}\\
-R7 & \mref{mOutput}, \mref{mEnergy}, \mref{mControl}, \mref{mSeqDS}, \mref{mPlot}\\
-R8 & \mref{mOutput}, \mref{mEnergy}, \mref{mControl}, \mref{mSeqDS}, \mref{mPlot}\\
-R9 & \mref{mVerifyOut}\\
-R10 & \mref{mOutput}, \mref{mODEs}, \mref{mControl}\\
-R11 & \mref{mOutput}, \mref{mODEs}, \mref{mEnergy}, \mref{mControl}\\
+R1 & \mref{M_HH}, \mref{M_I}\\
+R2 & \mref{M_CO}, \mref{M_CA}, \mref{M_G}\\
+R3 & \mref{M_O}\\
+R4 & \mref{M_O}\\
 \bottomrule
 \end{tabular}
 \caption{Trace Between Requirements and Modules}
@@ -332,23 +366,20 @@ R11 & \mref{mOutput}, \mref{mODEs}, \mref{mEnergy}, \mref{mControl}\\
 \toprule
 \textbf{AC} & \textbf{Modules}\\
 \midrule
-\acref{acHardware} & \mref{mHH}\\
-\acref{acInput} & \mref{mInput}\\
-\acref{acParams} & \mref{mParams}\\
-\acref{acVerify} & \mref{mVerify}\\
-\acref{acOutput} & \mref{mOutput}\\
-\acref{acVerifyOut} & \mref{mVerifyOut}\\
-\acref{acODEs} & \mref{mODEs}\\
-\acref{acEnergy} & \mref{mEnergy}\\
-\acref{acControl} & \mref{mControl}\\
-\acref{acSeqDS} & \mref{mSeqDS}\\
-\acref{acSolver} & \mref{mSolver}\\
-\acref{acPlot} & \mref{mPlot}\\
+\acref{AC_hardware} & \mref{M_HH}\\
+\acref{AC_OS} & \mref{M_HH}\\
+\acref{AC_graph} & \mref{M_G}, \mref{M_I}\\
+\acref{ac_weight} & \mref{M_G}, \mref{M_CA}\\
+\acref{AC_GPU} & \mref{M_HH}, \mref{M_G}\\
+\acref{ac_output} & \mref{M_CA}, \mref{M_O}\\
+\acref{ac_input} & \mref{M_I}\\
 \bottomrule
 \end{tabular}
 \caption{Trace Between Anticipated Changes and Modules}
 \label{TblACT}
 \end{table}
+
+\newpage
 
 \section{Use Hierarchy Between Modules} \label{SecUse}
 
@@ -365,11 +396,12 @@ because they use modules from the lower levels.
 
 \begin{figure}[H]
 \centering
-%\includegraphics[width=0.7\textwidth]{UsesHierarchy.png}
+\includegraphics[width=0.7\textwidth]{MM_hierarchy.png}
 \caption{Use hierarchy among modules}
 \label{FigUH}
 \end{figure}
 
+\newpage
 %\section*{References}
 
 \bibliographystyle {plainnat}
