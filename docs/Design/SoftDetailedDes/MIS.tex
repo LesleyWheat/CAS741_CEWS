@@ -16,6 +16,8 @@
 \usepackage{siunitx}
 \usepackage{booktabs}
 \usepackage{multirow}
+\usepackage{makecell}
+
 \usepackage[section]{placeins}
 \usepackage{caption}
 \usepackage{fullpage}
@@ -53,7 +55,8 @@ urlcolor=cyan          % color of external links
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-2022-03-10 & 1.0 & Creation \\
+2022-03-10 & 0.0 & Creation \\
+2022-03-17 & 1.0 & Version 1.0 \\
 \bottomrule
 \end{tabularx}
 
@@ -75,9 +78,8 @@ See SRS Documentation at \url{https://github.com/LesleyWheat/CAS741_CEWS/blob/ma
 
 \section{Introduction}
 
-The following document details the Module Interface Specifications for
-\mycomment{Fill in your project name and description}
-
+The following document details the Module Interface Specifications for \progname{}.
+This program implements the Cut Edge Weight Statistic measurement, proposed by Zighed et al. \cite{zighed_statistical_2005}. 
 Complementary documents include the System Requirement Specifications
 and Module Guide.  The full documentation and implementation can be
 found at \url{https://github.com/LesleyWheat/CAS741_CEWS/blob/main/docs/SRS/SRS.pdf}.
@@ -87,12 +89,14 @@ found at \url{https://github.com/LesleyWheat/CAS741_CEWS/blob/main/docs/SRS/SRS.
 \mycomment{You should describe your notation.  You can use what is below as
   a starting point.}
 
-The structure of the MIS for modules comes from \citet{HoffmanAndStrooper1995},
+The structure of the MIS for modules comes from \cite{HoffmanAndStrooper1995},
 with the addition that template modules have been adapted from
-\cite{GhezziEtAl2003}.  The mathematical notation comes from Chapter 3 of
-\citet{HoffmanAndStrooper1995}.  For instance, the symbol := is used for a
+\cite{GhezziEtAl2003}.  
+\mycomment{The mathematical notation comes from Chapter 3 of
+\citet{HoffmanAndStrooper1995}.  
+For instance, the symbol := is used for a
 multiple assignment statement and conditional rules follow the form $(c_1
-\Rightarrow r_1 | c_2 \Rightarrow r_2 | ... | c_n \Rightarrow r_n )$.
+\Rightarrow r_1 | c_2 \Rightarrow r_2 | ... | c_n \Rightarrow r_n )$.}
 
 The following table summarizes the primitive data types used by \progname. 
 
@@ -103,10 +107,11 @@ The following table summarizes the primitive data types used by \progname.
 \toprule 
 \textbf{Data Type} & \textbf{Notation} & \textbf{Description}\\ 
 \midrule
-character & char & a single symbol or digit\\
-integer & $\mathbb{Z}$ & a number without a fractional component in (-$\infty$, $\infty$) \\
+\mycomment{character & char & a single symbol or digit\\}
+\mycomment{integer & $\mathbb{Z}$ & a number without a fractional component in (-$\infty$, $\infty$) \\}
 natural number & $\mathbb{N}$ & a number without a fractional component in [1, $\infty$) \\
 real & $\mathbb{R}$ & any number in (-$\infty$, $\infty$)\\
+matrix & $\mathbb{M}_{n x m}$ & a matrix of real numbers of size $n$ and $m$ \\
 \bottomrule
 \end{tabular} 
 \end{center}
@@ -134,16 +139,16 @@ The following table is taken directly from the Module Guide document for this pr
 {Hardware-Hiding Module} & ~ \\
 \midrule
 
-\multirow{3}{0.3\textwidth}{Behaviour-Hiding Module} 
+\multirow{5}{0.3\textwidth}{Behaviour-Hiding Module} 
 & Control Module\\
 & Input Module\\
 & Output Module\\
-
-\midrule
-
-\multirow{2}{0.3\textwidth}{Software Decision Module} 
 & Calculation Module\\
 & Graph Module\\
+\midrule
+
+\multirow{1}{0.3\textwidth}{Software Decision Module} 
+& \\
 \bottomrule
 
 \end{tabular}
@@ -231,11 +236,12 @@ The following table is taken directly from the Module Guide document for this pr
 \newpage
   \section{MIS of Control Module} \label{M_CO}
 
-\subsection{Control Module}
+\subsection{Module}
+control
 
 \subsection{Uses}
 
-Input Module, Calculation Module, Output Module
+Input Module \ref{M_I}, Calculation Module \ref{M_CA}, Output Module \ref{M_O}
 
 \subsection{Syntax}
 
@@ -245,11 +251,11 @@ None.
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
+\begin{tabular}{p{3cm} p{4cm} p{4cm} p{2cm}}
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-Main & data, labels & $J_N$ & - \\
+cutEdgeWeight & \makecell[1]{inData: $\mathbb{M}_{n x m}$, \\ inLabels: $\mathbb{M}_{n x 1}$} & $J_N$: $\mathbb{R}$  & - \\
 \hline
 \end{tabular}
 \end{center}
@@ -263,16 +269,32 @@ None.
 None.
 
 \subsubsection{Assumptions}
+\begin{itemize}
+\item The inputs are valid.
+\item The input data has been formatted correctly.
+\end{itemize}
 
 \subsubsection{Access Routine Semantics}
 
-\noindent \mycomment{accessProg}():
+\noindent cutEdgeWeight():
 \begin{itemize}
-\item transition: \mycomment{if appropriate} 
-\item output: \mycomment{if appropriate} 
-\item exception: \mycomment{if appropriate} 
+\mycomment{
+\item transition: Controls the information flow.
+\begin{itemize}
+\item Pass input to Input Module
+\item Pass information to Calculation Module
+\item Pass result to Output Module
+\end{itemize}}
+\item output: $J_N$ computed by calculation module \ref{M_CA}.
+\mycomment{\item exception: None}
 \end{itemize}
 
+Controls the information flow.
+\begin{itemize}
+\item Pass input to Input Module \ref{M_I}
+\item Pass result to Calculation Module \ref{M_CA}, receive $J_N$
+\item Pass $J_N$ to Output Module \ref{M_O} for verification
+\end{itemize}
 
 \subsubsection{Local Functions}
 None.
@@ -281,7 +303,8 @@ None.
 \newpage
   \section{MIS of Input Module} \label{M_I}
 
-\subsection{Input Module}
+\subsection{Module}
+input
 
 \subsection{Uses}
 None.
@@ -294,11 +317,11 @@ None.
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
+\begin{tabular}{p{3cm} p{3cm} p{4cm} p{2cm}}
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-processInput & data, labels & - & Incorrect type, data size mismatch \\
+processInput & \makecell[1]{inData: $\mathbb{M}_{n x m}$, \\ inLabels: $\mathbb{M}_{n x 1}$} & \makecell[1]{data: $\mathbb{M}_{n x m}$, \\ labels: $\mathbb{M}_{n x 1}$} & \makecell[1]{typeError \\ formatError} \\
 \hline
 \end{tabular}
 \end{center}
@@ -312,25 +335,48 @@ None.
 None.
 
 \subsubsection{Assumptions}
+\begin{itemize}
+\item The input data has been formatted correctly (for example, that inData[i] is the data point associated with inLabels[i]).
+\end{itemize}
 
 \subsubsection{Access Routine Semantics}
 
-\noindent \mycomment{accessProg}():
+\noindent processInput():
 \begin{itemize}
-\item transition: \mycomment{if appropriate} 
-\item output: \mycomment{if appropriate} 
-\item exception: \mycomment{if appropriate} 
+\item transition: Verify and transform input if applicable
+\begin{itemize}
+\item Check if input is a correct data type
+\item Check input meets constraints
+\item Convert information to internal data programming object
+\end{itemize}
+\item output: 
+\begin{itemize}
+\item data: the inputted data converted to the correct internal data storage type for use by the Calculation Module \ref{M_CA}
+\item labels: the inputted labels converted to the correct internal data storage type for use by the Calculation Module \ref{M_CA}
+\end{itemize}
+\item exceptions:
+    \begin{itemize}
+    \item typeError: inData or inLabels are not accepted data objects (for example, a list of strings).
+    \item formatError:
+        \begin{itemize}
+        \item inData and inLabels have different values of $n$
+        \item Different rows of inData have a different $m$ value
+        \item Any index inData or inLabels is empty
+        \end{itemize}
+    
+\end{itemize}
 \end{itemize}
 
 
 \subsubsection{Local Functions}
-
+None.
 
 % MM
 \newpage
   \section{MIS of Output Module} \label{M_O}
 
-\subsection{Output Module}
+\subsection{Module}
+output
 
 \subsection{Uses}
 None.
@@ -342,11 +388,11 @@ None.
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
+\begin{tabular}{p{3cm} p{3cm} p{2cm} p{4cm}}
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-checkOutput & $J_N$ & - & resultOutOfBounds \\
+verifyOutput & $J_N$: $\mathbb{R}$ & - & resultOutOfBounds \\
 \hline
 \end{tabular}
 \end{center}
@@ -359,14 +405,20 @@ None.
 None.
 
 \subsubsection{Assumptions}
+\begin{itemize}
+\item $J_N$ comes from the Calculation Module \ref{M_CA}.
+\end{itemize}
 
 \subsubsection{Access Routine Semantics}
 
-\noindent \mycomment{accessProg}():
+\noindent verifyOutput():
 \begin{itemize}
-\item transition: \mycomment{if appropriate} 
-\item output: \mycomment{if appropriate} 
-\item exception: \mycomment{if appropriate} 
+\mycomment{\item transition: Preform error checking on $J_N$.}
+\mycomment{\item output: \mycomment{if appropriate} }
+\item exception:
+\begin{itemize}
+\item resultOutOfBounds: If $J_N < 0$ or $J_N > 1$.
+\end{itemize}
 \end{itemize}
 
 
@@ -377,10 +429,11 @@ None.
 \newpage
 \section{MIS of Calculation Module} \label{M_CA}
 
-\subsection{Calculation Module}
+\subsection{Module}
+calc
 
 \subsection{Uses}
-Graph Module
+Graph Module \ref{M_G}
 
 \subsection{Syntax}
 \subsubsection{Exported Constants}
@@ -393,7 +446,7 @@ None.
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-calcCEWS & data, labels & $J_N$ & - \\
+calcCEWS & \makecell[1]{data: $\mathbb{M}_{n x m}$ \\ labels: $\mathbb{M}_{n x 1}$} & $J_N$: $\mathbb{R}$ & - \\
 \hline
 \end{tabular}
 \end{center}
@@ -406,15 +459,19 @@ None.
 None.
 
 \subsubsection{Assumptions}
-
+\begin{itemize}
+\item Input variables have been processed through Input Module \ref{M_I}.
+\end{itemize}
 
 \subsubsection{Access Routine Semantics}
 
-\noindent \mycomment{accessProg}():
+\noindent calcCEWS():
 \begin{itemize}
-\item transition: \mycomment{if appropriate} 
-\item output: \mycomment{if appropriate} 
-\item exception: \mycomment{if appropriate} 
+\item output: 
+\begin{itemize}
+\item The Cut Edge Weight Statistic: $J_{N}$ given by $\frac {J}{I+J}$ where $J = \sum_{r=1}^{k-1} \sum_{s=r+1}^{k} J_{r,s};$ $ 0 \leq J \leq n^2$ where each $J_{r,s}  = \sum^{n}_{i=1} \sum^n_{j=1} V_{ij} \times I(c_i = r \And c_j = s)$ and 
+    $I = \sum_{r=1}^{k} I_r, 0\leq I \leq  n^2$ where each $I_{r}  = \sum^{n-1}_{i=1} \sum^n_{j=i+1} V_{ij} \times I(c_i = r \And c_j = r)$. $V$ is obtained from the Graph Module \ref{M_G}.
+\end{itemize}
 \end{itemize}
 
 
@@ -425,7 +482,8 @@ None.
 \newpage
 \section{MIS of Graph Module} \label{M_G}
 
-\subsection{Graph Module}
+\subsection{Module}
+graph
 
 \subsection{Uses}
 None.
@@ -437,11 +495,11 @@ None.
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
+\begin{tabular}{p{5cm} p{2cm} p{3cm} p{2cm}}
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-makeGraph & data & graphObject & - \\
+relativeNeighbourGraph & \makecell[1]{data: $\mathbb{M}_{n x m}$} & \makecell[1]{$V$: $\mathbb{M}_{n x n}$} & - \\
 \hline
 \end{tabular}
 \end{center}
@@ -454,14 +512,24 @@ None.
 None.
 
 \subsubsection{Assumptions}
+\begin{itemize}
+\item $\mbox{data}$ has been processed by Input Module \ref{M_I}.
+\end{itemize}
 
 \subsubsection{Access Routine Semantics}
 
-\noindent \mycomment{accessProg}():
+\noindent relativeNeighbourGraph():
 \begin{itemize}
-\item transition: \mycomment{if appropriate} 
-\item output: \mycomment{if appropriate} 
-\item exception: \mycomment{if appropriate} 
+\item transition: 
+\begin{itemize}
+\item Compute distance matrix
+\item Construct graph
+\end{itemize}
+
+\item output:
+\begin{itemize}
+\item Connection matrix $V = (v_{ij}), i = 1,2, ... ,n; j = 1,2, ... , n;$ \\ where $v_{ij} = I(E_{RNG}(P, i, j))$ as per: $E_{RNG}(P, i, j) = [ d(p_i,p_j) \leq \max (d(p_i,c), d(p_j,c)) \forall c $ where $c \in P, c \neq p_i, c \neq p_j  ]$.
+\end{itemize}
 \end{itemize}
 
 
@@ -470,12 +538,14 @@ None.
 
 \newpage
 
-\bibliographystyle {plainnat}
-\bibliography {../../../refs/References}
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\bibliographystyle{IEEEtran}
+\bibliography{refs/theoryrefs, refs/References}
 
-\newpage
+\mycomment{\newpage
 
-\section{Appendix} \label{Appendix}
+\section{Appendix} \label{Appendix}}
 
 \mycomment{Extra information if required}
 
