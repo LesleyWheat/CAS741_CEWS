@@ -90,9 +90,10 @@ found at \href{https://github.com/LesleyWheat/CAS741_CEWS}{GitHub}.
 \mycomment{You should describe your notation.  You can use what is below as
   a starting point.}
 
-The structure of the MIS for modules comes from \cite{HoffmanAndStrooper1995},
+The base structure of the MIS for modules comes from \cite{HoffmanAndStrooper1995},
 with the addition that template modules have been adapted from
-\cite{GhezziEtAl2003}.  Note that the symbol := is used for assignment.
+\cite{GhezziEtAl2003} and the addition of descriptions for readability.
+Note that the symbol := is used for assignment.
 \mycomment{The mathematical notation comes from Chapter 3 of
 \citet{HoffmanAndStrooper1995}.  
 For instance, the symbol := is used for a
@@ -213,9 +214,9 @@ The following table is taken directly from the Module Guide document for this pr
 
 \noindent \mycomment{accessProg}():
 \begin{itemize}
-\item transition: \mycomment{if appropriate} 
-\item output: \mycomment{if appropriate} 
-\item exception: \mycomment{if appropriate} 
+\item Transition: \mycomment{if appropriate} 
+\item Output: \mycomment{if appropriate} 
+\item Exception: \mycomment{if appropriate} 
 \end{itemize}
 
 \mycomment{A module without environment variables or state variables is unlikely to
@@ -242,7 +243,7 @@ control
 
 \subsection{Uses}
 
-Input Module \ref{M_I}, Calculation Module \ref{M_CA}, Output Module \ref{M_O}
+Input Module \ref{M_I}, Output Module \ref{M_O}, Calculation Module \ref{M_CA}
 
 \subsection{Syntax}
 
@@ -281,22 +282,19 @@ None.
 
 \noindent cutEdgeWeight(inData, inLabels):
 \begin{itemize}
-\mycomment{
-\item transition: Controls the information flow.
+\item Description: Controls the information flow.
 \begin{itemize}
-\item Pass input to Input Module
-\item Pass information to Calculation Module
-\item Pass result to Output Module
-\end{itemize}}
-\item output: $J_N$ computed by calculation module \ref{M_CA}.
-\mycomment{\item exception: None}
+\item Pass input to Input Module \ref{M_I}.
+\item Pass result to Calculation Module \ref{M_CA}, receive $J_N$.
+\item Pass $J_N$ to Output Module \ref{M_O} for verification.
 \end{itemize}
 
-Controls the information flow.
+\item Transition: None.
+\item Output: $out:=$
 \begin{itemize}
-\item Pass input to Input Module \ref{M_I}
-\item Pass result to Calculation Module \ref{M_CA}, receive $J_N$
-\item Pass $J_N$ to Output Module \ref{M_O} for verification
+\item $J_N$ (computed by calculation module \ref{M_CA}).
+\end{itemize}
+\item Exception: None
 \end{itemize}
 
 \subsubsection{Local Functions}
@@ -346,18 +344,19 @@ None.
 
 \noindent processInput(inData, inLabels):
 \begin{itemize}
-\item transition: Verify and transform input if applicable
+\item Description: Verify and transform input if applicable.
 \begin{itemize}
 \item Check if input is a correct data type
 \item Check input meets constraints
 \item Convert information to internal data programming object
 \end{itemize}
-\item output: 
+\item Transition: None
+\item Output: $out:=$
 \begin{itemize}
 \item data: the inputted data converted to the correct internal data storage type for use by the Calculation Module \ref{M_CA}
 \item labels: the inputted labels converted to the correct internal data storage type for use by the Calculation Module \ref{M_CA}
 \end{itemize}
-\item exceptions:
+\item Exceptions: $exc:=$
     \begin{itemize}
     \item typeError: inData or inLabels are not accepted data objects (for example, a list of strings).
     \item formatError:
@@ -417,9 +416,10 @@ None.
 
 \noindent verifyOutput($J_N$):
 \begin{itemize}
-\mycomment{\item transition: Preform error checking on $J_N$.}
-\mycomment{\item output: \mycomment{if appropriate} }
-\item exception:
+\item Description: Check calculation value against constraints.
+\item Transition: None.
+\item Output: None.
+\item Exception: $exc:=$
 \begin{itemize}
 \item resultOutOfBounds: If $J_N < 0$ or $J_N > 1$.
 \end{itemize}
@@ -471,7 +471,9 @@ None.
 
 \noindent calcCEWS(data, labels):
 \begin{itemize}
-\item output: 
+\item Description: Preform the algorithm from \cite{zighed_statistical_2005}.
+\item Transition: None.
+\item Output: $out:=$
 \begin{itemize}
 \item The Cut Edge Weight Statistic: $J_{N} := \frac {J}{I+J}$ where:
 \begin{itemize}
@@ -482,6 +484,7 @@ None.
 \item $V$ is obtained from the Graph Module \ref{M_G}.
 \end{itemize}
 \end{itemize}
+\item Exceptions: None.
 \end{itemize}
 
 
@@ -529,18 +532,16 @@ None.
 \subsubsection{Access Routine Semantics}
 
 \noindent relativeNeighbourGraph(data):
-\begin{itemize}
-\item transition: 
-\begin{itemize}
-\item Compute distance matrix
-\item Construct graph
-\end{itemize}
 
-\item output:
+\begin{itemize}
+\item Description: Construct a relative neighbour graph.
+\item Transition: None.
+\item Output: $out:=$
 \begin{itemize}
 \item Connection matrix $V := (v_{ij}), i = 1,2, ... ,n; j = 1,2, ... , n;$ \\ where $v_{ij} := I(E_{RNG}(P, i, j))$ as per: \\
 $E_{RNG}(P, i, j) := [ d(p_i,p_j) \leq \max (d(p_i,c), d(p_j,c)) \forall c $ where $c \in P, c \neq p_i, c \neq p_j  ]$.
 \end{itemize}
+\item Exceptions: None.
 \end{itemize}
 
 
