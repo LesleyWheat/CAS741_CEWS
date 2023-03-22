@@ -65,7 +65,7 @@ urlcolor=cyan          % color of external links
 
 \section{Symbols, Abbreviations and Acronyms}
 
-See SRS Documentation at \url{https://github.com/LesleyWheat/CAS741_CEWS/blob/main/docs/SRS/SRS.pdf} .
+See SRS Documentation at \href{https://github.com/LesleyWheat/CAS741_CEWS/blob/main/docs/SRS/SRS.pdf}{GitHub}.
 
 \mycomment{Also add any additional symbols, abbreviations or acronyms}
 
@@ -83,7 +83,7 @@ The following document details the Module Interface Specifications for \progname
 This program implements the Cut Edge Weight Statistic measurement, proposed by Zighed et al. \cite{zighed_statistical_2005}. 
 Complementary documents include the System Requirement Specifications
 and Module Guide.  The full documentation and implementation can be
-found at \url{https://github.com/LesleyWheat/CAS741_CEWS}.
+found at \href{https://github.com/LesleyWheat/CAS741_CEWS}{GitHub}.
 
 \section{Notation}
 
@@ -92,7 +92,7 @@ found at \url{https://github.com/LesleyWheat/CAS741_CEWS}.
 
 The structure of the MIS for modules comes from \cite{HoffmanAndStrooper1995},
 with the addition that template modules have been adapted from
-\cite{GhezziEtAl2003}.  
+\cite{GhezziEtAl2003}.  Note that the symbol := is used for assignment.
 \mycomment{The mathematical notation comes from Chapter 3 of
 \citet{HoffmanAndStrooper1995}.  
 For instance, the symbol := is used for a
@@ -473,7 +473,7 @@ None.
 \begin{itemize}
 \item output: 
 \begin{itemize}
-\item The Cut Edge Weight Statistic: $J_{N}$ given by $\frac {J}{I+J}$ where:
+\item The Cut Edge Weight Statistic: $J_{N} := \frac {J}{I+J}$ where:
 \begin{itemize}
 \item $J = \sum_{r=1}^{k-1} \sum_{s=r+1}^{k} J_{r,s};$ $ 0 \leq J \leq n^2$
 \item $J_{r,s}  = \sum^{n}_{i=1} \sum^n_{j=1} V_{ij} I(c_i = r \And c_j = s)$ 
@@ -538,7 +538,8 @@ None.
 
 \item output:
 \begin{itemize}
-\item Connection matrix $V = (v_{ij}), i = 1,2, ... ,n; j = 1,2, ... , n;$ \\ where $v_{ij} = I(E_{RNG}(P, i, j))$ as per: $E_{RNG}(P, i, j) = [ d(p_i,p_j) \leq \max (d(p_i,c), d(p_j,c)) \forall c $ where $c \in P, c \neq p_i, c \neq p_j  ]$.
+\item Connection matrix $V := (v_{ij}), i = 1,2, ... ,n; j = 1,2, ... , n;$ \\ where $v_{ij} := I(E_{RNG}(P, i, j))$ as per: \\
+$E_{RNG}(P, i, j) := [ d(p_i,p_j) \leq \max (d(p_i,c), d(p_j,c)) \forall c $ where $c \in P, c \neq p_i, c \neq p_j  ]$.
 \end{itemize}
 \end{itemize}
 
