@@ -17,13 +17,15 @@ etc.
 System requirements:
 Python version >= 3.9
 
-Setup dev environment (make sure python is on PATH)(bash):
-python -m venv .venv
-source ./.venv/Scripts/activate
-pip install -r requirements-dev.txt
+Test installation instructions:
+- Install python version 3.9 or higher (select add python to path)
+- In bash, navigate to main folder: CAS741_CEWS
+- Run command: python -m venv .venv
+- Run command: source ./.venv/Scripts/activate
+- Run command: pip install -r requirements-dev.txt
+- To run all tests, use command: pytest
+- To run unit tests, use command: pytest -m allModules
 
 Leave venv:
 deactivate
 
-Run tests :
-pytest -m allModules

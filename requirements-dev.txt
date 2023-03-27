@@ -18,3 +18,4 @@ pytest
 
 # Tooling
 autopep8
+setuptools >= 40.9.0
