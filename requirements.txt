@@ -1,0 +1,5 @@
+# Required packages and versions
+
+# Other used packages
+numpy
+scipy

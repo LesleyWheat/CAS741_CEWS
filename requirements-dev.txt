@@ -1,0 +1,20 @@
+# Additional packages for development
+
+# Base requirements
+--requirement requirements.txt
+
+# Proccessing test data
+pandas
+
+# Test graphs
+networkx == 2.8.8
+relativeNeighborhoodGraph
+
+# Testing against other complexity measures
+pymfe
+
+# Testing
+pytest
+
+# Tooling
+autopep8
