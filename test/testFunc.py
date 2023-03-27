@@ -16,6 +16,7 @@ from pymfe.complexity import *
 # Import local files
 sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/../src")
 import graphModule
+import CEWS
 
 #----------------------------------------------------------------
 # Functions
@@ -74,3 +75,13 @@ def countEdgesFromLibrary(data, labels):
 
 def getN1(data, labels):
     return(MFEComplexity.ft_n1(data, labels))
+
+def randomizeDataJn(data, labels):
+    assert data.shape[0] == labels.shape[0] 
+    rng = np.random.default_rng()
+    p = rng.permutation(data.shape[0])
+
+    data = data[p]
+    labels = labels[p]
+
+    return CEWS.cutEdgeWeight(data, labels)

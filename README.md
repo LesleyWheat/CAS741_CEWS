@@ -23,7 +23,7 @@ Test installation instructions:
 - Run command: python -m venv .venv
 - Run command: source ./.venv/Scripts/activate
 - Run command: pip install -r requirements-dev.txt
-- To run all tests, use command: pytest
+- To run all tests (very slow), use command: pytest
 - To run unit tests, use command: pytest -m allModules
 
 Leave venv:

@@ -256,6 +256,13 @@ class runBenchmarkDataset:
         N1 = testFunc.getN1(self.data, self.labels)
         assert self.Jn <= N1 + max(TOL_N1*N1, 0.05)
         assert self.Jn >= N1 - max(TOL_N1*N1, 0.05)
+    
+    def checkRandomize(self):
+        self.checkJnGot()
+
+        for i in range(1, 10):
+            random_Jn = testFunc.randomizeDataJn(self.data, self.labels)
+            assert self.Jn == random_Jn
 
 
 #-----------------------------------------------------------------
@@ -344,6 +351,15 @@ def test_checkJn(test_obj, name):
 @pytest.mark.allModules
 def test_checkJn_lib(test_obj, name):
     test_obj.checkJn_lib()
+
+# Check the Jn remains stable on dataset randomization
+@pytest.mark.parametrize("test_obj, name", pytest.benchmarks)
+@pytest.mark.benchmarks
+@pytest.mark.random
+@pytest.mark.slow
+@pytest.mark.allModules
+def test_checkRandomize(test_obj, name):
+    test_obj.checkRandomize()
 
 #### N1 Tests ####
 @pytest.mark.parametrize("test_obj, name", pytest.benchmarks)
