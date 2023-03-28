@@ -198,6 +198,8 @@ class runBenchmarkDataset:
 
         assert self.edgesCut <= self.edgesCut_lib + TOL_EDGE
         assert self.edgesCut >= self.edgesCut_lib - TOL_EDGE
+        print(self.edgesCut)
+        print(self.edgesCut_lib)
 
     def checkEdgesLibraryUncut(self):
         self.checkEdgesGot()
@@ -205,6 +207,8 @@ class runBenchmarkDataset:
 
         assert self.edgesUncut <= self.edgesUncut_lib + TOL_EDGE
         assert self.edgesUncut >= self.edgesUncut_lib - TOL_EDGE
+        print(self.edgesUncut)
+        print(self.edgesUncut_lib)
 
     def checkDataset(self):
         assert self.paper_n == self.data.shape[0]
@@ -223,18 +227,22 @@ class runBenchmarkDataset:
     def checkEdgesCut(self):
         self.checkEdgesGot()
 
-        pec = self.paper_E*self.paper_J
-        tol_base = self.paper_E*0.001
+        pec = round(self.paper_E*self.paper_J)
+        tol_base = round(self.paper_E*0.001)
         assert self.edgesCut <= pec + TOL_EDGE + tol_base
         assert self.edgesCut >= pec - TOL_EDGE - tol_base
+        print(self.edgesCut)
+        print(pec)
 
     def checkEdgesUncut(self):
         self.checkEdgesGot()
             
-        peuc = self.paper_E - self.paper_E*self.paper_J
-        tol_base = self.paper_E*0.001
+        peuc = round(self.paper_E - self.paper_E*self.paper_J)
+        tol_base = round(self.paper_E*0.001)
         assert self.edgesUncut <= peuc + TOL_EDGE + tol_base
         assert self.edgesUncut >= peuc - TOL_EDGE - tol_base
+        print(self.edgesUncut)
+        print(peuc)
     
     def checkJn(self):
         self.checkJnGot()
@@ -299,6 +307,7 @@ def test_checkEdgesAll(test_obj, name):
 @pytest.mark.parametrize("test_obj, name", pytest.benchmarks)
 @pytest.mark.benchmarks
 @pytest.mark.GM
+@pytest.mark.Cut
 @pytest.mark.paperCompare
 def test_checkEdgesCut(test_obj, name):
     test_obj.checkEdgesCut()
@@ -307,6 +316,7 @@ def test_checkEdgesCut(test_obj, name):
 @pytest.mark.parametrize("test_obj, name", pytest.benchmarks)
 @pytest.mark.benchmarks
 @pytest.mark.GM
+@pytest.mark.Uncut
 @pytest.mark.paperCompare
 def test_checkEdgesUncut(test_obj, name):
     test_obj.checkEdgesUncut()
@@ -325,12 +335,14 @@ def test_checkEdgesLibraryAll(test_obj, name):
 @pytest.mark.benchmarks
 @pytest.mark.graphLibrary
 @pytest.mark.GM
+@pytest.mark.Cut
 def test_checkEdgesLibraryCut(test_obj, name):
     test_obj.checkEdgesLibraryCut()
 
 @pytest.mark.parametrize("test_obj, name", pytest.benchmarks)
 @pytest.mark.benchmarks
 @pytest.mark.graphLibrary
+@pytest.mark.Uncut
 @pytest.mark.GM
 def test_checkEdgesLibraryUncut(test_obj, name):
     test_obj.checkEdgesLibraryUncut()
