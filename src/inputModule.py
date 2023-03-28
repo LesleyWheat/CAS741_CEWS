@@ -15,12 +15,12 @@ CLASS_MINIMUM = 2
 def proccessInput(inData, inLabels):
     # Check types
     try:
-        data = np.asarray(inData, dtype=np.float32)
+        data = np.asarray(inData, dtype=np.float64)
     except Exception as e:
         raise TypeError("Data matrix is an invalid type or format")
     
     try: 
-        labels = np.asarray(inLabels, dtype=np.int8)
+        labels = np.asarray(inLabels, dtype=np.int64)
     except Exception as e:
         raise TypeError("Label matrix is an invalid type or format")
     
