@@ -198,8 +198,6 @@ class runBenchmarkDataset:
 
         assert self.edgesCut <= self.edgesCut_lib + TOL_EDGE
         assert self.edgesCut >= self.edgesCut_lib - TOL_EDGE
-        print(self.edgesCut)
-        print(self.edgesCut_lib)
 
     def checkEdgesLibraryUncut(self):
         self.checkEdgesGot()
@@ -207,8 +205,6 @@ class runBenchmarkDataset:
 
         assert self.edgesUncut <= self.edgesUncut_lib + TOL_EDGE
         assert self.edgesUncut >= self.edgesUncut_lib - TOL_EDGE
-        print(self.edgesUncut)
-        print(self.edgesUncut_lib)
 
     def checkDataset(self):
         assert self.paper_n == self.data.shape[0]
@@ -231,8 +227,6 @@ class runBenchmarkDataset:
         tol_base = round(self.paper_E*0.001)
         assert self.edgesCut <= pec + TOL_EDGE + tol_base
         assert self.edgesCut >= pec - TOL_EDGE - tol_base
-        print(self.edgesCut)
-        print(pec)
 
     def checkEdgesUncut(self):
         self.checkEdgesGot()
@@ -241,8 +235,6 @@ class runBenchmarkDataset:
         tol_base = round(self.paper_E*0.001)
         assert self.edgesUncut <= peuc + TOL_EDGE + tol_base
         assert self.edgesUncut >= peuc - TOL_EDGE - tol_base
-        print(self.edgesUncut)
-        print(peuc)
     
     def checkJn(self):
         self.checkJnGot()
