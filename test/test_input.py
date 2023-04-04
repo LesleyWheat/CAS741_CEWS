@@ -131,15 +131,15 @@ def test_IM_labelNotVector():
         inputModule.proccessInput(inData, inLabels)
 
 # VnV Tests
-@pytest.mark.IM
 @pytest.mark.FP
-def test_IM_good():
+@pytest.mark.IM
+def test_IM_FP_good():
     inData, inLabels = TC_good()
-    data, labels = CEWS.cutEdgeWeight(inData, inLabels)
+    Jn = CEWS.cutEdgeWeight(inData, inLabels)
 
 @pytest.mark.FP
 @pytest.mark.IM
-def test_IM_wrongSizeLabel():
+def test_IM_FP_wrongSizeLabel():
     # Too Many labels
     with pytest.raises(ValueError) as exc_info:
         inData, inLabels = TC_moreLabels()
@@ -147,7 +147,7 @@ def test_IM_wrongSizeLabel():
 
 @pytest.mark.FP
 @pytest.mark.IM
-def test_IM_wrongSizeData():
+def test_IM_FP_wrongSizeData():
     # Too much data
     with pytest.raises(ValueError) as exc_info:
         inData, inLabels = TC_moreData()
@@ -155,42 +155,42 @@ def test_IM_wrongSizeData():
 
 @pytest.mark.FP
 @pytest.mark.IM
-def test_IM_oneClass():
+def test_IM_FP_oneClass():
     with pytest.raises(ValueError) as exc_info:
         inData, inLabels = TC_sameLabels()
         CEWS.cutEdgeWeight(inData, inLabels)
 
 @pytest.mark.FP
 @pytest.mark.IM
-def test_IM_formatTypeData():
+def test_IM_FP_formatTypeData():
     with pytest.raises(TypeError) as exc_info:
         inData, inLabels = TC_dataFormatType()
         CEWS.cutEdgeWeight(inData, inLabels)
 
 @pytest.mark.FP
 @pytest.mark.IM
-def test_IM_formatTypeLabel():
+def test_IM_FP_formatTypeLabel():
     with pytest.raises(TypeError) as exc_info:
         inData, inLabels = TC_labelFormatType()
         CEWS.cutEdgeWeight(inData, inLabels)
 
 @pytest.mark.FP
 @pytest.mark.IM
-def test_IM_formatTypeData():
+def test_IM_FP_formatTypeData():
     with pytest.raises(TypeError) as exc_info:
         inData, inLabels = TC_dataFormatType()
         CEWS.cutEdgeWeight(inData, inLabels)
 
 @pytest.mark.FP
 @pytest.mark.IM
-def test_IM_formatTypeLabel():
+def test_IM_FP_formatTypeLabel():
     with pytest.raises(TypeError) as exc_info:
         inData, inLabels = TC_labelFormatType()
         CEWS.cutEdgeWeight(inData, inLabels)
 
 @pytest.mark.FP
 @pytest.mark.IM
-def test_IM_labelNotVector():
+def test_IM_FP_labelNotVector():
     with pytest.raises(TypeError) as exc_info:
         inData, inLabels = TC_labelNotVector()
         CEWS.cutEdgeWeight(inData, inLabels)
