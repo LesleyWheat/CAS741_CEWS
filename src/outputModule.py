@@ -2,6 +2,8 @@
 # This modules verifies the output value
 #----------------------------------------------------------------
 # Local variables
+
+# Constants
 JN_LOWERBOUND = 0
 JN_UPPERBOUND = 1
 

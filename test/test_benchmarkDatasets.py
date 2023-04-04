@@ -281,7 +281,6 @@ for name in pytest.testObjects_names:
 #### Check dataset shape/size/classes vs paper Tests ####
 @pytest.mark.parametrize("test_obj, name", pytest.benchmarks)
 @pytest.mark.benchmarks
-@pytest.mark.IM
 @pytest.mark.paperCompare
 def test_checkDataset(test_obj, name):
     test_obj.checkDataset()
@@ -343,8 +342,8 @@ def test_checkEdgesLibraryUncut(test_obj, name):
 # Check the Jn value vs the paper
 @pytest.mark.parametrize("test_obj, name", pytest.benchmarks)
 @pytest.mark.benchmarks
-@pytest.mark.allModules
 @pytest.mark.paperCompare
+@pytest.mark.FP
 def test_checkJn(test_obj, name):
     test_obj.checkJn()
 
@@ -352,7 +351,7 @@ def test_checkJn(test_obj, name):
 @pytest.mark.parametrize("test_obj, name", pytest.benchmarks)
 @pytest.mark.benchmarks
 @pytest.mark.graphLibrary
-@pytest.mark.allModules
+@pytest.mark.FP
 def test_checkJn_lib(test_obj, name):
     test_obj.checkJn_lib()
 
@@ -361,7 +360,7 @@ def test_checkJn_lib(test_obj, name):
 @pytest.mark.benchmarks
 @pytest.mark.random
 @pytest.mark.slow
-@pytest.mark.allModules
+@pytest.mark.FP
 def test_checkRandomize(test_obj, name):
     test_obj.checkRandomize()
 
@@ -369,6 +368,5 @@ def test_checkRandomize(test_obj, name):
 @pytest.mark.parametrize("test_obj, name", pytest.benchmarks)
 @pytest.mark.benchmarks
 @pytest.mark.N1
-@pytest.mark.allModules
 def test_checkN1(test_obj, name):
     test_obj.checkN1()
