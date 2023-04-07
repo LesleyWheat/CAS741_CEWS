@@ -1,15 +1,33 @@
-# Import
-import os 
-import csv
-import sys
+# Description
+# Retrieves and formats the datasets under tests/datasets
+# Used for test cases
 
+# Import libraries
+import os
 import numpy as np
 import pandas as pd
 
+#----------------------------------------------------------------------------------
+# Functions
+
+# Get local path
 def get_datasetPath():
     dir_path = os.path.join(os.path.dirname(os.path.realpath(__file__)),"datasets")
     return dir_path 
 
+# UCI MLR: Iris Bezdek
+def dataset_irisBezdek():
+    filepath = os.path.join(get_datasetPath(),"bezdekIris","bezdekIris.data")
+    D, C = get_iris(filepath)
+    return(D, C)
+
+# UCI MLR: Iris plants
+def dataset_iris():
+    filepath = os.path.join(get_datasetPath(),"iris","iris.data")
+    D, C = get_iris(filepath)
+    return(D, C)
+
+# Format Iris datasets
 def get_iris(filepath):
     # Read data
     with open(filepath, "r") as csv_file:
@@ -33,17 +51,7 @@ def get_iris(filepath):
 
     return(data, labels)
 
-
-def dataset_irisBezdek():
-    filepath = os.path.join(get_datasetPath(),"bezdekIris","bezdekIris.data")
-    D, C = get_iris(filepath)
-    return(D, C)
-
-def dataset_iris():
-    filepath = os.path.join(get_datasetPath(),"iris","iris.data")
-    D, C = get_iris(filepath)
-    return(D, C)
-
+# UCI MLR: Yeast
 def dataset_yeast():
     filepath = os.path.join(get_datasetPath(),"yeast","yeast.data")
     # Read data
@@ -68,6 +76,7 @@ def dataset_yeast():
 
     return(data, labels)
 
+# UCI MLR: breast cancer
 def dataset_breastCancer():
     filepath = os.path.join(get_datasetPath(),"breast-cancer","breast-cancer-wisconsin.data")
     # Read data
@@ -100,6 +109,7 @@ def dataset_breastCancer():
 
     return(data, labels)
 
+# UCI MLR: Wine classification
 def dataset_wine():
     filepath = os.path.join(get_datasetPath(),"wine","wine.data")
     # Read data
@@ -132,6 +142,7 @@ def dataset_wine():
 
     return(data, labels)
 
+# UCI MLR: Glass
 def dataset_glass():
     # Read data
     filepath = os.path.join(get_datasetPath(),"glass","glass.data")
@@ -146,6 +157,7 @@ def dataset_glass():
 
     return(data, labels)
 
+# UCI MLR: Ionosphere
 def dataset_ionosphere():
     # Read data
     filepath = os.path.join(get_datasetPath(),"ionosphere","ionosphere.data")
@@ -170,6 +182,7 @@ def dataset_ionosphere():
 
     return(data, labels)
 
+# UCI MLR: Haberman
 def dataset_haberman():
     # Read data
     filepath = os.path.join(get_datasetPath(),"haberman","haberman.data")
@@ -184,13 +197,14 @@ def dataset_haberman():
 
     return(data, labels)
 
+# UCI MLR: Image segmentation
 def dataset_imgSeg():
     # Read data
     filepath = os.path.join(get_datasetPath(),"image_seg","segmentation.data")
     with open(filepath, "r") as csv_file:
         df = pd.read_csv(csv_file, header=None)
 
-        # Convert to numpy arrays 
+    # Convert to numpy arrays 
     data = df.iloc[:,1:20]
     data = data.to_numpy()
     labels_temp = df.iloc[:,0]
@@ -208,14 +222,14 @@ def dataset_imgSeg():
 
     return(data, labels)
 
-#print(get_datasetPath())
-#print(dataset_irisBezdek())
-#print(dataset_iris())
-#print(dataset_yeast())
-#print(dataset_breastCancer())
+# Ruspini
+def dataset_ruspini():
+    # Read data
+    filepath = os.path.join(get_datasetPath(),"ruspini","ruspini.txt")
+    with open(filepath, "r") as csv_file:
+        df = pd.read_csv(csv_file, header=None, delim_whitespace=True)
 
-#print(dataset_wine())
-#print(dataset_glass())
-#print(dataset_haberman())
-#print(dataset_imgSeg())
+    data = df.iloc[:,0:2]
+    data = data.to_numpy(dtype = np.int16)
 
+    return(data)
