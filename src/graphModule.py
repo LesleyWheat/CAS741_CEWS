@@ -4,6 +4,7 @@
 # Import libraries
 import numpy as np
 import scipy.spatial
+from math import isclose
 
 #----------------------------------------------------------------
 # Global Functions
@@ -30,14 +31,19 @@ def relativeNeighbourGraph(data):
 def checkEdge_RNG(distanceMatrix, a, b):
     # Check if an edge exists between two points
     n = distanceMatrix.shape[0]
-    E = True
+    distance_ab = distanceMatrix[a, b]
 
     if (a == b):
+        # Do not create edges when points are the same
+        E = False
+    if isclose(distance_ab, 0, abs_tol=1e-8):
+        # Do not create edges when points are on top of each other other
         E = False
     else:
-        distance_ab = distanceMatrix[a, b]
+        E = True
         for i in range(0, n):
-            if (not (i == a or i == b)):
+            # Only check points not on top of each other
+            if (distanceMatrix[a,i] > 0) & (distanceMatrix[b,i] > 0):
                 if max(distanceMatrix[a,i], distanceMatrix[b,i]) < distance_ab:
                     E = False
                     break
