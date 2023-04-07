@@ -12,7 +12,6 @@ import numpy as np
 
 # Project files
 sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/../src")
-import inputModule
 import CEWS
 
 #--------------------------------------------------------------------
@@ -72,65 +71,6 @@ def TC_labelNotVector():
 
 #--------------------------------------------------------------------
 # Tests
-
-@pytest.mark.IM
-def test_IM_good():
-    inData, inLabels = TC_good()
-    data, labels = inputModule.proccessInput(inData, inLabels)
-
-@pytest.mark.IM
-def test_IM_wrongSizeLabel():
-    # Too Many labels
-    with pytest.raises(ValueError) as exc_info:
-        inData, inLabels = TC_moreLabels()
-        inputModule.proccessInput(inData, inLabels)
-    
-@pytest.mark.IM
-def test_IM_wrongSizeData():
-    # Too much data
-    with pytest.raises(ValueError) as exc_info:
-        inData, inLabels = TC_moreData()
-        inputModule.proccessInput(inData, inLabels)
-
-@pytest.mark.IM
-def test_IM_oneClass():
-    with pytest.raises(ValueError) as exc_info:
-        inData, inLabels = TC_sameLabels()
-        inputModule.proccessInput(inData, inLabels)
-
-@pytest.mark.IM
-def test_IM_formatTypeData():
-    with pytest.raises(TypeError) as exc_info:
-        inData, inLabels = TC_dataFormatType()
-        inputModule.proccessInput(inData, inLabels)
-
-
-@pytest.mark.IM
-def test_IM_formatTypeLabel():
-    with pytest.raises(TypeError) as exc_info:
-        inData, inLabels = TC_labelFormatType()
-        inputModule.proccessInput(inData, inLabels)
-
-
-@pytest.mark.IM
-def test_IM_formatTypeData():
-    with pytest.raises(TypeError) as exc_info:
-        inData, inLabels = TC_dataFormatType()
-        inputModule.proccessInput(inData, inLabels)
-    
-@pytest.mark.IM
-def test_IM_formatTypeLabel():
-    with pytest.raises(TypeError) as exc_info:
-        inData, inLabels = TC_labelFormatType()
-        inputModule.proccessInput(inData, inLabels)
-
-@pytest.mark.IM
-def test_IM_labelNotVector():
-    with pytest.raises(TypeError) as exc_info:
-        inData, inLabels = TC_labelNotVector()
-        inputModule.proccessInput(inData, inLabels)
-
-# VnV Tests
 @pytest.mark.FP
 @pytest.mark.IM
 def test_IM_FP_good():
