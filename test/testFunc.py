@@ -73,6 +73,26 @@ def countEdgesFromLibrary(data, labels):
 
     return(edges)
 
+def compareEdges(data, label):
+    V_G = graphModule.relativeNeighbourGraph(data)
+    DM = scipy.spatial.distance_matrix(data, data)
+    V_L = returnRNG.returnRNG(DM)
+    n = DM.shape[0]
+
+    allEdgesMatch = True
+
+    for i in range(0, n-1):
+        for j in range(i+1, n):
+            edgeG = V_G[i][j]
+            edgeL = (V_L[i][j] > 0)
+            if edgeG != edgeL:
+                print("i: " + str(i) + " j: " + str(j) + " VG: "+ str(V_G[i][j]) + " V_L: " + str(V_L[i][j]) + " distance: " + str(DM[i][j]))
+                print("Point i: " + str(data[i]) + " Point j: " + str(data[j]))
+                allEdgesMatch = False
+
+    return allEdgesMatch
+
+
 def getN1(data, labels):
     return(MFEComplexity.ft_n1(data, labels))
 

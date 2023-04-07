@@ -15,7 +15,7 @@ setup(
     url='https://github.com/LesleyWheat/CAS741_CEWS',
     packages=['CEWS'],
     include_package_data=True,
-    python_requires=">=3.7.*",
+    python_requires=">=3.9.*",
     install_requires=['numpy', 'scipy'],
     license='-',
     zip_safe=False,

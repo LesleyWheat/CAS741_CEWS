@@ -263,6 +263,9 @@ class runBenchmarkDataset:
         for i in range(1, 10):
             random_Jn = testFunc.randomizeDataJn(self.data, self.labels)
             assert self.Jn == random_Jn
+    
+    def checkEdgeByEdge(self):
+        assert testFunc.compareEdges(self.data, self.labels)
 
 
 #-----------------------------------------------------------------
@@ -337,6 +340,15 @@ def test_checkEdgesLibraryCut(test_obj, name):
 @pytest.mark.GM
 def test_checkEdgesLibraryUncut(test_obj, name):
     test_obj.checkEdgesLibraryUncut()
+
+#### Edge Check ####
+@pytest.mark.parametrize("test_obj, name", pytest.benchmarks)
+@pytest.mark.benchmarks
+@pytest.mark.edgeByEdge
+@pytest.mark.graphLibrary
+@pytest.mark.GM
+def test_checkEdgeByEdge(test_obj, name):
+    test_obj.checkEdgeByEdge()
 
 #### Jn Tests ####
 # Check the Jn value vs the paper

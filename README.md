@@ -7,12 +7,11 @@ Date of project start: 2023-01-07
 This project is ...
 
 The folders and files for this project are as follows:
-
-docs - Documentation for the project
-refs - Reference material used for the project, including papers
-src - Source code
-test - Test cases
-etc.
+- docs: Documentation for the project
+- refs: Reference material used for the project, including papers
+- src: Source code
+- test: Test cases
+- etc.
 
 System requirements:
 Python version >= 3.9
@@ -24,8 +23,7 @@ Test installation instructions:
 - Run command: source ./.venv/Scripts/activate
 - Run command: pip install -r requirements-dev.txt
 - To run all tests (very slow), use command: pytest
-- To run unit tests, use command: pytest -m allModules
-
-Leave venv:
-deactivate
+- To run tests using main interface, use command: pytest -m FP
+- To see all test markers, read file: pytest.ini
+- Leave venv: deactivate
 
