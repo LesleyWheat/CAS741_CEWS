@@ -1,4 +1,5 @@
 # File description
+# Misc functions used for testing.
 
 #----------------------------------------------------------------
 # Imports
@@ -21,6 +22,7 @@ import CEWS
 #----------------------------------------------------------------
 # Functions
 
+# Cound edges made by graph module
 def countEdgesFromSrc(data, labels):
     V = graphModule.relativeNeighbourGraph(data)
     n = V.shape[0]
@@ -46,6 +48,7 @@ def countEdgesFromSrc(data, labels):
 
     return(edges)
 
+# count edges from graph made by relative neighbourhood library
 def countEdgesFromLibrary(data, labels):
     DM = scipy.spatial.distance_matrix(data, data)
     V = returnRNG.returnRNG(DM)
@@ -73,6 +76,7 @@ def countEdgesFromLibrary(data, labels):
 
     return(edges)
 
+# Compare each edge between graph module and relativeNeighorhoodGraph package
 def compareEdges(data, label):
     V_G = graphModule.relativeNeighbourGraph(data)
     DM = scipy.spatial.distance_matrix(data, data)
@@ -92,16 +96,49 @@ def compareEdges(data, label):
 
     return allEdgesMatch
 
-
+# Get complexity measure
 def getN1(data, labels):
     return(MFEComplexity.ft_n1(data, labels))
 
+# Test calculation by randomizing
 def randomizeDataJn(data, labels):
     assert data.shape[0] == labels.shape[0] 
+
+    # Randomize data and labels while keeping association
     rng = np.random.default_rng()
     p = rng.permutation(data.shape[0])
-
     data = data[p]
     labels = labels[p]
 
     return CEWS.cutEdgeWeight(data, labels)
+
+def randomizeEdges(data):
+    V_G1 = graphModule.relativeNeighbourGraph(data)
+
+    rng = np.random.default_rng()
+    n = data.shape[0]
+    p = rng.permutation(n)
+    print(n)
+    dataRan = data[p]
+
+    V_G2 = graphModule.relativeNeighbourGraph(dataRan)
+
+    for i in range(0, n-1):
+        for j in range(i+1, n):
+            rand_i = np.where(p == i)[0][0]
+            rand_j = np.where(p == j)[0][0]
+            edge1 = V_G1[i, j]
+            edge2 = V_G2[rand_i, rand_j]
+            if edge1 != edge2:
+                print("i: " + str(i) + " j: " + str(j))
+                print("pi: " + str(data[i]) + " ri: " + str(dataRan[rand_i]))
+                print("pj: " + str(data[j]) + " rj: " + str(dataRan[rand_j]))
+                print("1: " + str(edge1) + " 2: " + str(edge2))
+                assert edge1 == edge2
+
+
+    # edgetrue = compareEdges(data, labels)
+    # assert edgetrue
+
+    # edges = countEdgesFromSrc(data, labels)
+    # return edges

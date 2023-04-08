@@ -6,6 +6,9 @@ import numpy as np
 import scipy.spatial
 from math import isclose
 
+# Local constants
+TOL_FLOAT = 1e-8
+
 #----------------------------------------------------------------
 # Global Functions
 def relativeNeighbourGraph(data):
@@ -36,7 +39,7 @@ def checkEdge_RNG(distanceMatrix, a, b):
     if (a == b):
         # Do not create edges when points are the same
         E = False
-    if isclose(distance_ab, 0, abs_tol=1e-8):
+    if isclose(distance_ab, 0, abs_tol=TOL_FLOAT):
         # Do not create edges when points are on top of each other other
         E = False
     else:
