@@ -4,7 +4,7 @@ Developer Names: Lesley Wheat
 
 Date of project start: 2023-01-07
 
-This project is ...
+This project is a python program to calculate the Cut Edge Weight Statistic.
 
 The folders and files for this project are as follows:
 - docs: Documentation for the project

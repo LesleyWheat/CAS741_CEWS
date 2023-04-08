@@ -14,68 +14,81 @@ import numpy as np
 sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/../src")
 import CEWS
 
-#--------------------------------------------------------------------
+# --------------------------------------------------------------------
 # Functions to setup tests
+
+
 def TC_good():
-    data = [[1, 0],[0, 1],[0, 1]]
+    data = [[1, 0], [0, 1], [0, 1]]
     labels = [0, 1, 2]
-    return(data, labels)
+    return (data, labels)
+
 
 def TC_moreLabels():
     # More labels than data
-    data = [[1, 0],[0, 1],[0, 1]]
+    data = [[1, 0], [0, 1], [0, 1]]
     labels = [0, 1, 2, 3]
-    return(data, labels)
+    return (data, labels)
+
 
 def TC_moreData():
     # More data than labels
-    data = [[1, 0],[0, 1],[0, 1]]
+    data = [[1, 0], [0, 1], [0, 1]]
     labels = [0, 1]
-    return(data, labels)
+    return (data, labels)
+
 
 def TC_sameLabels():
     # All same labels
-    data = [[1, 0],[0, 1],[0, 1]]
+    data = [[1, 0], [0, 1], [0, 1]]
     labels = [0, 0, 0]
-    return(data, labels)
+    return (data, labels)
+
 
 def TC_dataFormatSize():
     # Some observations have more features
-    data = [[1, 0, 0],[0, 1],[0, 1]]
+    data = [[1, 0, 0], [0, 1], [0, 1]]
     labels = [0, 0, 1]
-    return(data, labels)
+    return (data, labels)
+
 
 def TC_dataFormatType():
     # Data has a string in it
-    data = [[1, 0],[0, "?"],[0, 1]]
+    data = [[1, 0], [0, "?"], [0, 1]]
     labels = [0, 0, 1]
-    return(data, labels)
+    return (data, labels)
+
 
 def TC_labelFormatSize():
     # More labels have more values
-    data = [[1, 0],[0, 1],[0, 1]]
+    data = [[1, 0], [0, 1], [0, 1]]
     labels = [0, 0, [1, 1]]
-    return(data, labels)
+    return (data, labels)
+
 
 def TC_labelFormatType():
     # Label has a string
-    data = [[1, 0],[0, 0],[0, 1]]
+    data = [[1, 0], [0, 0], [0, 1]]
     labels = [0, "?", 1]
-    return(data, labels)
+    return (data, labels)
+
 
 def TC_labelNotVector():
     # Lablels is a matrix
-    data = [[1, 0],[0, 0],[0, 1]]
-    labels = [[1, 0],[0, 0],[0, 1]]
-    return(data, labels)
+    data = [[1, 0], [0, 0], [0, 1]]
+    labels = [[1, 0], [0, 0], [0, 1]]
+    return (data, labels)
 
-#--------------------------------------------------------------------
+# --------------------------------------------------------------------
 # Tests
+
+
 @pytest.mark.FP
 @pytest.mark.IM
 def test_IM_FP_good():
     inData, inLabels = TC_good()
     Jn = CEWS.cutEdgeWeight(inData, inLabels)
+
 
 @pytest.mark.FP
 @pytest.mark.IM
@@ -85,6 +98,7 @@ def test_IM_FP_wrongSizeLabel():
         inData, inLabels = TC_moreLabels()
         CEWS.cutEdgeWeight(inData, inLabels)
 
+
 @pytest.mark.FP
 @pytest.mark.IM
 def test_IM_FP_wrongSizeData():
@@ -93,6 +107,7 @@ def test_IM_FP_wrongSizeData():
         inData, inLabels = TC_moreData()
         CEWS.cutEdgeWeight(inData, inLabels)
 
+
 @pytest.mark.FP
 @pytest.mark.IM
 def test_IM_FP_oneClass():
@@ -100,19 +115,6 @@ def test_IM_FP_oneClass():
         inData, inLabels = TC_sameLabels()
         CEWS.cutEdgeWeight(inData, inLabels)
 
-@pytest.mark.FP
-@pytest.mark.IM
-def test_IM_FP_formatTypeData():
-    with pytest.raises(TypeError) as exc_info:
-        inData, inLabels = TC_dataFormatType()
-        CEWS.cutEdgeWeight(inData, inLabels)
-
-@pytest.mark.FP
-@pytest.mark.IM
-def test_IM_FP_formatTypeLabel():
-    with pytest.raises(TypeError) as exc_info:
-        inData, inLabels = TC_labelFormatType()
-        CEWS.cutEdgeWeight(inData, inLabels)
 
 @pytest.mark.FP
 @pytest.mark.IM
@@ -121,12 +123,30 @@ def test_IM_FP_formatTypeData():
         inData, inLabels = TC_dataFormatType()
         CEWS.cutEdgeWeight(inData, inLabels)
 
+
 @pytest.mark.FP
 @pytest.mark.IM
 def test_IM_FP_formatTypeLabel():
     with pytest.raises(TypeError) as exc_info:
         inData, inLabels = TC_labelFormatType()
         CEWS.cutEdgeWeight(inData, inLabels)
+
+
+@pytest.mark.FP
+@pytest.mark.IM
+def test_IM_FP_formatTypeData():
+    with pytest.raises(TypeError) as exc_info:
+        inData, inLabels = TC_dataFormatType()
+        CEWS.cutEdgeWeight(inData, inLabels)
+
+
+@pytest.mark.FP
+@pytest.mark.IM
+def test_IM_FP_formatTypeLabel():
+    with pytest.raises(TypeError) as exc_info:
+        inData, inLabels = TC_labelFormatType()
+        CEWS.cutEdgeWeight(inData, inLabels)
+
 
 @pytest.mark.FP
 @pytest.mark.IM
