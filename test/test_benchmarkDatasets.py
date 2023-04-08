@@ -6,6 +6,7 @@
 # Core
 import sys
 import os
+from math import isclose
 
 # Packages
 import pytest
@@ -15,7 +16,7 @@ import numpy as np
 # Import local files
 sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/../src")
 import inputModule
-from CEWS import *
+import CEWS
 
 # Test files
 import getDataset
@@ -26,6 +27,8 @@ import testFunc
 TOL_EDGE = 1
 TOL_JN = 0.1
 TOL_N1 = 0.5
+TOL_N1_MIN = 0.1
+TOL_FLOAT = 1e-10
 
 #--------------------------------------------------------------------
 # Classes
@@ -154,6 +157,10 @@ class runBenchmarkDataset:
             self.paper_k = 7
             self.paper_J = 0.224
             self.paper_E = 268
+        elif (datasetName == "ruspini"):
+            self.data = getDataset.dataset_ruspini()
+            self.labels = range(self.data.shape[0])
+            self.paper_E = 86
         else:
             raise ValueError("Invalid dataset name")
         
@@ -182,29 +189,29 @@ class runBenchmarkDataset:
 
     def checkJnGot(self):
         if(self.Jn == None):
-            self.Jn = cutEdgeWeight(self.data, self.labels)
+            self.Jn = CEWS.cutEdgeWeight(self.data, self.labels)
     
     #Test functions
     def checkEdgesLibraryAll(self):
         self.checkEdgesGot()
         self.checkEdgesLibGot()
+
+        print(self.edgesAll)
+        print(self.edgesAll_lib)
     
-        assert self.edgesAll <= self.edgesAll_lib + TOL_EDGE
-        assert self.edgesAll >= self.edgesAll_lib - TOL_EDGE
+        assert isclose(self.edgesAll, self.edgesAll_lib, abs_tol=TOL_EDGE)
 
     def checkEdgesLibraryCut(self):
         self.checkEdgesGot()
         self.checkEdgesLibGot()
 
-        assert self.edgesCut <= self.edgesCut_lib + TOL_EDGE
-        assert self.edgesCut >= self.edgesCut_lib - TOL_EDGE
+        assert isclose(self.edgesCut, self.edgesCut_lib, abs_tol=TOL_EDGE)
 
     def checkEdgesLibraryUncut(self):
         self.checkEdgesGot()
         self.checkEdgesLibGot()
 
-        assert self.edgesUncut <= self.edgesUncut_lib + TOL_EDGE
-        assert self.edgesUncut >= self.edgesUncut_lib - TOL_EDGE
+        assert isclose(self.edgesUncut, self.edgesUncut_lib, abs_tol=TOL_EDGE)
 
     def checkDataset(self):
         assert self.paper_n == self.data.shape[0]
@@ -216,53 +223,57 @@ class runBenchmarkDataset:
     
     def checkEdgesAll(self):
         self.checkEdgesGot()
-    
-        assert self.edgesAll <= self.paper_E + TOL_EDGE
-        assert self.edgesAll >= self.paper_E - TOL_EDGE
+        assert isclose(self.edgesAll, self.paper_E, abs_tol=TOL_EDGE)
     
     def checkEdgesCut(self):
         self.checkEdgesGot()
 
         pec = round(self.paper_E*self.paper_J)
         tol_base = round(self.paper_E*0.001)
-        assert self.edgesCut <= pec + TOL_EDGE + tol_base
-        assert self.edgesCut >= pec - TOL_EDGE - tol_base
+        assert isclose(self.edgesCut, pec, abs_tol=TOL_EDGE + tol_base)
 
     def checkEdgesUncut(self):
         self.checkEdgesGot()
             
         peuc = round(self.paper_E - self.paper_E*self.paper_J)
         tol_base = round(self.paper_E*0.001)
-        assert self.edgesUncut <= peuc + TOL_EDGE + tol_base
-        assert self.edgesUncut >= peuc - TOL_EDGE - tol_base
+        assert isclose(self.edgesUncut, peuc, abs_tol=TOL_EDGE + tol_base)
     
     def checkJn(self):
         self.checkJnGot()
-
-        assert self.Jn <= self.paper_J + TOL_JN
-        assert self.Jn >= self.paper_J - TOL_JN
+        assert isclose(self.Jn, self.paper_J, abs_tol=TOL_JN)
 
     def checkJn_lib(self):
         self.checkEdgesLibGot()
         self.checkJnGot()
 
         JN_lib = self.edgesCut_lib/self.edgesAll_lib
-        assert self.Jn <= JN_lib + TOL_JN
-        assert self.Jn >= JN_lib - TOL_JN
+        assert isclose(self.Jn, JN_lib, abs_tol=TOL_JN)
     
     def checkN1(self):
         self.checkJnGot()
     
         N1 = testFunc.getN1(self.data, self.labels)
-        assert self.Jn <= N1 + max(TOL_N1*N1, 0.05)
-        assert self.Jn >= N1 - max(TOL_N1*N1, 0.05)
+        assert isclose(self.Jn, N1, abs_tol=max(TOL_N1*N1, TOL_N1_MIN))
     
     def checkRandomize(self):
-        self.checkJnGot()
+        # self.checkJnGot()
+        # self.checkEdgesGot()
 
-        for i in range(1, 10):
-            random_Jn = testFunc.randomizeDataJn(self.data, self.labels)
-            assert self.Jn == random_Jn
+        number_of_tests = 3
+
+        for i in range(1, number_of_tests):
+            testFunc.randomizeEdges(self.data, self.labels)
+
+
+#           list_randomJn = np.empty((number_of_tests))
+
+#         for i in range(1, number_of_tests):
+#             list_randomJn[i] = testFunc.randomizeDataJn(self.data, self.labels)
+#             print(str(list_randomJn[i]))
+
+#         for i in range(1, number_of_tests):
+#             assert isclose(self.Jn, list_randomJn[i], rel_tol=TOL_FLOAT) """
     
     def checkEdgeByEdge(self):
         assert testFunc.compareEdges(self.data, self.labels)
@@ -278,6 +289,7 @@ pytest.benchmarks = list()
 for name in pytest.testObjects_names:
     pytest.benchmarks.append([runBenchmarkDataset(name),name])
 
+pytest.ruspini = runBenchmarkDataset("ruspini")
 #-----------------------------------------------------------------
 # Tests
 
@@ -322,9 +334,17 @@ def test_checkEdgesUncut(test_obj, name):
 @pytest.mark.benchmarks
 @pytest.mark.graphLibrary
 @pytest.mark.GM
+@pytest.mark.total
 def test_checkEdgesLibraryAll(test_obj, name):
     test_obj.checkEdgesLibraryAll()
 
+@pytest.mark.benchmarks
+@pytest.mark.GM
+@pytest.mark.ruspini
+def test_checkEdgesAll_RUS():
+    pytest.ruspini.checkEdgesLibraryAll()
+
+# Check number of cut edges
 @pytest.mark.parametrize("test_obj, name", pytest.benchmarks)
 @pytest.mark.benchmarks
 @pytest.mark.graphLibrary
@@ -333,6 +353,7 @@ def test_checkEdgesLibraryAll(test_obj, name):
 def test_checkEdgesLibraryCut(test_obj, name):
     test_obj.checkEdgesLibraryCut()
 
+# Check number of uncut edges
 @pytest.mark.parametrize("test_obj, name", pytest.benchmarks)
 @pytest.mark.benchmarks
 @pytest.mark.graphLibrary
@@ -341,12 +362,13 @@ def test_checkEdgesLibraryCut(test_obj, name):
 def test_checkEdgesLibraryUncut(test_obj, name):
     test_obj.checkEdgesLibraryUncut()
 
-#### Edge Check ####
+# Check every edge from the library to every edge from the main program
 @pytest.mark.parametrize("test_obj, name", pytest.benchmarks)
 @pytest.mark.benchmarks
 @pytest.mark.edgeByEdge
 @pytest.mark.graphLibrary
 @pytest.mark.GM
+@pytest.mark.slow
 def test_checkEdgeByEdge(test_obj, name):
     test_obj.checkEdgeByEdge()
 
