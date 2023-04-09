@@ -135,10 +135,3 @@ def randomizeEdges(data):
                 print("pj: " + str(data[j]) + " rj: " + str(dataRan[rand_j]))
                 print("1: " + str(edge1) + " 2: " + str(edge2))
                 assert edge1 == edge2
-
-
-    # edgetrue = compareEdges(data, labels)
-    # assert edgetrue
-
-    # edges = countEdgesFromSrc(data, labels)
-    # return edges
