@@ -113,15 +113,12 @@ def randomizeDataJn(data, labels):
     return CEWS.cutEdgeWeight(data, labels)
 
 def randomizeEdges(data):
-    print("G1")
     V_G1 = graphModule.relativeNeighbourGraph(data)
 
     rng = np.random.default_rng()
     n = data.shape[0]
     p = rng.permutation(n)
     dataRan = data[p]
-
-    print("G2")
     V_G2 = graphModule.relativeNeighbourGraph(dataRan)
 
     for i in range(0, n-1):
