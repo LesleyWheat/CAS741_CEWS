@@ -33,6 +33,11 @@
 \input{../Comments}
 \input{../Common}
 
+%counter
+\newcounter{testnum} %Test Number
+\newcommand{\rthetestnum}{P\thetestnum}
+\newcommand{\tref}[1]{T\ref{#1}}
+
 \begin{document}
 
 \title{Project Title: System Verification and Validation Plan for \progname{}} 
@@ -50,6 +55,7 @@
 \midrule
 2023-02-10 & 0.0 & Creation\\
 2023-02-14 & 1.0 & Version 1.0\\
+2023-04-16 & 2.0 & Version 2.0\\
 \bottomrule
 \end{tabularx}
 
@@ -146,7 +152,7 @@ This document will be reviewed by the VnV team members in Section \ref{sec:VnV_t
 \subsection{Implementation Verification Plan}
 
 Individual tests are outlined in sections 5.1 through 5.2. 
-The tests will either be performed manually or with someone reviewing the code.
+The tests will either be performed Automatedly or with someone reviewing the code.
 
 \mycomment{You should at least point to the tests listed in this document and the unit
   testing plan.}
@@ -191,7 +197,7 @@ inspection?}
 %---------------------------------------------------------------------------------
 \section{System Test Description}
 	
-\subsection{Tests for Functional Requirements}
+\subsection{Tests for Functional Requirements and Nonfunctional Requirements}
 
 \mycomment{Subsets of the tests may be in related, so this section is divided into
   different areas.  If there are no identifiable subsets for the tests, this
@@ -200,116 +206,194 @@ inspection?}
 \mycomment{Include a blurb here to explain why the subsections below
   cover the requirements.  References to the SRS would be good here.}
 
-\subsubsection{Area of Testing 1: FR1, FR4}
+\subsubsection{Area of Testing 1: FR1, NFR2, NFR3}
 
 This area of testing will address inputs to the program.
+Functional requirement 1 states: CEWS System will read the input data.
+Non Functional Requirement 2 states: A program should be able to call CEWS System by calling a function of the form CEWS($D$, $C$) and CEWS System should return the output.
+Non Functional Requirement 3 states: The software should run on the Windows 11 operating system.
 
-Functional requirement 1 states: CEWS System will read the input data. Also functional requirement 4 states: The CEWS System will generate an output.
-
-\mycomment{It would be nice to have a blurb here to explain why the subsections below
-  cover the requirements.  References to the SRS would be good here.  If a section
-  covers tests for input constraints, you should reference the data constraints
-  table in the SRS.}
-		
-\paragraph{Tests for FR1}
-
+\paragraph{Tests for FR1, NFR2, NFR3}
 \begin{enumerate}
+\item{T\refstepcounter{testnum}\thetestnum \textbf{\label{T:norm} 
+ - Normal Input}}
 
-\item{T1 - Normal Input\\}
-
-Control: Manual
+Control: Automated
 					
 Initial State: Pending Input
 					
-Input: $D$ and $C$ have the same number of samples and features, $C$ contains at least two classes.
+Input: Meets all constraints from SRS.
 					
-Output: No error generated, program proceeds to next state.
+Output: No error generated, program proceeds to calculation phase.
 
-Test Case Derivation: FR1, FR4
+Test Case Derivation: FR1, NFR2, NFR3
+
+Modules: Control Module, Input Module, Calculation Module, Graph Module, Output Module
 					
-How test will be performed: Manual
+How test will be performed: PyTest on Windows 11 operating system
+
+\item{T\refstepcounter{testnum}\thetestnum \textbf{\label{T:moreLabels} 
+ - Data Mismatch: More Labels}}
+
+Control: Automated
 					
-\item{T2 - Data Mismatch\\}
-
-Control: Manual
+Initial State: Pending Input
 					
-Initial State: 
+Input: $C$ has more samples than $D$.
 					
-Input: $D$ and $C$ have different number of samples or $D$ has a different number of features.
+Output: Generate ValueError.
+
+Test Case Derivation: FR1, NFR2, NFR3
+
+Modules: Control Module, Input Module
+
+How test will be performed: PyTest on Windows 11 operating system
+
+\item{T\refstepcounter{testnum}\thetestnum \textbf{\label{T:}  
+ - Data Mismatch: More Data}}
+
+Control: Automated
 					
-Output: Generate error about incorrect data format.
+Initial State: Pending Input
+					
+Input: $D$ has more samples than $C$.
+					
+Output: Generate ValueError.
 
-Test Case Derivation: FR1, FR4
+Test Case Derivation: FR1, NFR2, NFR3
 
-How test will be performed: Manual
+Modules: Control Module, Input Module
 
-\item{T3 - Single Class\\}
+How test will be performed: PyTest on Windows 11 operating system
 
-Control: Manual
+\item{T\refstepcounter{testnum}\thetestnum \textbf{\label{T:}  
+ - Single Class}}
+
+Control: Automated
 					
 Initial State: 
 					
 Input: $C$ contains only one class
 					
-Output: Generate error about lack of classes.
+Output: Generate ValueError.
 
-Test Case Derivation: FR1, FR4
+Test Case Derivation: FR1, NFR2, NFR3
 
-How test will be performed: Manual
+Modules: Control Module, Input Module
 
-\item{T4 - Empty Data\\}
+How test will be performed: PyTest on Windows 11 operating system
 
-Control: Manual
+\item{T\refstepcounter{testnum}\thetestnum \textbf{\label{T:}  
+ - Wrong Number of Features: Data}}
+
+Control: Automated
+					
+Initial State: 
+					
+Input: $D$ has a different number of features.
+					
+Output: Generate TypeError.
+
+Test Case Derivation: FR1, NFR2, NFR3
+
+Modules: Control Module, Input Module
+
+How test will be performed: PyTest on Windows 11 operating system
+
+\item{T\refstepcounter{testnum}\thetestnum \textbf{\label{T:}  
+ - Wrong Size: Labels}}
+
+Control: Automated
+					
+Initial State: 
+					
+Input: $C$ has a different number of features.
+					
+Output: Generate TypeError.
+
+Test Case Derivation: FR1, NFR2, NFR3
+
+Modules: Control Module, Input Module
+
+How test will be performed: PyTest on Windows 11 operating system
+
+\item{T\refstepcounter{testnum}\thetestnum \textbf{\textbf{\label{T:}  
+ - Wrong Value Type in Data Matrix}}
+
+Control: Automated
 					
 Initial State: Pending Input
 					
-Input: $C$ or $D$ is null.
+Input: $D$ contains a string.
 					
-Output: Generate warning about empty data object.
+Output: Generate TypeError.
 
-Test Case Derivation: FR1, FR4
+Test Case Derivation: FR1, NFR2, NFR3
 
-How test will be performed: Manual
+Modules: Control Module, Input Module
 
-\item{T5 - Value out of range\\}
+How test will be performed: PyTest on Windows 11 operating system
 
-Control: Manual
+\item{T\refstepcounter{testnum}\thetestnum \textbf{\label{T:} 
+ - Wrong Value Type in Label Matrix}}
+
+Control: Automated
 					
 Initial State: Pending Input
 					
-Input: $C$ contains a value larger than $W_{\max}$ or smaller than $W_{\min}$. $D$ contains a value larger than $F_{\max}$ or smaller than $F_{\min}$. (Table \ref{Tabel:constants})
+Input: $C$ contains a string.
 					
-Output: Generate warning about data value out of range.
+Output: Generate TypeError.
 
-Test Case Derivation: FR1, FR4
+Test Case Derivation: FR1, NFR2, NFR3
 
-How test will be performed: Manual
+Modules: Control Module, Input Module
+
+How test will be performed: PyTest on Windows 11 operating system
+
+\item{T\refstepcounter{testnum}\thetestnum \textbf{\label{T:} 
+ - Labels Not a Vector}}
+
+Control: Automated
+					
+Initial State: Pending Input
+					
+Input: $C$ is not of size $n \times 1$.
+					
+Output: Generate TypeError.
+
+Test Case Derivation: FR1, NFR2, NFR3
+
+Modules: Control Module, Input Module
+
+How test will be performed: PyTest on Windows 11 operating system
 
 \end{enumerate}
 
-\subsubsection{Area of Testing 2: FR2, FR3, FR4}
+\subsubsection{Area of Testing 2: FR2, NFR1}
 This area of testing addresses the result of the program.
 Functional Requirement 2 states: CEWS System will preform the calculation.
-
-Functional Requirement 3 states: The CEWS System should generate an error if the calculation result exceeds the constraints.
-
-Functional Requirement 4 states: The CEWS System will generate an output.
+Nonfunctional Requirement 1 states: The accuracy of the computed solutions should meet the level needed
+for data analysis. The absolute error should be less than ACCURACY\_ERR\_ABS.
 
 \begin{enumerate}
 
-\item{T6 - UCI Dataset Tests\\}
+\item{T\refstepcounter{testnum}\thetestnum \textbf{\label{T:paper} 
+ - Output on UCI Dataset Tests}}
 
-Control: Manual
+Control: Automated
 					
 Initial State: Pending Input
 					
-Input: UCI Machine Learning Repository datasets: Breast Cancer, BUPA liver, Glass Ident, Haberman, Image seg, Ionosphere, Iris (Bezdek), Iris plants, Musk "Clean1", Pima Indians, Waveform, Wine recognition and Yeast.
+Input: UCI Machine Learning Repository datasets: Breast Cancer, Haberman, Glass Identitification, Image seg, Ionosphere, Iris (Bezdek), Iris, Wine recognition and Yeast.
 					
-Output: Normalized CEWS Measurement $J_N$.
+Output: Normalized CEWS Measurement $J_N$ within ACCURACY\_ERR\_ABS.
 
-Test Case Derivation: FR2, FR3, FR4
+Test Case Derivation: FR2, NFR1
+
+Modules: Control Module, Input Module, Calculation Module, Graph Module, Output Module
 					
-How test will be performed:
+How test will be performed: PyTest
 \begin{enumerate}
 \item Format a dataset
 \item Input the reformatted dataset to the system
@@ -320,19 +404,15 @@ How test will be performed:
 \centering
 \begin{tabular}{|c|c|} \hline
 Dataset & Expected Result \\ \hline \hline
-\iref{Breast Cancer} & 0.008\\ \hline
-\rref{BUPA liver} & 0.401 \\ \hline
-\rref{Glass Ident.} & 0.356 \\ \hline
-\rref{Haberman}   & 0.331 \\ \hline
-\rref{Image seg.} & 0.224 \\ \hline
-\rref{Ionosphere} & 0.137\\ \hline
-\rref{Iris (Bezdek)} & 0.090 \\ \hline
-\rref{Iris Plants} & 0.087 \\ \hline
-\rref{Musk "Clean1"} & 0.167 \\ \hline
-\rref{Pima Indians} & 0.310 \\ \hline
-\rref{Waveform} & 0.255 \\ \hline
-\rref{Wine recognition} & 0.093\\ \hline
-\rref{Yeast} & 0.524 \\ \hline
+Breast Cancer & 0.008\\ \hline
+Glass Identification & 0.356 \\ \hline
+Haberman   & 0.331 \\ \hline
+Image segments & 0.224 \\ \hline
+Ionosphere & 0.137\\ \hline
+Iris (Bezdek) & 0.090 \\ \hline
+Iris Plants & 0.087 \\ \hline
+Wine recognition & 0.093\\ \hline
+Yeast & 0.524 \\ \hline
 \end{tabular}
 \caption{CEWS Result on Benchmark Datasets from \cite{zighed_statistical_2005}}
 \label{Table:benchmarks}
@@ -340,7 +420,140 @@ Dataset & Expected Result \\ \hline \hline
 
 \end{enumerate}
 
+\subsubsection{Area of Testing 3: FR2}
+This area of testing addresses the graph generation of the program and output validation of the program.
+Functional Requirement 2 states: CEWS System will preform the calculation.
 
+\begin{enumerate}
+
+\item{T\refstepcounter{testnum}\thetestnum \textbf{\label{T:} 
+ - Graph Module and relativeNeighborhoodGraph Test on UCI Dataset Tests}}
+
+Control: Automated
+					
+Initial State: Pending Input
+					
+Input: UCI Machine Learning Repository datasets: Breast Cancer, Haberman, Glass Identitification, Image seg, Ionosphere, Iris (Bezdek), Iris, Wine recognition and Yeast.
+					
+Output: The Graph Module connection matrix.
+
+Test Case Derivation: FR2
+
+Modules: Graph Module
+					
+How test will be performed: PyTest
+\begin{enumerate}
+\item Format a dataset
+\item Input the reformatted dataset to the system
+\item Record the output of the graph module.
+\item Check the output matches the output of 
+relativeNeighborhoodGraph Python library \cite{pythonRNG}.
+
+\end{enumerate}
+
+\item{T\refstepcounter{testnum}\thetestnum \textbf{\label{T:out big} 
+ - Graph Generation: Square}}
+
+Control: Automated
+					
+Initial State: Pending Output
+					
+Input: A dataset of points that form a square.
+					
+Output: A connection matrix that has edges only on the edge of the square.
+
+Test Case Derivation: FR2
+
+Modules: Graph Module
+
+How test will be performed: PyTest
+
+\item{T\refstepcounter{testnum}\thetestnum \textbf{\label{T:out big} 
+ - Graph Generation: Line}}
+
+Control: Automated
+					
+Initial State: Pending Output
+					
+Input: A dataset of points that form a line.
+					
+Output: A connection matrix that has edges only connecting the closest points.
+
+Test Case Derivation: FR2
+
+Modules: Graph Module
+
+How test will be performed: PyTest
+
+\item{T\refstepcounter{testnum}\thetestnum \textbf{\label{T:out big} 
+ - Output Out of Bounds: Too Large}}
+
+Control: Automated
+					
+Initial State: Pending Output
+					
+Input: $J_N > J_{\max}$
+					
+Output: Generate ValueError.
+
+Test Case Derivation: FR2
+
+Modules: Output Module
+
+How test will be performed: PyTest
+
+\item{T\refstepcounter{testnum}\thetestnum \textbf{\label{T:out small} 
+ - Output out of Bounds: Too Small}}
+
+Control: Automated
+					
+Initial State: Pending Output
+					
+Input: $J_N < J_{\min}$
+					
+Output: Generate ValueError.
+
+Test Case Derivation: FR2
+
+Modules: Output Module
+
+How test will be performed: PyTest
+
+\end{enumerate}
+
+\subsubsection{Area of Testing 4: FR3}
+This area of testing addresses the reproducibility of the program.
+Functional Requirement 3 states: The CEWS System will generate the exact same output for the exact same dataset.
+
+\begin{enumerate}
+
+\item{T\refstepcounter{testnum}\thetestnum \textbf{\label{T:repro} 
+ - Reproducibility on UCI Dataset Tests}}
+
+Control: Automated
+					
+Initial State: Pending Input
+					
+Input: UCI Machine Learning Repository datasets: Breast Cancer, Haberman, Glass Identitification, Image seg, Ionosphere, Iris (Bezdek), Iris, Wine recognition and Yeast.
+					
+Output: Normalized CEWS Measurement $J_N$.
+
+Test Case Derivation: FR3
+
+Modules: Control Module, Input Module, Calculation Module, Graph Module, Output Module
+					
+How test will be performed: PyTest
+\begin{enumerate}
+\item Format a dataset
+\item Input the reformatted dataset to the system
+\item Record the value $J_N$
+\item Repeat SHUFFLE\_TIMES: Shuffle the input dataset and check the calculated value of $J_N$ against the first value $J_N$.
+\end{enumerate}
+
+\end{enumerate}
+
+
+\mycomment{
 \subsection{Tests for Nonfunctional Requirements}
 
 \mycomment{The nonfunctional requirements for accuracy will likely just reference the
@@ -363,10 +576,11 @@ The absolute error should be less than ACCURACY\_ERR\_ABS.
 %\paragraph{Title for Test}
 
 \begin{enumerate}
+\item{T\refstepcounter{testnum}\thetestnum \textbf{\label{T:}  
+ - }}
+\item{T7: Accuracy}
 
-\item{T7: Accuracy\\}
-
-Type: Manual
+Type: Automated
 					
 Initial State: Pending input
 					
@@ -374,7 +588,7 @@ Input/Condition: UCI Datasets listed in Table \ref{Table:benchmarks}.
 					
 Output/Result: Less than ACCURACY\_ERR\_ABS difference in results from Table \ref{Table:benchmarks}.
 					
-How test will be performed: Manual
+How test will be performed: PyTest
 
 \end{enumerate}
 
@@ -384,9 +598,9 @@ Non Functional Requirement 2 states: A program should be able to call CEWS Syste
 
 \begin{enumerate}
 
-\item{T8: Usability\\}
+\item{T8: Usability}
 
-Type: Manual
+Type: Automated
 					
 Initial State: Off
 					
@@ -394,7 +608,7 @@ Input/Condition: Simulated dataset
 					
 Output/Result: $J_N$
 					
-How test will be performed: Manually, the user will attempt to call the program's function.
+How test will be performed: PyTestly, the user will attempt to call the program's function.
 
 \end{enumerate}
 
@@ -404,9 +618,9 @@ Non Functional Requirement 3 states: The program code should be readable and cle
 
 \begin{enumerate}
 
-\item{T9: Maintainability\\}
+\item{T9: Maintainability}
 
-Type: Manual
+Type: Automated
 					
 Initial State: None
 					
@@ -424,9 +638,9 @@ Non Functional Requirement 4 states: The software should run on the Windows 11 o
 
 \begin{enumerate}
 
-\item{T9: Maintainability\\}
+\item{T9: Maintainability}
 
-Type: Manual
+Type: Automated
 					
 Initial State: Off
 					
@@ -434,39 +648,19 @@ Input/Condition: Simulated dataset
 					
 Output/Result: $J_N$
 					
-How test will be performed: Manually on a computer running Windows 11.
+How test will be performed: PyTest on a computer running Windows 11.
 
 \end{enumerate}
+}
 
+\afterpage{
+\begin{landscape}
 \subsection{Traceability Between Test Cases and Requirements}
+\input{./docs/VnV/testcases_to_req.tex}
+\end{landscape}
+}
 
-\mycomment{Provide a table that shows which test cases are supporting which
-  requirements.}
-
-%\afterpage{
-%\begin{landscape}
-\begin{table}[h!]
-\centering
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
-\hline
-	& T1 & T2 & T3 & T4 & T5 & T6 & T7 & T8 & T9\\
-\hline
-FR1  &X&X&X&X&X& & & &  \\ \hline
-FR2  & & & & &X& & & &  \\ \hline
-FR3  & & & & &X& & & & \\ \hline
-FR4  & &X&X&X&X& & & &  \\ \hline
-NFR1 & & & & & &X& & &  \\ \hline
-NFR2 & & & & & & &X& &  \\ \hline
-NFR3 & & & & & & & &X&  \\ \hline
-NFR4 & & & & & & & & &X  \\ \hline
-\end{tabular}
-\caption{Which test cases are supporting which requirements}
-\label{Table:test_support}
-\end{table}
-%\end{landscape}
-%}
-
-
+\mycomment{
 \section{Unit Test Description}
 
 This section is intentionally left blank until the MIS is completed.
@@ -500,9 +694,9 @@ This section is intentionally left blank until the MIS is completed.
 
 \begin{enumerate}
 
-\item{test-id1\\}
+\item{test-id1}}
 
-Type: \mycomment{Functional, Dynamic, Manual, Automatic, Static etc. Most will
+Type: \mycomment{Functional, Dynamic, Automated, Automatic, Static etc. Most will
   be automatic}
 					
 Initial State: 
@@ -517,7 +711,7 @@ How test will be performed:
 					
 \item{test-id2\\}
 
-Type: \mycomment{Functional, Dynamic, Manual, Automatic, Static etc. Most will
+Type: \mycomment{Functional, Dynamic, Automated, Automatic, Static etc. Most will
   be automatic}
 					
 Initial State: 
@@ -553,7 +747,7 @@ How test will be performed:
 
 \item{test-id1\\}
 
-Type: \mycomment{Functional, Dynamic, Manual, Automatic, Static etc. Most will
+Type: \mycomment{Functional, Dynamic, Automated, Automatic, Static etc. Most will
   be automatic}
 					
 Initial State: 
@@ -566,7 +760,7 @@ How test will be performed:
 					
 \item{test-id2\\}
 
-Type: Functional, Dynamic, Manual, Static etc.
+Type: Functional, Dynamic, Automated, Static etc.
 					
 Initial State: 
 					
@@ -581,8 +775,15 @@ How test will be performed:
 \subsubsection{Module ?}
 
 ...
+}
 
+\afterpage{
+\begin{landscape}
 \subsection{Traceability Between Test Cases and Modules}
+\input{./docs/VnV/testcases_to_modules.tex}
+\end{landscape}
+}
+
 }
 \mycomment{Provide evidence that all of the modules have been considered.}
 
@@ -590,13 +791,13 @@ How test will be performed:
 \phantomsection
 \addcontentsline{toc}{section}{References}
 \bibliographystyle{IEEEtran}
-\bibliography{refs/theoryrefs}
+\bibliography{refs/theoryrefs, refs/References}
 
 \newpage
 
 \section{Appendix}
 
-This is where you can place additional information.
+%This is where you can place additional information.
 
 \subsection{Symbolic Parameters}
 
@@ -616,7 +817,8 @@ Their values are defined in this section for easy maintenance.
   $W_{\max}$ &  $2^{8} - 1$\\
   $J_{\max}$ & 1\\
   $J_{\min}$ & 0\\
-  ACCURACY\_ERR\_ABS & 0.01 \\
+  ACCURACY\_ERR\_ABS & 0.1 \\
+  SHUFFLE\_TIMES & 3 \\
   \bottomrule
 \end{longtable*}
 \end{table}
