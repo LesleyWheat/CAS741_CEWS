@@ -31,7 +31,7 @@ def TC_line():
     expectedMatrix = np.asarray(expectedMatrix, dtype=np.int16)
     return (data, expectedMatrix)
 
-# Function for tests
+# Function for tests to check edges
 def assertAllEdges(graphExpected, graphResult):
     n = graphExpected.shape[0]
 
