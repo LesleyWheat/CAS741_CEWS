@@ -257,23 +257,25 @@ class runBenchmarkDataset:
         assert isclose(self.Jn, N1, abs_tol=max(TOL_N1*N1, TOL_N1_MIN))
     
     def checkRandomize(self):
-        # self.checkJnGot()
-        # self.checkEdgesGot()
+        self.checkJnGot()
+        self.checkEdgesGot()
 
         number_of_tests = 3
 
+        list_randomJn = np.empty((number_of_tests))
+
         for i in range(1, number_of_tests):
-            testFunc.randomizeEdges(self.data, self.labels)
+            list_randomJn[i] = testFunc.randomizeDataJn(self.data, self.labels)
+            print(str(list_randomJn[i]))
 
+        for i in range(1, number_of_tests):
+            assert self.Jn == list_randomJn[i]
 
-#           list_randomJn = np.empty((number_of_tests))
+    def checkRandomize_edges(self):
+        self.checkEdgesGot()
 
-#         for i in range(1, number_of_tests):
-#             list_randomJn[i] = testFunc.randomizeDataJn(self.data, self.labels)
-#             print(str(list_randomJn[i]))
-
-#         for i in range(1, number_of_tests):
-#             assert isclose(self.Jn, list_randomJn[i], rel_tol=TOL_FLOAT) """
+        # Check once over all the edges
+        testFunc.randomizeEdges(self.data)
     
     def checkEdgeByEdge(self):
         assert testFunc.compareEdges(self.data, self.labels)
@@ -281,7 +283,7 @@ class runBenchmarkDataset:
 
 #-----------------------------------------------------------------
 # Make test objects
-pytest.testObjects_names = ["iris", "irisBezdek", "yeast",
+pytest.testObjects_names = ["yeast","iris", "irisBezdek",
                             "breastCancer","wine","glass",
                             "ionosphere","haberman","imgSeg"]
 
@@ -369,7 +371,8 @@ def test_checkEdgesLibraryUncut(test_obj, name):
 @pytest.mark.graphLibrary
 @pytest.mark.GM
 @pytest.mark.slow
-def test_checkEdgeByEdge(test_obj, name):
+@pytest.mark.VnV
+def test_T11_checkEdgeByEdge(test_obj, name):
     test_obj.checkEdgeByEdge()
 
 #### Jn Tests ####
@@ -378,7 +381,8 @@ def test_checkEdgeByEdge(test_obj, name):
 @pytest.mark.benchmarks
 @pytest.mark.paperCompare
 @pytest.mark.FP
-def test_checkJn(test_obj, name):
+@pytest.mark.VnV
+def test_T10_checkJn(test_obj, name):
     test_obj.checkJn()
 
 # Check the Jn value vs the relative neighbourhood graph library
@@ -389,6 +393,7 @@ def test_checkJn(test_obj, name):
 def test_checkJn_lib(test_obj, name):
     test_obj.checkJn_lib()
 
+#### Randomize Tests ####
 # Check the Jn remains stable on dataset randomization
 @pytest.mark.parametrize("test_obj, name", pytest.benchmarks)
 @pytest.mark.benchmarks
@@ -397,6 +402,16 @@ def test_checkJn_lib(test_obj, name):
 @pytest.mark.FP
 def test_checkRandomize(test_obj, name):
     test_obj.checkRandomize()
+
+# Check edges remains stable on dataset randomization
+@pytest.mark.parametrize("test_obj, name", pytest.benchmarks)
+@pytest.mark.benchmarks
+@pytest.mark.random
+@pytest.mark.slow
+@pytest.mark.FP
+@pytest.mark.VnV
+def test_T16_checkRandomize_edges(test_obj, name):
+    test_obj.checkRandomize_edges()
 
 #### N1 Tests ####
 @pytest.mark.parametrize("test_obj, name", pytest.benchmarks)

@@ -85,14 +85,16 @@ def TC_labelNotVector():
 
 @pytest.mark.FP
 @pytest.mark.IM
-def test_IM_FP_good():
+@pytest.mark.VnV
+def test_T1_IM_FP_good():
     inData, inLabels = TC_good()
     Jn = CEWS.cutEdgeWeight(inData, inLabels)
 
 
 @pytest.mark.FP
 @pytest.mark.IM
-def test_IM_FP_wrongSizeLabel():
+@pytest.mark.VnV
+def test_T2_IM_FP_wrongSizeLabel():
     # Too Many labels
     with pytest.raises(ValueError) as exc_info:
         inData, inLabels = TC_moreLabels()
@@ -101,7 +103,8 @@ def test_IM_FP_wrongSizeLabel():
 
 @pytest.mark.FP
 @pytest.mark.IM
-def test_IM_FP_wrongSizeData():
+@pytest.mark.VnV
+def test_T3_IM_FP_wrongSizeData():
     # Too much data
     with pytest.raises(ValueError) as exc_info:
         inData, inLabels = TC_moreData()
@@ -110,7 +113,8 @@ def test_IM_FP_wrongSizeData():
 
 @pytest.mark.FP
 @pytest.mark.IM
-def test_IM_FP_oneClass():
+@pytest.mark.VnV
+def test_T4_IM_FP_oneClass():
     with pytest.raises(ValueError) as exc_info:
         inData, inLabels = TC_sameLabels()
         CEWS.cutEdgeWeight(inData, inLabels)
@@ -118,7 +122,26 @@ def test_IM_FP_oneClass():
 
 @pytest.mark.FP
 @pytest.mark.IM
-def test_IM_FP_formatTypeData():
+@pytest.mark.VnV
+def test_T5_IM_FP_dataFormatSize():
+    with pytest.raises(TypeError) as exc_info:
+        inData, inLabels = TC_dataFormatSize()
+        CEWS.cutEdgeWeight(inData, inLabels)
+
+
+@pytest.mark.FP
+@pytest.mark.IM
+@pytest.mark.VnV
+def test_T6_IM_FP_labelFormatSize():
+    with pytest.raises(TypeError) as exc_info:
+        inData, inLabels = TC_labelFormatSize()
+        CEWS.cutEdgeWeight(inData, inLabels)
+
+
+@pytest.mark.FP
+@pytest.mark.IM
+@pytest.mark.VnV
+def test_T7_IM_FP_formatTypeData():
     with pytest.raises(TypeError) as exc_info:
         inData, inLabels = TC_dataFormatType()
         CEWS.cutEdgeWeight(inData, inLabels)
@@ -126,7 +149,8 @@ def test_IM_FP_formatTypeData():
 
 @pytest.mark.FP
 @pytest.mark.IM
-def test_IM_FP_formatTypeLabel():
+@pytest.mark.VnV
+def test_T8_IM_FP_formatTypeLabel():
     with pytest.raises(TypeError) as exc_info:
         inData, inLabels = TC_labelFormatType()
         CEWS.cutEdgeWeight(inData, inLabels)
@@ -134,23 +158,8 @@ def test_IM_FP_formatTypeLabel():
 
 @pytest.mark.FP
 @pytest.mark.IM
-def test_IM_FP_formatTypeData():
-    with pytest.raises(TypeError) as exc_info:
-        inData, inLabels = TC_dataFormatType()
-        CEWS.cutEdgeWeight(inData, inLabels)
-
-
-@pytest.mark.FP
-@pytest.mark.IM
-def test_IM_FP_formatTypeLabel():
-    with pytest.raises(TypeError) as exc_info:
-        inData, inLabels = TC_labelFormatType()
-        CEWS.cutEdgeWeight(inData, inLabels)
-
-
-@pytest.mark.FP
-@pytest.mark.IM
-def test_IM_FP_labelNotVector():
+@pytest.mark.VnV
+def test_T9_IM_FP_labelNotVector():
     with pytest.raises(TypeError) as exc_info:
         inData, inLabels = TC_labelNotVector()
         CEWS.cutEdgeWeight(inData, inLabels)

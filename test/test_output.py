@@ -24,14 +24,16 @@ def test_IM_good():
 
 
 @pytest.mark.OM
-def test_IM_tooBig():
+@pytest.mark.VnV
+def test_T14_IM_tooBig():
     JN = 1.1
     with pytest.raises(ValueError) as exc_info:
         outputModule.verifyOutput(JN)
 
 
 @pytest.mark.OM
-def test_IM_tooSmall():
+@pytest.mark.VnV
+def test_T15_IM_tooSmall():
     JN = -0.1
 
     with pytest.raises(ValueError) as exc_info:

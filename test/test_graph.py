@@ -49,7 +49,7 @@ def assertAllEdges(graphExpected, graphResult):
 @pytest.mark.FP
 @pytest.mark.GM
 @pytest.mark.VnV
-def test_GM_square():
+def test_T12_GM_square():
     data, expectedMatrix = TC_square()
     graph = graphModule.relativeNeighbourGraph(data)
     assertAllEdges(expectedMatrix, graph)
@@ -57,7 +57,7 @@ def test_GM_square():
 @pytest.mark.FP
 @pytest.mark.GM
 @pytest.mark.VnV
-def test_GM_line():
+def test_T13_GM_line():
     data, expectedMatrix = TC_line()
     graph = graphModule.relativeNeighbourGraph(data)
     assertAllEdges(expectedMatrix, graph)
