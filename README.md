@@ -1,4 +1,4 @@
-# Project Name
+# CEWS System
 
 Developer Names: Lesley Wheat
 
@@ -22,8 +22,7 @@ Test installation instructions:
 - Run command: python -m venv .venv
 - Run command: source ./.venv/Scripts/activate
 - Run command: pip install -r requirements-dev.txt
+- To run tests for Verification and Validation, use command: pytest -v -m VnV
 - To run all tests (very slow), use command: pytest
-- To run tests using main interface, use command: pytest -m FP
 - To see all test markers, read file: pytest.ini
-- Leave venv: deactivate
 
