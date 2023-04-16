@@ -1,11 +1,29 @@
 \documentclass[12pt, titlepage]{article}
 
-\usepackage{booktabs}
-\usepackage{tabularx}
+%Page Size
+\usepackage{geometry}
+\geometry{a4paper}
+
+\usepackage{amsmath, mathtools}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{colortbl}
+\usepackage{xr}
 \usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{xfrac}
+\usepackage{tabularx}
+\usepackage{float}
+\usepackage{siunitx}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{pdflscape}
+\usepackage{afterpage}
+
 \hypersetup{
     colorlinks,
-    citecolor=black,
+    citecolor=blue,
     filecolor=black,
     linkcolor=red,
     urlcolor=blue
@@ -30,8 +48,8 @@
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-Date 1 & 1.0 & Notes\\
-Date 2 & 1.1 & Notes\\
+2023-03-27 & 0.1 & Creation\\
+2023-04-14 & 1.0 & Version 1.0\\
 \bottomrule
 \end{tabularx}
 
@@ -45,54 +63,293 @@ Date 2 & 1.1 & Notes\\
   \textbf{symbol} & \textbf{description}\\
   \midrule 
   T & Test\\
+  CEWS & Cut Edge Weight Statistic\\
+  $J_N$ & Normalized Multiclass Cut Edge Weight Measurement\\
+  $D$ & Input Data Matrix\\
+  $C$ & Input Class Matrix\\
+  FR & Functional Requirement \\
+  NFR & Non Functional Requirement \\
   \bottomrule
 \end{tabular}\\
 
-\wss{symbols, abbreviations or acronyms -- you can reference the SRS tables if needed}
+%\wss{symbols, abbreviations or acronyms -- you can reference the SRS tables if needed}
 
 \newpage
 
 \tableofcontents
 
+\newpage
+
 \listoftables %if appropriate
 
-\listoffigures %if appropriate
+%\listoffigures %if appropriate
 
 \newpage
 
 \pagenumbering{arabic}
 
-This document ...
+This document reviews the Verification and Validation specifications as
+outlined in the \href{https://github.com/LesleyWheat/CAS741_CEWS/blob/main/docs/VnVPlan/VnVPlan.pdf}{VnVPlan}.
 
 \section{Functional Requirements Evaluation}
 
+\begin{itemize}
+    \item R1: Input
+    \begin{itemize}
+    \item Description: CEWS System will read the input data.
+    \item Result: Pass
+    \end{itemize}
+    \item R2: Calculation
+    \begin{itemize}
+    \item Description: After reading the input data, CEWS System will perform the calculation and output the results.
+    \item Result: Unclear
+    \item Explanation: Issues with existing implementations may invalidate the test cases (see Section \ref{sec:comparision}).
+    \end{itemize}
+    \item R3: Reproducibility
+    \begin{itemize}
+    \item Description: The CEWS System will generate the exact same output for the exact same dataset.
+    \item Result: Pass
+    \end{itemize}
+\end{itemize}
+
+
 \section{Nonfunctional Requirements Evaluation}
 
-\subsection{Usability}
-		
-\subsection{Performance}
+\begin{itemize}
+    \item NFR1: Accuracy 
+    \begin{itemize}
+    \item Description: The accuracy of the computed solutions should meet the level needed for data analysis.
+    \item Result: Unclear, due to R2 being unclear.
+    \end{itemize}
+    \item NFR2: Usability 
+    \begin{itemize}
+    \item Description: program should be able to call CEWS System by calling a function of the form CEWS(D, C) and CEWS System should return the output.
+    \item Result: Pass
+    \end{itemize}
+    \Needspace{5\baselineskip}
+    \item NFR3: Portability 
+    \begin{itemize}
+    \item Description: The software should run on the Windows 11 operating system.
+    \item Result: Pass
+    \end{itemize}
+\end{itemize}
 
-\subsection{etc.}
-	
-\section{Comparison to Existing Implementation}	
+\section{Test Results}
+This section reviews the results of the automated tests.
 
-This section will not be appropriate for every project.
+\begin{itemize}
+    \item T1
+    \begin{itemize}
+    \item Result: Pass
+    \end{itemize}
+    \item T2
+    \begin{itemize}
+    \item Result: Pass
+    \end{itemize}
+    \item T3
+    \begin{itemize}
+    \item Result: Pass
+    \end{itemize}
+    \item T4
+    \begin{itemize}
+    \item Result: Pass
+    \end{itemize}
+    \item T5
+    \begin{itemize}
+    \item Result: Pass
+    \end{itemize}
+    \item T6
+    \begin{itemize}
+    \item Result: Pass
+    \end{itemize}
+    \item T7
+    \begin{itemize}
+    \item Result: Pass
+    \end{itemize}
+    \item T8
+    \begin{itemize}
+    \item Result: Pass
+    \end{itemize}
+    \item T9
+    \begin{itemize}
+    \item Result: Pass
+    \end{itemize}
+    \item T10
+    \begin{itemize}
+    \item See Section \ref{sec:T10}.
+    \end{itemize}
+    \item T11
+    \begin{itemize}
+    \item See Section \ref{sec:T11}.
+    \end{itemize}
+    \item T12
+    \begin{itemize}
+    \item Result: Pass
+    \end{itemize}
+    \item T13
+    \begin{itemize}
+    \item Result: Pass
+    \end{itemize}
+    \item T14
+    \begin{itemize}
+    \item Result: Pass
+    \end{itemize}
+    \item T15
+    \begin{itemize}
+    \item Result: Pass
+    \end{itemize}
+    \Needspace{20\baselineskip}
+    \item T16
+    \begin{itemize}
+    \item Result: 
+        \begin{table}[H]
+        \centering
+        \begin{tabular}{|c|c|c|}
+        \hline
+        Benchmark Dataset & Test Result \\ \hline
+        Breast Cancer & Pass \\ \hline
+        Glass Identification & Pass \\ \hline
+        Haberman  &  Pass\\ \hline
+        Image Segments &  Pass \\ \hline
+        Ionosphere & Pass  \\ \hline
+        Iris (Bezdek) &  Pass \\ \hline
+        Iris Plants &  Pass \\ \hline
+        Wine Recognition &  Pass \\ \hline
+        Yeast &  Pass \\ \hline
+        \end{tabular}
+        \caption{T16 Results}
+        \label{Table:T16}
+        \end{table}
+    \end{itemize}
+\end{itemize}
 
-\section{Unit Testing}
+
+\section{Comparison to Existing Implementation}	\label{sec:comparision}
+
+There are two existing implementations for different parts of the system. 
+Note: the CEWS result implemented with \cite{pythonRNG} does not match the results from \cite{zighed_statistical_2005}.
+It's possible there are errors in one or both of the implementations.
+
+No accessible graph generation implementation has been able to reproduce the results in \cite{zighed_statistical_2005}.
+The implementation used by the original authors does not run on modern operating systems.
+It is possible but unlikely that the benchmark datasets have changed since \cite{zighed_statistical_2005} was published.
+
+\cite{pythonRNG} implements the same algorithm used in Graph Module. 
+However, \cite{pythonRNG} is not very credible. 
+Also, \cite{pythonRNG} has an error based on the SRS requirements as discussed in Section \ref{sec:change repro}.
+
+However, even if the graphs are not constructed using exactly the same method then it doesn't mean the program doesn't measure data complexity.
+In \cite{zighed_statistical_2005}, the authors stated they achieved similar results with a Gabriel Graph or Minimum Spanning Tree.
+Another common data complexity measure, Fraction of Borderline Points uses a Minimum Spanning Tree and nearest neighbour graphs are often used as well.
+As such the program may still be able to measure data complexity even if the program doesn't pass these tests.
+
+\Needspace{20\baselineskip}
+\subsection{T10} \label{sec:T10}
+
+This test compares the program results to the results from \cite{zighed_statistical_2005}.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+Benchmark Dataset & Test Result \\ \hline
+Breast Cancer &  Pass\\ \hline
+Glass Identification &  Pass\\ \hline
+Haberman  &  Pass \\ \hline
+Image Segments &  Pass \\ \hline
+Ionosphere &  Pass \\ \hline
+Iris (Bezdek) &   Pass\\ \hline
+Iris Plants &   Pass\\ \hline
+Wine Recognition &  Fail \\ \hline
+Yeast &  Pass\\ \hline
+\end{tabular}
+\caption{T10 Results}
+\label{Table:t10}
+\end{table}
+
+The test fails on the Wine Recognition dataset with significant deviation (expected: 0.093, result: 0.268) which could indicate a legitimate error in the program.
+
+\Needspace{20\baselineskip}
+\subsection{T11} \label{sec:T11}
+
+This test compares the program results to the results from \cite{pythonRNG}.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+Benchmark Dataset & Test Result \\ \hline
+Breast Cancer &  Pass\\ \hline
+Glass Identification &  Pass\\ \hline
+Haberman  &  Pass \\ \hline
+Image Segments &   Pass\\ \hline
+Ionosphere &   Pass\\ \hline
+Iris (Bezdek) &  Fail \\ \hline
+Iris Plants &  Fail \\ \hline
+Wine Recognition &  Pass \\ \hline
+Yeast & Fail \\ \hline
+\end{tabular}
+\caption{T11 Results}
+\label{Table:t11}
+\end{table}
+
+
+
+%\section{Unit Testing}
 
 \section{Changes Due to Testing}
 
-\section{Automated Testing}
-		
-\section{Trace to Requirements}
-		
-\section{Trace to Modules}		
+\subsection{Relative Neighbourhood Graph Algorithm}
+The Graph Module was converted to the simplest, naive algorithm for constructing a Relative Neighbourhood Graph in case the faster algorithms had slightly different behaviour in some cases and that was causing T11 and T16 to fail.
+Early implementations did pass T11 until changes made for Section \ref{sec:change repro}.
 
-\section{Code Coverage Metrics}
+\subsection{Reproduciblility} \label{sec:change repro}
+During troubleshooting, the data was randomized to see if that was influencing the output of the existing implementations.
+There was a difference and there should not be for this application so the software requirements were revised to reflect that.
 
-\bibliographystyle{plainnat}
-\bibliography{../../refs/References}
+In a previous version, T16 would fail on the Yeast dataset but all T11 test cases would pass. Upon closer examination, it appears a numerical computation error (less than 1e-15) caused the ordering of the dataset to result in slightly different values for the distance. Both implementations had this error thus their result was the same. To fix the error in T16, an equality condition was converted to condition with a very small margin. This results in more edges being created in the relative neighbourhood graph. This fixed the error in T16 but then the values never longer match the existing implementation and T11 fails.
 
+Notability, this case of distances between points being extremely similar exists only in some of the tested datasets. 
+Only Yeast failed T16 originally but the changes also effected Iris Plants and Iris (Bezdek) as shown in T11.
+The other datasets appear to not have points that meet this condition, as they were unaffected by the change.
+Meeting the requirement R3 is more important for this implementation that matching existing implementations.
+
+\subsection{Duplicate Points}
+During testing, several deviations from expected results were traced back to the existence of duplicate points in the test data. Duplicate points have a distance of zero therefore always end up connected which stops the Graph Module from creating edges to non-duplicate close points. The program was change so points that are extremely close are considered to be duplicates and edges are not created between them.
+
+\subsection{Benchmark Dataset Processing}
+Some of the benchmark datasets from the UCI Machine Learning Repository had question marks in some fields to represent missing data.
+These benchmarks failed their tests due to the Input Module detecting them and generating an error.
+The samples with missing data were then removed from the datasets prior to running the program.
+
+%\section{Automated Testing}
+
+\afterpage{
+\begin{landscape}
+\subsection{Traceability Between Test Cases and Requirements}
+\input{./docs/VnV/testcases_to_req.tex}
+\end{landscape}
+}
+
+\afterpage{
+\begin{landscape}
+\section{Traceability Between Test Cases and Modules}
+\input{./docs/VnV/testcases_to_modules.tex}
+\end{landscape}
+}
+
+%\section{Code Coverage Metrics}
+
+\newpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\bibliographystyle{IEEEtran}
+\bibliography{refs/theoryrefs, refs/References}
+
+%\bibliographystyle{plainnat}
+%\bibliography{../../refs/References, }
+
+\mycomment{
 \newpage{}
 \section*{Appendix --- Reflection}
 
@@ -103,5 +360,5 @@ graduate attribute of Lifelong Learning.  Please answer the following questions:
   \item 
   \item 
 \end{enumerate}
-
+}
 \end{document}

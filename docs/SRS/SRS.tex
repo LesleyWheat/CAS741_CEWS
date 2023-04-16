@@ -179,6 +179,12 @@ The choice of symbols was made to be consistent with the statistics literature.
 \midrule 
 $I(...)$ & N/A & Indicator Function, returns 1 if its argument is true and 0 otherwise \\ %Ellipsis
 $J_N$ & N/A & Normalized Multiclass Cut Edge Weight Measurement \\
+$n$ & N/A & Number of observations \\
+$m$ & N/A & Number of features \\
+$C$ & N/A & Class label matrix of size $n \times 1$\\
+$D$ & N/A & Data matrix of size $n \times m$\\
+$V$ & N/A & Graph connection matrix \\
+$d(a, b)$ & N/A & Euclidean distance between points $a$ and $b$ \\
 \bottomrule
 \end{longtable*}
 \mycomment{Use your problems actual symbols.  The si package is a good idea to use for
@@ -635,11 +641,10 @@ likely change [LC], in which the respective assumption is used.
 \item[A\refstepcounter{assumpnum}\theassumpnum \label{A:fp}:]
 All rational numbers can be represented in a base-2 computer system. Operations performed on rational numbers in a computer system is exact. Any computation rounding error is negligible and does not need to be taken into account.
 
-\item[A\refstepcounter{assumpnum}\theassumpnum \label{A:CWN}:]
-Class labels are represented as whole numbers. All observations from one class share the same class label.
+\item[A\refstepcounter{assumpnum}\theassumpnum \label{A:CWN}:] All observations from one class share the same class label.
 
-\item[A\refstepcounter{assumpnum}\theassumpnum \label{A:NOF}:]
-Each observation has the same number of features. No features are null. 
+%\item[A\refstepcounter{assumpnum}\theassumpnum \label{A:NOF}:]
+%Each observation has the same number of features. No features are null. 
 
 \item[A\refstepcounter{assumpnum}\theassumpnum \label{A:weights}:]
 The user does not want to use weights for the edge calculation.
@@ -686,6 +691,8 @@ J = \sum_{r=1}^{k-1} \sum_{s=r+1}^{k} J_{r,s} =  \frac {1}{2} \sum_{2}^{} Z_{ij}
 }
 % #5 description
 {
+Based on assumptions \ref{A:fp}, \ref{A:CWN}, \ref{A:NOF}, \ref{A:weights}, \ref{A:rng} and \ref{A:pvalue}.
+
 The above equations give the formula for calculating the multiclass is the sum of cut edges where $k$ is the number of classes, $Z_{ij}$ is a boolean variable indicating different classes (one if the vertices $i$ and $j$ have different and zero if not) and $J_{r,s}$ is the sum of edges linking a vertex of class $r$ and a vertex of class $s$.
 
 }
@@ -781,6 +788,7 @@ RNG is an undirected graph constructed by connecting an edge between two points 
 & $P$ is a set of $n$ points in real space with dimension(s) $m$ with elements $p_{i}$: $i=1,...,n$.\\
 & $V$ is the connection matrix where $v_{ij} =  1$ if there is an edge and $v_{ij} =  0$ if not.\\
 & $d(a,b)$ is the Euclidean distance between points $a$ and $b$ given by \ddref{DD:ED}.\\
+& Based on assumptions \ref{A:fp}. \\
 \hline
   Source & \cite{zighed_statistical_2005} \\ \hline
   Ref.\ By & \iref{IM:CEWS} \\ \hline
@@ -801,8 +809,8 @@ Label &\bf Sum of Cut Edges \\ \hline
 SI Units& N/A \\ \hline
 Equation & $J = \sum_{r=1}^{k-1} \sum_{s=r+1}^{k} J_{r,s} =  \frac {1}{2} \sum_{2}^{} Z_{ij}$  \\ \hline
 Description &
-The above equation gives the formula for calculating the multiclass is the sum of cut edges.
-\\
+Based on assumptions \ref{A:fp}, \ref{A:CWN}, \ref{A:NOF}, \ref{A:weights}, \ref{A:rng} and \ref{A:pvalue}. \\
+& The above equation gives the formula for calculating the multiclass is the sum of cut edges. \\
 & $k$ is the number of classes.\\
 & $J_{r,s}$ is the sum of edges linking a vertex of class $r$ and a vertex of class $s$ based on \dref{GD:RNG}.\\
 & $Z_{ij}$ is a boolean variable indicating different classes (one if the vertices $i$ and $j$ have different and zero if not).\\
@@ -861,6 +869,7 @@ Symbol &$d(a,b)$\\ \hline
   Description & 
                 $d(a,b)$ is the Euclidiean distance between points $a$ and $b$ in Euclidean space with $n$ dimensions.  
                 $a_i$ and $b_i$ are Euclidean vectors from the origin. 
+                Based on assumption \ref{A:fp}. 
   \\ \hline
   Sources& N/A \\ \hline
   Ref.\ By & \dref{GD:RNG} \\ \hline
@@ -910,7 +919,8 @@ The goal GS\ref{G:CEWS} is solved by \iref{IM:CEWS}, which is the implementation
     & $I_{r}  = \sum^{n-1}_{i=1} \sum^n_{j=i+1} V_{ij} \times I(c_i = r \And c_j = r)$ \\
     \hline
     Description &
-    The above equation gives the formula for calculating the the multiclass normalized cut edge weight measurement. \\
+    Based on assumptions \ref{A:fp}, \ref{A:CWN}, \ref{A:weights}, \ref{A:rng} and \ref{A:pvalue}. \\
+    & The above equation gives the formula for calculating the the multiclass normalized cut edge weight measurement. \\
     & $k$ is the number of classes.\\
     & $V_{ij}$ is the RNG connection matrix for matrix $D$ given by \dref{GD:RNG}.\\
     \hline
@@ -1049,7 +1059,7 @@ qualities that the software is expected to exhibit.
 % Read input
 \item[R\refstepcounter{reqnum}\thereqnum \label{R:inputs}:] CEWS System will read the input data.
 \begin{itemize}
-    \item Any constraint in \ref{sec:dataConstraints} is violated then CEWS System will generate an appropriate error message. 
+    \item Any constraint in \ref{sec:dataConstraints} is violated, the CEWS System will generate an appropriate error message. 
     \item The input matrices are formatted as iterable objects.
 \end{itemize}
 
@@ -1061,18 +1071,27 @@ qualities that the software is expected to exhibit.
 %\item[R\refstepcounter{reqnum}\thereqnum \label{R_OutputInputs}:] \mycomment{It isn't always required, but often echoing the inputs as part of the output is a good idea.}
 
 % Do calculation
-\item[R\refstepcounter{reqnum}\thereqnum \label{R:calculate}:] After reading the input data, CEWS System will perform the calculation in \iref{IM:CEWS}.
-\mycomment{Calculation
-    related requirements.}
+\item[R\refstepcounter{reqnum}\thereqnum \label{R:calculate}:] After reading the input data, CEWS System will perform the calculation in \iref{IM:CEWS} and output the result.
+\begin{itemize}
+    \item The CEWS System should generate an error if the calculation result exceeds the constraints in \ref{sec:correctSolution}.
+    \item In case an error occurs, an error will be raised by the program.
+    \item In case no error occurs, no error will be raised and $J_N$ will be returned as a float type.
+\end{itemize}
 
-\item[R\refstepcounter{reqnum}\thereqnum \label{R:verifyOutput}:] The CEWS System should generate an error if the calculation result exceeds the constraints in \ref{sec:correctSolution}.
+%\item[R\refstepcounter{reqnum}\thereqnum \label{R:verifyOutput}:] The CEWS System should generate an error if the calculation result exceeds the constraints in \ref{sec:correctSolution}.
   \mycomment{Verification related requirements.}
 
 % Output
-\item[R\refstepcounter{reqnum}\thereqnum \label{R:output}:] The CEWS System will generate an output.
+%\item[R\refstepcounter{reqnum}\thereqnum \label{R:output}:] The CEWS System will generate an output.
+%\begin{itemize}
+    %\item In case an error occurs, an error should be raised by the program.
+    %\item In case no error occurs, no error should be raised and $J_N$ will be returned as a float type.
+%\end{itemize}
+
+% Reproducible
+\item[R\refstepcounter{reqnum}\thereqnum \label{R:repro}:] The CEWS System will generate the exact same output for the exact same dataset.
 \begin{itemize}
-    \item In case an error occurs, an error should be raised by the program.
-    \item In case no error occurs, no error should be raised and $J_N$ will be returned as a float type.
+    \item Including if the order of the dataset changes, as long as the same labels are associated with the same points.
 \end{itemize}
 
 \end{itemize}
@@ -1102,21 +1121,23 @@ be covered in the Verification and Validation document.}
 \noindent \begin{itemize}
 
 \item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR:accuracy}:]
-  \textbf{Accuracy} As per \aref{A:fp}, any calculation error should be negligible. The accuracy of the computed solutions should meet the level needed for data analysis. The absolute error should be less than ACCURACY\_ERR\_ABS. (See Table  \label{Tabel:constants})
+  \textbf{Accuracy} 
+  %As per \aref{A:fp}, any calculation error should be negligible. 
+  The accuracy of the computed solutions should meet the level needed for data analysis. The absolute error should be less than ACCURACY\_ERR\_ABS. (See Table \ref{Tabel:constants})
   \mycomment{Characterize the accuracy by giving the context/use for the software.  
   Maybe something like, ``The accuracy of the computed solutions should meet the level needed for $<$engineering or scientific application$>$.
   The level of accuracy achieved by \progname{} shall be described following the procedure given in Section~X of the Verification and Validation Plan.''
   A link to the VnV plan would be a nice extra.}
 
-\item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR:usability}:] \textbf{Usability} A program should be able to call CEWS System by calling a function of the form CEWS($D$, $C$) and CEWS System should return the output as described in \rref{R:output}.
+\item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR:usability}:] \textbf{Usability} A program should be able to call CEWS System by calling a function of the form CEWS($D$, $C$) and CEWS System should return the output.
   \mycomment{Characterize the usability by giving the context/use for the software.
     You should likely reference the user characteristics section.  The level of
     usability achieved by the software shall be described following the
     procedure given in Section~X of the Verification and Validation Plan.  A
     link to the VnV plan would be a nice extra.}
 
-\item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR:maintainability}:]
-  \textbf{Maintainability} The program code should be readable and clear.
+%\item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR:maintainability}:]
+ % \textbf{Maintainability} The program code should be readable and clear.
   \mycomment{The effort required to make any of the likely changes listed for \progname{} should be less than FRACTION of the original development time.  
   FRACTION is then a symbolic constant that can be defined at the end of the report.}
 
@@ -1178,16 +1199,16 @@ the assumptions.
 %\begin{landscape}
 \begin{table}[h!]
 \centering
-\begin{tabular}{|c|c|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|c|}
 \hline
-	& \aref{A:fp} & \aref{A:CWN} & \aref{A:NOF} & \aref{A:weights} & \aref{A:rng} & \aref{A:pvalue} \\
+	& \aref{A:fp} & \aref{A:CWN} & \aref{A:weights} & \aref{A:rng} & \aref{A:pvalue} \\
 \hline
-\dref{GD:RNG}             &X& &  X& & &  \\ \hline
-\ddref{DD:ED}             &X& &  & & &  \\ \hline
-\iref{IM:CEWS}            &X&X&X&X&X&X \\ \hline
-\lcref{LC:optWeights}     & &  &  &X & &  \\ \hline
-\lcref{LC:optGraphs}      & &  &  & &X &  \\ \hline
-\lcref{LC:output}         & &  &  & & &X  \\ \hline
+\dref{GD:RNG}             &X& &X& &  \\ \hline
+\ddref{DD:ED}             &X& & & &  \\ \hline
+\iref{IM:CEWS}            &X&X&X&X&X \\ \hline
+\lcref{LC:optWeights}     & & &X& &  \\ \hline
+\lcref{LC:optGraphs}      & & & &X&  \\ \hline
+\lcref{LC:output}         & & & & &X  \\ \hline
 \end{tabular}
 \caption{Traceability Matrix Showing the Connections Between Assumptions and Other Items}
 \label{Table:A_trace}
@@ -1219,10 +1240,9 @@ the assumptions.
 \iref{IM:CEWS}          & \\ \hline
 \rref{R:inputs}         &X \\ \hline
 \rref{R:calculate}      &X \\ \hline
-\rref{R:verifyOutput}   &X \\ \hline
-\rref{R:output}         &X \\ \hline
-
-\hline
+\rref{R:repro}          &X \\ \hline
+\nfrref{NFR:accuracy}   &X \\ \hline
+\nfrref{NFR:usability}  &X \\ \hline
 \end{tabular}
 \caption{Traceability Matrix Showing the Connections Between Requirements and Instance Models}
 \label{Table:R_trace}
@@ -1283,7 +1303,7 @@ Their values are defined in this section for easy maintenance.
   \toprule
   \textbf{Var} & \textbf{Value} \\
   \midrule 
-  ACCURACY\_ERR\_ABS & 0.01 \\
+  ACCURACY\_ERR\_ABS & 0.1 \\
   \bottomrule
 \end{longtable*}
 \end{table}
