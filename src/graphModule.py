@@ -41,6 +41,7 @@ def checkEdge_RNG(distanceMatrix, a, b):
         E = False
     if isclose(distance_ab, 0, rel_tol=TOL_FLOAT):
         # Do not create edges when points are on top of each other other
+        # Assume duplicate points
         E = False
     else:
         E = True
@@ -49,8 +50,8 @@ def checkEdge_RNG(distanceMatrix, a, b):
             if (distanceMatrix[a,i] > 0) & (distanceMatrix[b,i] > 0):
                 max_dist = max(distanceMatrix[a,i], distanceMatrix[b,i])
 
-                if isclose(max_dist, distance_ab, rel_tol=TOL_FLOAT):
-                    print("Close points: "+str(a)+" "+str(b)+" "+str(i)+" "+str(distance_ab)+" "+str(max_dist)+" diff: "+str(distance_ab-max_dist))
+                #if isclose(max_dist, distance_ab, rel_tol=TOL_FLOAT):
+                    #print("Close points: "+str(a)+" "+str(b)+" "+str(i)+" "+str(distance_ab)+" "+str(max_dist)+" diff: "+str(distance_ab-max_dist))
 
                 if not isclose(max_dist, distance_ab, rel_tol=TOL_FLOAT) and max_dist < distance_ab:
                     # if too close to call, then consider making edge
