@@ -7,7 +7,7 @@ import scipy.spatial
 from math import isclose
 
 # Local constants
-TOL_FLOAT = 1e-10
+TOL_FLOAT = 1e-15
 
 #----------------------------------------------------------------
 # Global Functions
@@ -39,7 +39,7 @@ def checkEdge_RNG(distanceMatrix, a, b):
     if (a == b):
         # Do not create edges when points are the same
         E = False
-    if isclose(distance_ab, 0, abs_tol=TOL_FLOAT):
+    if isclose(distance_ab, 0, rel_tol=TOL_FLOAT):
         # Do not create edges when points are on top of each other other
         E = False
     else:
@@ -49,7 +49,10 @@ def checkEdge_RNG(distanceMatrix, a, b):
             if (distanceMatrix[a,i] > 0) & (distanceMatrix[b,i] > 0):
                 max_dist = max(distanceMatrix[a,i], distanceMatrix[b,i])
 
-                if not isclose(max_dist, distance_ab, abs_tol=TOL_FLOAT) and max_dist < distance_ab:
+                if isclose(max_dist, distance_ab, rel_tol=TOL_FLOAT):
+                    print("Close points: "+str(a)+" "+str(b)+" "+str(i)+" "+str(distance_ab)+" "+str(max_dist)+" diff: "+str(distance_ab-max_dist))
+
+                if not isclose(max_dist, distance_ab, rel_tol=TOL_FLOAT) and max_dist < distance_ab:
                     # if too close to call, then consider making edge
                     E = False
                     break
