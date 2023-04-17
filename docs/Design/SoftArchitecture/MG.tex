@@ -49,6 +49,7 @@
 2023-03-10 & 0.0 & Creation \\
 2023-03-17 & 1.0 & Version 1 \\
 2023-03-21 & 1.1 & Additional explanation of anticipated changes \\
+2023-04-16 & 2.0 & Revision based on feedback \\
 \bottomrule
 \end{tabularx}
 
@@ -164,7 +165,7 @@ change.
 \item[\refstepcounter{acnum} \actheacnum \label{AC_graph}:] The type of graph used for the algorithm.
 \item[\refstepcounter{acnum} \actheacnum \label{ac_weight}:] The type of weights used for the algorithm.
 \item[\refstepcounter{acnum} \actheacnum \label{AC_GPU}:] Using GPU instead of CPU for computation.
-\item[\refstepcounter{acnum} \actheacnum \label{ac_output}:] The number of output values.
+\item[\refstepcounter{acnum} \actheacnum \label{ac_output}:] The number of output values. (For example, if $p$-value was added as an output.)
 \item[\refstepcounter{acnum} \actheacnum \label{ac_input}:] The data type / location of the initial input data.
 \end{description}
 
@@ -351,9 +352,8 @@ requirements and between the modules and the anticipated changes.
 \textbf{Req.} & \textbf{Modules}\\
 \midrule
 R1 & \mref{M_HH}, \mref{M_I} \\
-R2 & \mref{M_CO}, \mref{M_CA}, \mref{M_G} \\
-R3 & \mref{M_O} \\
-R4 & \mref{M_HH}, \mref{M_O} \\
+R2 & \mref{M_HH}, \mref{M_CO}, \mref{M_O}, \mref{M_CA}, \mref{M_G} \\
+R3 & \mref{M_HH}, \mref{M_CO}, \mref{M_I}, \mref{M_O}, \mref{M_CA}, \mref{M_G} \\
 \bottomrule
 \end{tabular}
 \caption{Trace Between Requirements and Modules}

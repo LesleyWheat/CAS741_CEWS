@@ -2,6 +2,7 @@
 
 \usepackage{tabularx}
 \usepackage{booktabs}
+\usepackage[round]{natbib}
 
 \title{Reflection Report on \progname}
 
@@ -20,9 +21,7 @@
 \toprule
 \textbf{Date} & \textbf{Developer(s)} & \textbf{Change}\\
 \midrule
-Date1 & Name(s) & Description of changes\\
-Date2 & Name(s) & Description of changes\\
-... & ... & ...\\
+2023-04-16 & Lesley Wheat & Creation \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -31,22 +30,71 @@ Date2 & Name(s) & Description of changes\\
 
 \maketitle
 
-Put your introductory blurb here.
+
+This reflection will discuss the accomplishments and challenges faced during the development of CEWS System. 
+This report will summarize the original project goals and requirements then evaluate the project's successes, problem areas and discuss about what could be done differently in future projects.
 
 \section{Project Overview}
 
-\plt{Summarize the original project goals and requirements}
+The project aimed to develop software to calculate the normalized Cut Edge Weight measurement for a given dataset, which is a measurement of data separability.
+The program should read the input data, perform the calculation, and output the result. 
+The functional requirements include handling input errors and generating the same output for the same dataset regardless of the dataset ordering.
+The non-functional requirements include accuracy in computed solutions and portability to run on any machine with the Windows 11 operating system. 
+
+\mycomment{Summarize the original project goals and requirements}
 
 \section{Key Accomplishments}
 
-\plt{What went well?  This can be what went well with the documentation, the
+The code has been written and implemented in a well-organized manner, meeting most of the project requirements.
+The testing process has helped to identify and correct several errors.
+The requirements were refined based on the results of the tests.
+In the process of developing the software, I gained experience in utilizing automated tools such as pytest and autopep8, which is helpful. 
+
+\mycomment{What went well?  This can be what went well with the documentation, the
   coding, the project management, etc.}
 
 \section{Key Problem Areas}
 
-\plt{What went wrong?  This can be what went wrong with the documentation, the
+The chosen software project had several areas that presented challenges.
+One of the main issues was the lack of clear test cases, which made it difficult to ensure that the requirements were met. 
+Furthermore, this type of project was not the typical project type for the course, making it too niche for some of the reviewers. 
+
+Additionally, the research \cite{zighed_statistical_2005} that the project is based on has no existing available implementation for testing.
+None of the available relative nieghbourhood graph libraries could generate results that came close to the results of the paper and the results could no longer be verified due to the age of the research.
+Even different libraries (examined early on), disagreed on the generated graph.
+So using this research for testing purposes proved to be an unsuitable approach.
+On the positive side, the exclusion of this method from literature reviews is now no longer a mystery.
+
+The template used for the project was not well suited to this type of software development.
+Many template fields were unused or unnecessary.
+Moreover, documentation produced using the template was confusing to other developers in the field. 
+Documentation produced using this template does not meet the minimum criteria and information for most open source or commercial applications.
+For the project to be packaged for open-source development, documentation would need to be rewritten and more documents added which would require a significant amount of work above what has already been written.
+Also, the template did not help to produce good code.
+
+Although the code is nicely written, it is a slow implementation that would be less than ideal for many applications.
+It would likely need to be rewritten with a different algorithm in a different language to achieve good performance.
+In addition, no stretch goals were met so the functionality of the program is limited.
+
+
+\mycomment{What went wrong?  This can be what went wrong with the documentation, the
   technology, the coding, time management, etc.}
 
 \section{What Would you Do Differently Next Time}
+
+I would have chosen a project that has a well-established existing implementation to ensure that the results are accurate and to avoid any unnecessary difficulties in reproducing the research findings.
+I would have approached the research aspect of the project more critically and not spent as much time trying to reproduce the results of the paper.
+
+If I were to undertake a similar project in the future, I would use a different template or follow the documentation standards of established projects to produce more helpful and developer-friendly documentation.
+Additionally, I would make use of more diagrams and images to communicate concepts effectively.
+
+In the future, I would consider writing the code in a different programming language to improve its performance.
+I would have focused less on matching the results of the previous research \cite{zighed_statistical_2005} and instead prioritize using other test cases to ensure the accuracy of the program's output.
+
+\newpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\bibliographystyle{plainnat}
+\bibliography{refs/theoryrefs, refs/References}
 
 \end{document}

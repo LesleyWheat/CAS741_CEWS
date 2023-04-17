@@ -49,7 +49,7 @@
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
 2023-03-27 & 0.1 & Creation\\
-2023-04-14 & 1.0 & Version 1.0\\
+2023-04-16 & 1.0 & Completed Version 1.0\\
 \bottomrule
 \end{tabularx}
 
@@ -119,17 +119,12 @@ outlined in the \href{https://github.com/LesleyWheat/CAS741_CEWS/blob/main/docs/
     \item NFR1: Accuracy 
     \begin{itemize}
     \item Description: The accuracy of the computed solutions should meet the level needed for data analysis.
-    \item Result: Unclear, due to R2 being unclear.
-    \end{itemize}
-    \item NFR2: Usability 
-    \begin{itemize}
-    \item Description: program should be able to call CEWS System by calling a function of the form CEWS(D, C) and CEWS System should return the output.
-    \item Result: Pass
+    \item Result: Unclear, due to testing results for R2 being unclear.
     \end{itemize}
     \Needspace{5\baselineskip}
-    \item NFR3: Portability 
+    \item NFR2: Portability 
     \begin{itemize}
-    \item Description: The software should run on the Windows 11 operating system.
+    \item Description: The software should run any machine running the Windows 11 operating system.
     \item Result: Pass
     \end{itemize}
 \end{itemize}
@@ -227,7 +222,7 @@ This section reviews the results of the automated tests.
 \section{Comparison to Existing Implementation}	\label{sec:comparision}
 
 There are two existing implementations for different parts of the system. 
-Note: the CEWS result implemented with \cite{pythonRNG} does not match the results from \cite{zighed_statistical_2005}.
+Note: the CEWS calculated with the graph from \cite{pythonRNG} does not match the results from \cite{zighed_statistical_2005}.
 It's possible there are errors in one or both of the implementations.
 
 No accessible graph generation implementation has been able to reproduce the results in \cite{zighed_statistical_2005}.
@@ -235,12 +230,12 @@ The implementation used by the original authors does not run on modern operating
 It is possible but unlikely that the benchmark datasets have changed since \cite{zighed_statistical_2005} was published.
 
 \cite{pythonRNG} implements the same algorithm used in Graph Module. 
-However, \cite{pythonRNG} is not very credible. 
+However, the \cite{pythonRNG} has not been independently verified.
 Also, \cite{pythonRNG} has an error based on the SRS requirements as discussed in Section \ref{sec:change repro}.
 
 However, even if the graphs are not constructed using exactly the same method then it doesn't mean the program doesn't measure data complexity.
 In \cite{zighed_statistical_2005}, the authors stated they achieved similar results with a Gabriel Graph or Minimum Spanning Tree.
-Another common data complexity measure, Fraction of Borderline Points uses a Minimum Spanning Tree and nearest neighbour graphs are often used as well.
+Another common data complexity measure, Fraction of Borderline Points uses a Minimum Spanning Tree and nearest neighbour graphs are often used as well. \cite{lorena_how_2020}
 As such the program may still be able to measure data complexity even if the program doesn't pass these tests.
 
 \Needspace{20\baselineskip}
@@ -343,7 +338,7 @@ The samples with missing data were then removed from the datasets prior to runni
 \newpage
 \phantomsection
 \addcontentsline{toc}{section}{References}
-\bibliographystyle{IEEEtran}
+\bibliographystyle{plainnat}
 \bibliography{refs/theoryrefs, refs/References}
 
 %\bibliographystyle{plainnat}

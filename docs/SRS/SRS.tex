@@ -154,6 +154,7 @@
 2023-01-24 & 0.0 & Creation \\
 2023-02-01 & 0.1 & Revise Instance Models \\
 2023-02-03 & 1.0 & Version 1 Release \\
+2023-04-16 & 2.0 & Revision based on feedback \\
 \bottomrule
 \end{tabularx}
 
@@ -214,7 +215,7 @@ $d(a, b)$ & N/A & Euclidean distance between points $a$ and $b$ \\
 
 \subsection{Mathematical Notation}
 
-This document uses notation used in \cite{zighed_statistical_2005} and \cite{lorena_how_2020}.
+This document uses notation the used in \cite{zighed_statistical_2005} and \cite{lorena_how_2020}.
 
 \mycomment{This section is optional, but should be included for projects that make use of notation to convey mathematical information.  
 For instance, if typographic conventions (like bold face font) are used to distinguish matrices, this should be stated here.  
@@ -294,23 +295,24 @@ In some cases the easiest way to summarize the notation is to point to a text or
 
 \section{Introduction}
 
-Classification is a common machine learning problem and there are many techniques for solving classification problems. 
+Classification is a common machine learning problem, many techniques are used for solving classification problems. 
 Unfortunately, not all classification problems are easy and it can be difficult to explain why classifiers perform poorly on certain datasets. 
 Data complexity has been defined as a characteristic of the data that relates to the difficulty of the classification problem \cite{luengo_automatic_2015}. 
 To further refine this definition, we consider data complexity to be represented by aspects of the data that introduce difficulty for the classifiers. 
 
 One of these aspects is separability, an intrinsic characteristic that describes how the observations from different classes mix together \cite{guan_novel_2021}. 
 A classic measurement for separability is Fraction of Points on Class Boundary.
-Based on the work of Friedman and Rafsky \cite{friedman_multivariate_1979} and documented by Basu and Ho  \cite{ho_complexity_2002}, this measurement constructs a minimum spanning tree over the dataset then calculates the number of points with a connection to another class over all points.
+Based on the work of Friedman and Rafsky \cite{friedman_multivariate_1979} and documented by Basu and Ho  \cite{ho_complexity_2002}. This measurement constructs a minimum spanning tree over the dataset then calculates the number of points with a connection to another class over all points.
 
-The Cut Edge Weight Statistic measurement is a variation of the Fraction of Points on Class Boundary, proposed by Zighed et al. \cite{zighed_statistical_2005}.
-The algorithm for the normalized measurement begins by constructing a Toussaint’s Relative Neighbourhood Graph \cite{toussaint_relative_1980} over the entire dataset then computing the number of edges which connect different classes (the "cut edges") over the total number of edges (shown in Figure \ref{fig:RNG}). 
-This measurement is a viable way of measuring separability because it has a high coefficient of determination ($R^2$) with the mean error rate of several classifiers.
+The Cut Edge Weight Statistic (CEWS) measurement is a variation of the Fraction of Points on Class Boundary, proposed by Zighed et al. \cite{zighed_statistical_2005}.
+The algorithm for the normalized measurement begins by constructing a Toussaint’s Relative Neighbourhood Graph \cite{toussaint_relative_1980} over the entire dataset then computing the number of edges that connect different classes (the ``cut edges'') over the total number of edges (shown in Figure \ref{fig:RNG}). 
+This measurement is a viable way of measuring separability because it has a high coefficient of determination ($R^2$) with the mean error rate of several classifiers \cite{zighed_statistical_2005}.
+CEWS System is a program designed to calculate the CEWS.
 
 \begin{figure}[h!]
 \begin{center}
  \includegraphics[width=0.7\textwidth]{RNG_CEWS_Example.png}
-\caption{An visualization of the RNG for a binary classification problem represented by black and white points. (a) An example of a 2D RNG graph construction. (b) Identifying cut edges with dotted lines.}
+\caption{An visualization of the RNG for a binary classification problem represented by black and white points \cite{zighed_statistical_2005}. (a) An example of a 2D RNG graph construction. (b) Identifying cut edges with dotted lines.}
 \label{fig:RNG} 
 \end{center}
 \end{figure}
@@ -441,7 +443,7 @@ The CEWS System will exist as a standalone product or as a module. The system co
 \item User Responsibilities:
 \begin{itemize}
 \item Provide the input data matrices. (Section \ref{sec:dataConstraints})
-\item Correctly format the input data matrices as per Section \ref{sec:dataConstraints}.
+\item Correctly format the input data matrices as per Section \ref{sec:dataConstraints}. (For example, it is the responsability of the user to make sure the points and labels are correctly associated as this can not be checked by the system.)
 \item Manage the computer's resources including supplying the system with enough resources to support the size of their dataset.
 \item Understand the problem.
 \item Perform any data pre-processing required for the relevant classification problem such as transformations, feature extraction, etc.
@@ -506,7 +508,7 @@ sections and their meaning, with the purpose of reducing ambiguity and making it
 easier to correctly understand the requirements:
 
 \begin{itemize}
-\item Observation: An identifiable element in a data set which has features and a class label associated with it.
+\item Observation: An identifiable element in a data set that has features and a class label associated with it.
 \item Dataset: A set of observations from a population including information about those observations.
 \item Feature: An individual measurable property of an observation.
 \item Class label: Represents the class an observation belongs to.
@@ -514,6 +516,8 @@ easier to correctly understand the requirements:
 \item Data complexity: Aspects of the data that classifiers have difficultly with \cite{luengo_automatic_2015}.
 \item Separability: A type of data complexity that measures how the observations from different classes mix together \cite{guan_novel_2021}.
 \item Boolean variable: A variable that has one of two possible values.
+\item Data Matrix: a matrix containing the features for each observation.
+\item Class Matrix: a matrix containing class labels.
 \end{itemize}
 
 \subsubsection{Physical System Description} \label{sec:phySystDescrip}
@@ -557,14 +561,10 @@ The physical system of \progname{}, as shown in Figure~?, includes the following
   amount of technical language.  They should be understandable by non-domain
   experts.}
 
-\noindent Given the dataset, the goal statements are:
+\noindent Given the dataset, the goal statement is:
 
 \begin{itemize}
-
-\item[GS\refstepcounter{goalnum}\thegoalnum \label{G:CEWS}:]  Calculate the normalized multiclass CEWS measurement. \mycomment{One
-    sentence description of the goal.  There may be more than one.  Each Goal
-    should have a meaningful label.}
-
+\item[GS\refstepcounter{goalnum}\thegoalnum \label{G:CEWS}:]  Calculate the normalized multiclass CEWS measurement.
 \end{itemize}
 
 \subsection{Solution Characteristics Specification}
@@ -616,7 +616,7 @@ The physical system of \progname{}, as shown in Figure~?, includes the following
 %\end{figure}
 
 The instance models that govern \progname{} are presented in
-Subsection~\ref{sec:instance}.  The information to understand the meaning of the
+Section~\ref{sec:instance}.  The information to understand the meaning of the
 instance models and their derivation is also presented, so that the instance
 models can be verified.
 
@@ -641,19 +641,19 @@ likely change [LC], in which the respective assumption is used.
 \item[A\refstepcounter{assumpnum}\theassumpnum \label{A:fp}:]
 All rational numbers can be represented in a base-2 computer system. Operations performed on rational numbers in a computer system is exact. Any computation rounding error is negligible and does not need to be taken into account.
 
-\item[A\refstepcounter{assumpnum}\theassumpnum \label{A:CWN}:] All observations from one class share the same class label.
+\item[A\refstepcounter{assumpnum}\theassumpnum \label{A:CWN}:] All observations from one class share the same class label. (For example, no subclasses exist.)
 
 %\item[A\refstepcounter{assumpnum}\theassumpnum \label{A:NOF}:]
 %Each observation has the same number of features. No features are null. 
 
 \item[A\refstepcounter{assumpnum}\theassumpnum \label{A:weights}:]
-The user does not want to use weights for the edge calculation.
+Weights are not used for the edge calculation.
 
 \item[A\refstepcounter{assumpnum}\theassumpnum \label{A:rng}:]
-The user wants to use a relative neighbourhood graph as the base graph.
+A relative neighbourhood graph is used as the base graph.
 
 \item[A\refstepcounter{assumpnum}\theassumpnum \label{A:pvalue}:]
-The user does not want the statistic $p$-value.
+The statistic $p$-value is not needed.
 
   \mycomment{Short description of each assumption.  Each assumption
     should have a meaningful label.  Use cross-references to identify the
@@ -762,6 +762,7 @@ None
 
 ~\newline
 }
+\Needspace{50\baselineskip}
 \subsubsection{General Definitions}\label{sec:gendef}
 
 This section collects the equations that will be used in building the instance models.
@@ -779,14 +780,13 @@ Number& GD\refstepcounter{defnum}\thedefnum \label{GD:RNG}\\
 \hline
 Label &\bf Toussaint’s Relative Neighbourhood Graph \\ \hline
 SI Units& N/A \\ \hline
-Equation & $E_{RNG}(P, i, j) = [ d(p_i,p_j) \leq \max (d(p_i,c), d(p_j,c)) \forall c $ \\
-& where $c \in P, c \neq p_i, c \neq p_j  ]$\\
-& Connection matrix: $V = (v_{ij}), i = 1,2, ... ,n; j = 1,2, ... , n;$ \\
-& where $v_{ij} = I(E_{RNG}(P, i, j))$ \\ \hline
+Equation & Connection matrix: $V = (v_{ij}), i = 1,2, ... ,n; j = 1,2, ... , n;$ \\
+& where $v_{ij} = I([ d(p_i,p_j) \leq \max (d(p_i,c), d(p_j,c)) \forall c , c \in P, c \neq p_i, c \neq p_j ])$\\
+ \hline
 Description &
 RNG is an undirected graph constructed by connecting an edge between two points when a third point does not exist that is closer to both.\\
 & $P$ is a set of $n$ points in real space with dimension(s) $m$ with elements $p_{i}$: $i=1,...,n$.\\
-& $V$ is the connection matrix where $v_{ij} =  1$ if there is an edge and $v_{ij} =  0$ if not.\\
+& $V$ is the connection matrix that represents the RNG where $v_{ij} =  1$ if there is an edge and $v_{ij} =  0$ if not.\\
 & $d(a,b)$ is the Euclidean distance between points $a$ and $b$ given by \ddref{DD:ED}.\\
 & Based on assumptions \ref{A:fp}. \\
 \hline
@@ -868,7 +868,7 @@ Symbol &$d(a,b)$\\ \hline
   Equation & $d(a,b) = \sqrt{\sum^n_{i=1} (a_i - b_i)^2 }$ \\\hline
   Description & 
                 $d(a,b)$ is the Euclidiean distance between points $a$ and $b$ in Euclidean space with $n$ dimensions.  
-                $a_i$ and $b_i$ are Euclidean vectors from the origin. 
+                $a_i$ and $b_i$ are vectors from the origin. 
                 Based on assumption \ref{A:fp}. 
   \\ \hline
   Sources& N/A \\ \hline
@@ -909,20 +909,22 @@ The goal GS\ref{G:CEWS} is solved by \iref{IM:CEWS}, which is the implementation
     \hline
     Label& \bf Multiclass Normalized Cut Edge Weight Measurement\\
     \hline
-    Input & The input data matrix, $D$, and the class label matrix, $C$, based on \ref{sec:dataConstraints}. \\ \hline
+    Input & The input data matrix, $D_{n \times m}$, and the class label matrix, $C_{n \times 1}$, based on \ref{sec:dataConstraints}. \\ \hline
     Output&$J_{N}$, $0\leq J_N \leq 1$, such that\\
     &$J_{N} = \frac {J}{I+J}$\\
     & where \\
     & $J = \sum_{r=1}^{k-1} \sum_{s=r+1}^{k} J_{r,s}; 0 \leq J \leq n^2$\\
-    & $J_{r,s}  = \sum^{n}_{i=1} \sum^n_{j=1} V_{ij} \times I(c_i = r \And c_j = s)$ \\
+    & where $J_{r,s}  = \sum^{n}_{i=1} \sum^n_{j=1} V_{ij} \times I(c_i = r \And c_j = s)$ \\
     & $I = \sum_{r=1}^{k} I_r, 0\leq I \leq  n^2$ \\
-    & $I_{r}  = \sum^{n-1}_{i=1} \sum^n_{j=i+1} V_{ij} \times I(c_i = r \And c_j = r)$ \\
+    & where $I_{r}  = \sum^{n-1}_{i=1} \sum^n_{j=i+1} V_{ij} \times I(c_i = r \And c_j = r)$ \\
     \hline
     Description &
     Based on assumptions \ref{A:fp}, \ref{A:CWN}, \ref{A:weights}, \ref{A:rng} and \ref{A:pvalue}. \\
     & The above equation gives the formula for calculating the the multiclass normalized cut edge weight measurement. \\
     & $k$ is the number of classes.\\
-    & $V_{ij}$ is the RNG connection matrix for matrix $D$ given by \dref{GD:RNG}.\\
+    & $V$ is the RNG connection matrix for matrix $D$ as $P$ given by \dref{GD:RNG}.\\
+    & $v_{ij}$ is element $i, j$ of $V$.\\
+    & $c_i$ is element $i$ of $C$.\\
     \hline
     Sources& \cite{zighed_statistical_2005} \cite{jaromczyk_relative_1992} \\
     \hline
@@ -943,8 +945,9 @@ The uncertainty column provides an estimate of the confidence with which the phy
 %This information would be part of the input if one were performing an uncertainty quantification exercise.
 
 The user provides a dataset in the format of matrices $D$ and $C$. 
-The matrices $D$ and $C$ must be iterable objects.
-$n$ is the number of observations. $m$ is the number of features. 
+%The matrices $D$ and $C$ must be iterable objects.
+$n$ is the number of observations. 
+$m$ is the number of features. 
 The input data matrix, $D$, is of size $n \times m$ and  must contain rational numbers. $D$ is formatted as: \\
  \[
   D =
@@ -1032,7 +1035,7 @@ A correct solution must exhibit the following behaviour: Table \ref{tabel:Output
   \toprule
   \textbf{Var} & \textbf{Physical Constraints} \\
   \midrule 
-  $J_N$ & $0 \leq J_N \leq 1$ (by~\aref{A:fp}) \\
+  $J_N$ & $0 \leq J_N \leq 1$ \\
   \bottomrule
 \end{longtable*}
 \end{table}
@@ -1060,7 +1063,6 @@ qualities that the software is expected to exhibit.
 \item[R\refstepcounter{reqnum}\thereqnum \label{R:inputs}:] CEWS System will read the input data.
 \begin{itemize}
     \item Any constraint in \ref{sec:dataConstraints} is violated, the CEWS System will generate an appropriate error message. 
-    \item The input matrices are formatted as iterable objects.
 \end{itemize}
 
 \mycomment{Requirements
@@ -1073,9 +1075,9 @@ qualities that the software is expected to exhibit.
 % Do calculation
 \item[R\refstepcounter{reqnum}\thereqnum \label{R:calculate}:] After reading the input data, CEWS System will perform the calculation in \iref{IM:CEWS} and output the result.
 \begin{itemize}
-    \item The CEWS System should generate an error if the calculation result exceeds the constraints in \ref{sec:correctSolution}.
+    %\item The CEWS System should generate an error if the calculation result exceeds the constraints in \ref{sec:correctSolution}.
     \item In case an error occurs, an error will be raised by the program.
-    \item In case no error occurs, no error will be raised and $J_N$ will be returned as a float type.
+    \item In case no error occurs, $J_N$ will be the output.
 \end{itemize}
 
 %\item[R\refstepcounter{reqnum}\thereqnum \label{R:verifyOutput}:] The CEWS System should generate an error if the calculation result exceeds the constraints in \ref{sec:correctSolution}.
@@ -1123,13 +1125,15 @@ be covered in the Verification and Validation document.}
 \item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR:accuracy}:]
   \textbf{Accuracy} 
   %As per \aref{A:fp}, any calculation error should be negligible. 
-  The accuracy of the computed solutions should meet the level needed for data analysis. The absolute error should be less than ACCURACY\_ERR\_ABS. (See Table \ref{Tabel:constants})
+  The accuracy of the computed solutions should meet the level needed for data analysis. 
+  The absolute error should be less than ACCURACY\_ERR\_ABS. (See Table \ref{Tabel:constants})
+  The absolute error is used because the error should not vary based on the size of the result (the scale of the values is limited).
   \mycomment{Characterize the accuracy by giving the context/use for the software.  
   Maybe something like, ``The accuracy of the computed solutions should meet the level needed for $<$engineering or scientific application$>$.
   The level of accuracy achieved by \progname{} shall be described following the procedure given in Section~X of the Verification and Validation Plan.''
   A link to the VnV plan would be a nice extra.}
 
-\item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR:usability}:] \textbf{Usability} A program should be able to call CEWS System by calling a function of the form CEWS($D$, $C$) and CEWS System should return the output.
+%\item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR:usability}:] \textbf{Usability} A program should be able to call CEWS System by calling a function of the form CEWS($D$, $C$) and CEWS System should return the output.
   \mycomment{Characterize the usability by giving the context/use for the software.
     You should likely reference the user characteristics section.  The level of
     usability achieved by the software shall be described following the
@@ -1141,9 +1145,9 @@ be covered in the Verification and Validation document.}
   \mycomment{The effort required to make any of the likely changes listed for \progname{} should be less than FRACTION of the original development time.  
   FRACTION is then a symbolic constant that can be defined at the end of the report.}
 
-\item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR:portability}:]
+\item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR:port}:]
   \textbf{Portability}
-    The software should run on the Windows 11 operating system.
+    The software should run any machine running the Windows 11 operating system.
 
 %\item Other NFRs that might be discussed include verifiability, understandability and reusability.
 
@@ -1242,7 +1246,7 @@ the assumptions.
 \rref{R:calculate}      &X \\ \hline
 \rref{R:repro}          &X \\ \hline
 \nfrref{NFR:accuracy}   &X \\ \hline
-\nfrref{NFR:usability}  &X \\ \hline
+\nfrref{NFR:port}  &X \\ \hline
 \end{tabular}
 \caption{Traceability Matrix Showing the Connections Between Requirements and Instance Models}
 \label{Table:R_trace}
@@ -1281,7 +1285,8 @@ instance models, requirements, and data constraints on each other.
 % 	\end{center}
 % \end{figure}
 
-%\section{Development Plan}
+\section{Development Plan}
+Not applicable.
 
 \mycomment{This section is optional.  It is used to explain the plan for developing
   the software.  In particular, this section gives a list of the order in which

@@ -58,6 +58,7 @@ urlcolor=cyan          % color of external links
 2022-03-10 & 0.0 & Creation \\
 2022-03-17 & 1.0 & Version 1.0 \\
 2022-03-21 & 1.1 & Revisions from feedback \\
+2023-04-16 & 2.0 & Revision based on feedback \\
 \bottomrule
 \end{tabularx}
 
@@ -113,7 +114,7 @@ The following table summarizes the primitive data types used by \progname.
 \mycomment{integer & $\mathbb{Z}$ & a number without a fractional component in (-$\infty$, $\infty$) \\}
 natural number & $\mathbb{N}$ & a number without a fractional component in [1, $\infty$) \\
 real & $\mathbb{R}$ & any number in (-$\infty$, $\infty$)\\
-matrix & $\mathbb{M}_{n x m}$ & a matrix of real numbers of size $n$ and $m$ \\
+matrix & $\mathbb{M}_{n \times m}$ & a matrix of real numbers of size $n$ and $m$ \\
 \bottomrule
 \end{tabular} 
 \end{center}
@@ -257,7 +258,7 @@ None.
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-cutEdgeWeight & \makecell[1]{inData: $\mathbb{M}_{n x m}$, \\ inLabels: $\mathbb{M}_{n x 1}$} & $J_N$: $\mathbb{R}$  & - \\
+cutEdgeWeight & \makecell[1]{inData: $\mathbb{M}_{n \times m}$, \\ inLabels: $\mathbb{M}_{n \times 1}$} & $J_N$: $\mathbb{R}$  & - \\
 \hline
 \end{tabular}
 \end{center}
@@ -268,10 +269,7 @@ cutEdgeWeight & \makecell[1]{inData: $\mathbb{M}_{n x m}$, \\ inLabels: $\mathbb
 None.
 
 \subsubsection{Environment Variables}
-\begin{itemize}
-\item inData: $\mathbb{M}_{n x m}$
-\item inLabels: $\mathbb{M}_{n x 1}$
-\end{itemize}
+None.
 
 \subsubsection{Assumptions}
 \begin{itemize}
@@ -322,7 +320,7 @@ None.
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-processInput & \makecell[1]{inData: $\mathbb{M}_{n x m}$, \\ inLabels: $\mathbb{M}_{n x 1}$} & \makecell[1]{data: $\mathbb{M}_{n x m}$, \\ labels: $\mathbb{M}_{n x 1}$} & \makecell[1]{typeError \\ valueError} \\
+processInput & \makecell[1]{inData: $\mathbb{M}_{n \times m}$, \\ inLabels: $\mathbb{M}_{n \times 1}$} & \makecell[1]{data: $\mathbb{M}_{n \times m}$, \\ labels: $\mathbb{M}_{n \times 1}$} & \makecell[1]{typeError \\ valueError} \\
 \hline
 \end{tabular}
 \end{center}
@@ -353,8 +351,8 @@ None.
 \item Transition: None
 \item Output: $out:=$
 \begin{itemize}
-\item data: the inputted data converted to the correct internal data storage type for use by the Calculation Module \ref{M_CA}
-\item labels: the inputted labels converted to the correct internal data storage type for use by the Calculation Module \ref{M_CA}
+\item data: the inputted data converted to the correct internal data storage type (from matrix to Python Numpy matrix) for use by the Calculation Module \ref{M_CA}
+\item labels: the inputted labels converted to the correct internal data storage type (from matrix to Python Numpy matrix) for use by the Calculation Module \ref{M_CA}
 \end{itemize}
 \item Exceptions: $exc:=$
     \begin{itemize}
@@ -368,7 +366,7 @@ None.
     \item valueError:
         \begin{itemize}
         \item inData or inLabels do not have the same value of $n$.
-        \item Less than 2 classes exist in inLabels.
+        \item There is only one class label used (a minimum of two classes must exist in the dataset).
         \item The inLabels is not of size $n \times 1$.
         \end{itemize}
 \end{itemize}
@@ -455,7 +453,7 @@ None.
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-calcCEWS & \makecell[1]{data: $\mathbb{M}_{n x m}$ \\ labels: $\mathbb{M}_{n x 1}$} & $J_N$: $\mathbb{R}$ & - \\
+calcCEWS & \makecell[1]{data: $\mathbb{M}_{n \times m}$ \\ labels: $\mathbb{M}_{n \times 1}$} & $J_N$: $\mathbb{R}$ & - \\
 \hline
 \end{tabular}
 \end{center}
@@ -483,10 +481,10 @@ None.
 \item The Cut Edge Weight Statistic: $J_{N} := \frac {J}{I+J}$ where:
 \begin{itemize}
 \item $J = \sum_{r=1}^{k-1} \sum_{s=r+1}^{k} J_{r,s};$ $ 0 \leq J \leq n^2$
-\item $J_{r,s}  = \sum^{n}_{i=1} \sum^n_{j=1} V_{ij} I(c_i = r \And c_j = s)$ 
+\item $J_{r,s}  = \sum^{n}_{i=1} \sum^n_{j=1} V_{ij} I(\mbox{labels}_i = r \And \mbox{labels}_j = s)$ 
 \item $I = \sum_{r=1}^{k} I_r, 0\leq I \leq  n^2$ 
-\item $I_{r}  = \sum^{n-1}_{i=1} \sum^n_{j=i+1} V_{ij} I(c_i = r \And c_j = r)$. 
-\item $V$ is obtained from the Graph Module \ref{M_G}.
+\item $I_{r}  = \sum^{n-1}_{i=1} \sum^n_{j=i+1} V_{ij} I(\mbox{labels}_i = r \And \mbox{labels}_j = r)$. 
+\item $V$ is obtained from the Graph Module \ref{M_G} for the data input.
 \end{itemize}
 \end{itemize}
 \item Exceptions: None.
@@ -517,7 +515,7 @@ None.
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-relativeNeighbourGraph & \makecell[1]{data: $\mathbb{M}_{n x m}$} & \makecell[1]{$V$: $\mathbb{M}_{n x n}$} & - \\
+relativeNeighbourGraph & \makecell[1]{data: $\mathbb{M}_{n \times m}$} & \makecell[1]{$V$: $\mathbb{M}_{n \times n}$} & - \\
 \hline
 \end{tabular}
 \end{center}
@@ -543,28 +541,28 @@ None.
 \item Transition: None.
 \item Output: $out:=$
 \begin{itemize}
-\item Connection matrix $V := (v_{ij}), i = 1,2, ... ,n; j = 1,2, ... , n;$ \\ where $v_{ij} := I(E_{RNG}(P, i, j))$ as per: \\
-$E_{RNG}(P, i, j) := [ d(p_i,p_j) \leq \max (d(p_i,c), d(p_j,c)) \forall c $ where $c \in P, c \neq p_i, c \neq p_j  ]$.
+\item Connection matrix $V := (v_{ij}), i = 1,2, ... ,n; j = 1,2, ... , n;$ \\ 
+where $v_{ij} :=$ checkEdge\_RNG($\mbox{distanceMatrix}$, $i$, $j$) given: \\ $\mbox{distanceMatrix}_{ij} = d(data_i, data_j)$ where $d(a,b)$ is Euclidean Distance.
 \end{itemize}
 \item Exceptions: None.
 \end{itemize}
 
 
 \subsubsection{Local Functions}
-\noindent checkEdge\_RNG($distanceMatrix$, $a$, $b$):
+\noindent checkEdge\_RNG($\mbox{distanceMatrix}$, $a$, $b$):
 \begin{itemize}
 \item Description: Checks if an edge exists between points $i$ and $j$.
 \item Inputs:
 \begin{itemize}
-\item $distanceMatrix$: distance matrix, $\mathbb{M}$, size of $n \times n$
-\item $a$: $\mathbb{N}$, $a \leq n$
-\item $b$: $\mathbb{N}$, $b \leq n$
+\item $\mbox{distanceMatrix}$: a distance matrix, $\mathbb{M}$, size of $n \times n$
+\item $a$: $\mathbb{N}$, $1 \leq a \leq n$
+\item $b$: $\mathbb{N}$, $1 \leq b \leq n$
 \end{itemize}
 \item Transition: None.
 \item Output: $out:=$
 \begin{itemize}
 \item Edge existence:
-$E := [distanceMatrix_{ab} \leq \max(distanceMatrix_{ac}, distanceMatrix_{bc}) \forall c $ where $1 \leq c \leq n, c \neq a, c \neq b ]$.
+$E := I([\mbox{distanceMatrix}_{ab} \leq \max(\mbox{distanceMatrix}_{ac}, \mbox{distanceMatrix}_{bc}) \forall c $ where $1 \leq c \leq n, c \neq a, c \neq b ]$).
 \end{itemize}
 \item Exceptions: None.
 \end{itemize}
