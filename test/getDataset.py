@@ -55,7 +55,11 @@ def get_iris(filepath):
             if (labels_temp[i] == classList[j]):
                 labels[i] = j + 1
 
-    return (data, labels)
+    dmax = data.max(axis=0)
+    dmin = data.min(axis=0)
+    data_normed = 2* (data - dmin) / (dmax-dmin) -1
+
+    return (data_normed, labels)
 
 
 def dataset_yeast():
@@ -82,7 +86,11 @@ def dataset_yeast():
             if (labels_temp[i] == classList[j]):
                 labels[i] = j + 1
 
-    return (data, labels)
+    dmax = data.max(axis=0)
+    dmin = data.min(axis=0)
+    data_normed = 2* (data - dmin) / (dmax-dmin) -1
+
+    return (data_normed, labels)
 
 
 def dataset_breastCancer():
@@ -118,7 +126,11 @@ def dataset_breastCancer():
 
     data = data.astype(np.float16)
 
-    return (data, labels)
+    dmax = data.max(axis=0)
+    dmin = data.min(axis=0)
+    data_normed = 2* (data - dmin) / (dmax-dmin) -1
+
+    return (data_normed, labels)
 
 
 def dataset_wine():
@@ -153,7 +165,11 @@ def dataset_wine():
 
     data = data.astype(np.float32)
 
-    return (data, labels)
+    dmax = data.max(axis=0)
+    dmin = data.min(axis=0)
+    data_normed = 2* (data - dmin) / (dmax-dmin) -1
+
+    return (data_normed, labels)
 
 
 def dataset_glass():
@@ -170,7 +186,11 @@ def dataset_glass():
     labels = df.iloc[:, 10]
     labels = labels.to_numpy(dtype=np.int8)
 
-    return (data, labels)
+    dmax = data.max(axis=0)
+    dmin = data.min(axis=0)
+    data_normed = 2* (data - dmin) / (dmax-dmin) -1
+
+    return (data_normed, labels)
 
 
 def dataset_ionosphere():
@@ -197,6 +217,7 @@ def dataset_ionosphere():
             if (labels_temp[i] == classList[j]):
                 labels[i] = j + 1
 
+
     return (data, labels)
 
 
@@ -214,7 +235,11 @@ def dataset_haberman():
     labels = df.iloc[:, 3]
     labels = labels.to_numpy(dtype=np.int8)
 
-    return (data, labels)
+    dmax = data.max(axis=0)
+    dmin = data.min(axis=0)
+    data_normed = 2* (data - dmin) / (dmax-dmin) -1
+
+    return (data_normed, labels)
 
 
 def dataset_imgSeg():
@@ -257,3 +282,5 @@ def dataset_ruspini():
     data = data.to_numpy(dtype=np.int16)
 
     return (data)
+
+print(dataset_iris())
