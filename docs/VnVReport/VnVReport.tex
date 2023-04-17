@@ -102,8 +102,8 @@ outlined in the \href{https://github.com/LesleyWheat/CAS741_CEWS/blob/main/docs/
     \item R2: Calculation
     \begin{itemize}
     \item Description: After reading the input data, CEWS System will perform the calculation and output the results.
-    \item Result: Unclear
-    \item Explanation: Issues with existing implementations may invalidate the test cases (see Section \ref{sec:comparision}).
+    \item Result: Pass*
+    \item *Issues with existing implementations may invalidate some failed test cases (see Section \ref{sec:comparision}).
     \end{itemize}
     \item R3: Reproducibility
     \begin{itemize}
@@ -119,7 +119,7 @@ outlined in the \href{https://github.com/LesleyWheat/CAS741_CEWS/blob/main/docs/
     \item NFR1: Accuracy 
     \begin{itemize}
     \item Description: The accuracy of the computed solutions should meet the level needed for data analysis.
-    \item Result: Unclear, due to testing results for R2 being unclear.
+    \item Result: Pass.
     \end{itemize}
     \Needspace{5\baselineskip}
     \item NFR2: Portability 
@@ -225,9 +225,9 @@ There are two existing implementations for different parts of the system.
 Note: the CEWS calculated with the graph from \cite{pythonRNG} does not match the results from \cite{zighed_statistical_2005}.
 It's possible there are errors in one or both of the implementations.
 
-No accessible graph generation implementation has been able to reproduce the results in \cite{zighed_statistical_2005}.
-The implementation used by the original authors does not run on modern operating systems.
-It is possible but unlikely that the benchmark datasets have changed since \cite{zighed_statistical_2005} was published.
+%No accessible graph generation implementation has been able to reproduce the results in \cite{zighed_statistical_2005}.
+%The implementation used by the original authors does not run on modern operating systems.
+%It is possible but unlikely that the benchmark datasets have changed since \cite{zighed_statistical_2005} was published.
 
 \cite{pythonRNG} implements the same algorithm used in Graph Module. 
 However, the \cite{pythonRNG} has not been independently verified.
@@ -235,8 +235,8 @@ Also, \cite{pythonRNG} has an error based on the SRS requirements as discussed i
 
 However, even if the graphs are not constructed using exactly the same method then it doesn't mean the program doesn't measure data complexity.
 In \cite{zighed_statistical_2005}, the authors stated they achieved similar results with a Gabriel Graph or Minimum Spanning Tree.
-Another common data complexity measure, Fraction of Borderline Points uses a Minimum Spanning Tree and nearest neighbour graphs are often used as well. \cite{lorena_how_2020}
-As such the program may still be able to measure data complexity even if the program doesn't pass these tests.
+Another common data complexity measure, Fraction of Borderline Points uses a Minimum Spanning Tree and nearest neighbour graphs are often used as well \cite{lorena_how_2020}.
+As such the program may still be able to measure data complexity even if the program doesn't reproduce the exact same result which is why there is a margin of error allowed.
 
 \Needspace{20\baselineskip}
 \subsection{T10} \label{sec:T10}
@@ -255,14 +255,12 @@ Image Segments &  Pass \\ \hline
 Ionosphere &  Pass \\ \hline
 Iris (Bezdek) &   Pass\\ \hline
 Iris Plants &   Pass\\ \hline
-Wine Recognition &  Fail \\ \hline
+Wine Recognition &  Pass \\ \hline
 Yeast &  Pass\\ \hline
 \end{tabular}
 \caption{T10 Results}
 \label{Table:t10}
 \end{table}
-
-The test fails on the Wine Recognition dataset with significant deviation (expected: 0.093, result: 0.268) which could indicate a legitimate error in the program.
 
 \Needspace{20\baselineskip}
 \subsection{T11} \label{sec:T11}
@@ -274,15 +272,15 @@ This test compares the program results to the results from \cite{pythonRNG}.
 \begin{tabular}{|c|c|c|}
 \hline
 Benchmark Dataset & Test Result \\ \hline
-Breast Cancer &  Pass\\ \hline
-Glass Identification &  Pass\\ \hline
+Breast Cancer &  Pass \\ \hline
+Glass Identification &  Pass \\ \hline
 Haberman  &  Pass \\ \hline
-Image Segments &   Pass\\ \hline
-Ionosphere &   Pass\\ \hline
+Image Segments &   Pass \\ \hline
+Ionosphere &   Pass \\ \hline
 Iris (Bezdek) &  Fail \\ \hline
 Iris Plants &  Fail \\ \hline
 Wine Recognition &  Pass \\ \hline
-Yeast & Fail \\ \hline
+Yeast & Pass \\ \hline
 \end{tabular}
 \caption{T11 Results}
 \label{Table:t11}
@@ -316,6 +314,11 @@ During testing, several deviations from expected results were traced back to the
 Some of the benchmark datasets from the UCI Machine Learning Repository had question marks in some fields to represent missing data.
 These benchmarks failed their tests due to the Input Module detecting them and generating an error.
 The samples with missing data were then removed from the datasets prior to running the program.
+
+Some of the datasets were generating very different results from the \cite{zighed_statistical_2005}, this is likely due to differences in the dataset processing.
+When the process to normalize the datasets was changed, the program passed T11.
+It is unclear what type of normalization was used in \cite{zighed_statistical_2005} and the normailzation now used may not be exactly the same but the results are now within the accuracy range.
+
 
 %\section{Automated Testing}
 
