@@ -1,4 +1,4 @@
-# CEWS System
+# CAS741: CEWS
 
 Developer Names: Lesley Wheat
 
